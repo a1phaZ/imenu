@@ -10,11 +10,14 @@ const mongoose     = require('mongoose');
 const chalk        = require('chalk');
 const compression  = require('compression');
 const dotenv       = require('dotenv');
+const expressValidator = require('express-validator');
+const flash = require('express-flash');
 
 dotenv.load({ path: '.env' });
 
 const index = require('./routes/index');
 const users = require('./routes/users');
+const categoryController = require('./controllers/category');
 
 const app = express();
 
@@ -41,10 +44,29 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(expressValidator());
+app.use(session({
+  resave: true,
+  saveUninitialized: true,
+  secret: process.env.SESSION_SECRET,
+  store: new MongoStore({
+    url: process.env.MONGODB_URI || process.env.MONGOLAB_URI,
+    autoReconnect: true
+  })
+}));
+app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+app.get('/category', categoryController.getCategoryList);
+app.get('/category/new', categoryController.getNewCategory);
+app.post('/category', categoryController.postNewCategory);
+app.post('/category/new', categoryController.postNewCategory);
+app.get('/category/:slug', categoryController.getCategoryBySlug);
+app.post('/category/:slug', categoryController.postCategoryBySlug);
+app.delete('/category/:slug', categoryController.deleteCategoryBySlug, categoryController.getCategoryList);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
