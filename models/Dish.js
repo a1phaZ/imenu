@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const dishSchema = new mongoose.Schema({
 	title      : {type: String},
 	description: {type: String},
-	composition: Array,
+	composition: {type: String},
 	category   : {
 		type     : mongoose.Schema.Types.ObjectId,
 		ref      : 'Category'
