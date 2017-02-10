@@ -69,6 +69,11 @@ app.post('/category/:slug', categoryController.postCategoryBySlug);
 app.delete('/category/:slug', categoryController.deleteCategoryBySlug, categoryController.getCategoryList);
 app.get('/products', productController.getProductsList);
 app.get('/category/:slug/products', productController.getProductsListByCategorySlug);
+app.get('/product/new', productController.getNewProduct);
+app.post('/product/new', productController.postNewProduct);
+app.get('/product/:slug', productController.getProductBySlug);
+app.post('/product/:slug', productController.postProductBySlug);
+app.delete('/product/:slug', productController.deleteProductBySlug, productController.getProductsList);
 
 
 // catch 404 and forward to error handler
