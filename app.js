@@ -67,7 +67,7 @@ app.post('/category/new', categoryController.postNewCategory);
 app.get('/category/:slug', categoryController.getCategoryBySlug);
 app.post('/category/:slug', categoryController.postCategoryBySlug);
 app.delete('/category/:slug', categoryController.deleteCategoryBySlug, categoryController.getCategoryList);
-app.get('/products', productController.getProductsList);
+app.get('/product', productController.getProductsList);
 app.get('/category/:slug/products', productController.getProductsListByCategorySlug);
 app.get('/product/new', productController.getNewProduct);
 app.post('/product/new', productController.postNewProduct);

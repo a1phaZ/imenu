@@ -36,7 +36,7 @@ exports.getProductsListByCategorySlug = (req, res, next) =>{
  * GET /product/new
  */
 exports.getNewProduct = (req, res) =>{
-	res.render('products/products', {
+	res.render('product/product', {
 		title: 'Новый продукт'
 	});
 };
