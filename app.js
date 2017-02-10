@@ -18,7 +18,7 @@ dotenv.load({ path: '.env' });
 const index = require('./routes/index');
 const users = require('./routes/users');
 const categoryController = require('./controllers/category');
-const dishController = require('./controllers/dish');
+const productController = require('./controllers/product');
 
 const app = express();
 
@@ -67,8 +67,8 @@ app.post('/category/new', categoryController.postNewCategory);
 app.get('/category/:slug', categoryController.getCategoryBySlug);
 app.post('/category/:slug', categoryController.postCategoryBySlug);
 app.delete('/category/:slug', categoryController.deleteCategoryBySlug, categoryController.getCategoryList);
-app.get('/dishes', dishController.getDishesList);
-app.get('/category/:slug/dishes', dishController.getDishesListByCategorySlug);
+app.get('/products', productController.getProductsList);
+app.get('/category/:slug/products', productController.getProductsListByCategorySlug);
 
 
 // catch 404 and forward to error handler

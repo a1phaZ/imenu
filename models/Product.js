@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
-const dishSchema = new mongoose.Schema({
+const productSchema = new mongoose.Schema({
 	title      : {type: String},
+	slug       : {type: String, unique: true},
 	description: {type: String},
 	composition: {type: String},
 	category   : {
@@ -13,6 +14,6 @@ const dishSchema = new mongoose.Schema({
 	discount   : {type: Number}
 });
 
-const Dish = mongoose.model('Dish', dishSchema);
+const Product = mongoose.model('Product', productSchema);
 
-module.exports = Dish;
+module.exports = Product;

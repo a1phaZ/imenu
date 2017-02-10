@@ -31,7 +31,7 @@ exports.postNewCategory = (req, res, next) =>{
 	}
 	const category = new Category({
 		title: req.body.title,
-		description: req.body.description
+		description: req.body.description ? req.body.description : ''
 	});
 	category.save(req.body.title, (err)=>{
 		if (err) {return next(err);}
