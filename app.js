@@ -1,25 +1,36 @@
-const express      = require('express');
-const session      = require('express-session');
-const path         = require('path');
-const favicon      = require('serve-favicon');
-const logger       = require('morgan');
-const cookieParser = require('cookie-parser');
-const bodyParser   = require('body-parser');
-const MongoStore   = require('connect-mongo')(session);
-const mongoose     = require('mongoose');
-const chalk        = require('chalk');
-const compression  = require('compression');
-const dotenv       = require('dotenv');
+const express          = require('express');
+const session          = require('express-session');
+const path             = require('path');
+const favicon          = require('serve-favicon');
+const logger           = require('morgan');
+const cookieParser     = require('cookie-parser');
+const bodyParser       = require('body-parser');
+const MongoStore       = require('connect-mongo')(session);
+const mongoose         = require('mongoose');
+const chalk            = require('chalk');
+const compression      = require('compression');
+const dotenv           = require('dotenv');
 const expressValidator = require('express-validator');
-const flash = require('express-flash');
+const flash            = require('express-flash');
+const lusca            = require('lusca');
+const passport         = require('passport');
 
 dotenv.load({ path: '.env' });
 
-const index = require('./routes/index');
-const users = require('./routes/users');
+const index              = require('./routes/index');
+const users              = require('./routes/users');
+const userController     = require('./controllers/user');
 const categoryController = require('./controllers/category');
-const productController = require('./controllers/product');
+const productController  = require('./controllers/product');
 
+/**
+ * API keys and Passport configuration.
+ */
+const passportConfig = require('./config/passport');
+
+/**
+ * Create Express server.
+ */
 const app = express();
 
 /**
@@ -55,11 +66,51 @@ app.use(session({
     autoReconnect: true
   })
 }));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(flash());
+app.use(lusca.xframe('SAMEORIGIN'));
+app.use(lusca.xssProtection(true));
+app.use((req, res, next) => {
+  res.locals.user = req.user;
+  next();
+});
+app.use((req, res, next) => {
+  // After successful login, redirect back to the intended page
+  if (!req.user &&
+      req.path !== '/login' &&
+      req.path !== '/signup' &&
+      !req.path.match(/^\/auth/) &&
+      !req.path.match(/\./)) {
+    req.session.returnTo = req.path;
+  } else if (req.user &&
+      req.path == '/account') {
+    req.session.returnTo = req.path;
+  }
+  next();
+});
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+//Account
+app.get('/login', userController.getLogin);
+app.post('/login', userController.postLogin);
+app.get('/logout', userController.logout);
+app.get('/forgot', userController.getForgot);
+app.post('/forgot', userController.postForgot);
+app.get('/reset/:token', userController.getReset);
+app.post('/reset/:token', userController.postReset);
+app.get('/account', passportConfig.isAuthenticated, userController.getAccount);
+app.post('/account/profile', passportConfig.isAuthenticated, userController.postUpdateProfile);
+app.post('/account/password', passportConfig.isAuthenticated, userController.postUpdatePassword);
+app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
+app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
+app.get('/signup', userController.getSignup);
+app.post('/signup', userController.postSignup);
+
+// app.get('/contact', contactController.getContact);
+// app.post('/contact', contactController.postContact);
 app.get('/category', categoryController.getCategoryList);
 app.get('/category/new', categoryController.getNewCategory);
 app.post('/category', categoryController.postNewCategory);
