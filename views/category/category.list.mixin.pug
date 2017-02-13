@@ -1,0 +1,11 @@
+mixin category-list(category)
+	.col-lg-3.col-md-4.col-sm-6
+		.category-card
+			.category-card-header
+				a(href='/category/'+category.slug)
+					img(src='http://placehold.it/500x500', class='img-responsive logo category-card-logo')
+					h2.category-title #{category.title}
+			.category-card-description #{category.description}
+
+for category in categoryList
+	+category-list(category)

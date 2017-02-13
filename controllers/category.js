@@ -6,7 +6,11 @@ exports.getCategoryList = (req, res, next) =>{
 		.find();
 	getCategoryList
 		.then((categoryList) => {
-			res.send(categoryList);
+			res.render('category/index', {
+				title: 'Список категорий',
+				categoryList: categoryList
+			});
+			// res.send(categoryList);
 		})
 		.catch((error) => {
 			next(error);
