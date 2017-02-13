@@ -14,6 +14,7 @@ const expressValidator = require('express-validator');
 const flash            = require('express-flash');
 const lusca            = require('lusca');
 const passport         = require('passport');
+const sass             = require('node-sass-middleware');
 
 dotenv.load({ path: '.env' });
 
@@ -49,6 +50,10 @@ app.disable('x-powered-by');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.use(compression());
+app.use(sass({
+  src: path.join(__dirname, 'public'),
+  dest: path.join(__dirname, 'public')
+}));
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));

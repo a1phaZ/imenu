@@ -7,26 +7,53 @@
         span.icon-bar
         span.icon-bar
       a.navbar-brand(href='/')
-        i.fa.fa-book
-        | Journal
+        i.fa.fa-bars
+        | iMenu
     .collapse.navbar-collapse
-      ul.nav.navbar-nav
-        li(class=(title == 'List') ? 'active' : undefined)
-          a(href='/') Замечания
-        li(class=(title == 'My') ? 'active' : undefined)
-          a(href='/my') Мои замечания
-        //- li(class=(title == 'API Examples') ? 'active' : undefined)
-        //-   a(href='/api') API Examples
-        //- li(class=(title == 'Contact') ? 'active' : undefined)
-        //-   a(href='/contact') Contact
-        //- li
-        //-   a(href='/status') Status
+      if user
+        ul.nav.navbar-nav
+          li.dropdown(class=(title == 'List') ? 'active' : undefined)
+            a.dropdown-toggle(href='#', data-toggle='dropdown') Категории
+              i.caret
+            ul.dropdown-menu
+              li
+                a(href='/account') 
+                  i.fa.fa-user
+                  | Мой аккаунт
+              li
+                a(href='/order')
+                  i.fa.fa-first-order
+                  | Мой заказ
+              li
+                a(href='/history') 
+                  i.fa.fa-history
+                  | История заказов
+              li.divider
+              li
+                a(href='/logout') 
+                  i.fa.fa-sign-out
+                  | Выход
+          li(class=(title == 'Order') ? 'active' : undefined)
+            a(href='/order') 
+              | Заказ
+              span.badge 
+                | 3
+          //- li(class=(title == 'API Examples') ? 'active' : undefined)
+          //-   a(href='/api') API Examples
+          //- li(class=(title == 'Contact') ? 'active' : undefined)
+          //-   a(href='/contact') Contact
+          //- li
+          //-   a(href='/status') Status
       ul.nav.navbar-nav.navbar-right
         if !user
           li(class=(title == 'Login') ? 'active' : undefined)
-            a(href='/login') Login
+            a(href='/login') 
+              i.fa.fa-sign-in
+              | Войти
           li(class=(title == 'Create Account') ? 'active' : undefined)
-            a(href='/signup') Create Account
+            a(href='/signup') 
+              i.fa.fa-user-plus
+              | Создать аккаунт
         else
           li.dropdown(class=(title == 'Account Management') ? 'active' : undefined)
             a.dropdown-toggle(href='#', data-toggle='dropdown')
@@ -38,7 +65,21 @@
               i.caret
             ul.dropdown-menu
               li
-                a(href='/account') Мой аккаунт
+                a(href='/account') 
+                  i.fa.fa-user
+                  | Мой аккаунт
+              li
+                a(href='/order')
+                  i.fa.fa-first-order
+                  | Мой заказ
+                  span.badge 
+                    | 3
+              li
+                a(href='/history') 
+                  i.fa.fa-history
+                  | История заказов
               li.divider
               li
-                a(href='/logout') Выход
+                a(href='/logout') 
+                  i.fa.fa-sign-out
+                  | Выход
