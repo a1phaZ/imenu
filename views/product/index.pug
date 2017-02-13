@@ -1,0 +1,8 @@
+extends ../layout
+
+block content
+	.page-header
+		h1 #{category.title}
+
+	.row
+		include product.list.mixin.pug

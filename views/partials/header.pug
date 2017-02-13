@@ -16,23 +16,8 @@
             a.dropdown-toggle(href='#', data-toggle='dropdown') Категории
               i.caret
             ul.dropdown-menu
-              li
-                a(href='/account') 
-                  i.fa.fa-user
-                  | Мой аккаунт
-              li
-                a(href='/order')
-                  i.fa.fa-first-order
-                  | Мой заказ
-              li
-                a(href='/history') 
-                  i.fa.fa-history
-                  | История заказов
-              li.divider
-              li
-                a(href='/logout') 
-                  i.fa.fa-sign-out
-                  | Выход
+              include category.menu.mixin.pug
+              
           li(class=(title == 'Order') ? 'active' : undefined)
             a(href='/order') 
               | Заказ

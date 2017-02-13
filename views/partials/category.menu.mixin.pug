@@ -1,0 +1,6 @@
+mixin category-menu(category)
+	li
+		a(href='/category/'+category.slug) #{category.title}
+
+for category in categoryList
+	+category-menu(category)

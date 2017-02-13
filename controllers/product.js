@@ -16,16 +16,19 @@ exports.getProductsList = (req, res, next) =>{
 		});
 };
 
-// GET /category/:slug/product
+// GET /category/:slug
 exports.getProductsListByCategorySlug = (req, res, next) =>{
 	let getProductsList = Product
-		.find({category: req.params.slug})
+		.find({category: res.category._id})
 		.populate({
 			path: 'category'
 		});
 	getProductsList
-		.then((productsList) => {
-			res.send(productsList);
+		.then((productList) => {
+			res.render('product/index',{
+				productList: productList,
+				title: 'Список блюд'
+			});
 		})
 		.catch((error) => {
 			next(error);

@@ -1,20 +1,27 @@
 const Category = require('../models/Category');
 
-//GET /category
-exports.getCategoryList = (req, res, next) =>{
+/**
+ * comment
+ */
+exports.getAllCategoryToRes = (req, res, next) =>{
 	let getCategoryList = Category
 		.find();
 	getCategoryList
 		.then((categoryList) => {
-			res.render('category/index', {
-				title: 'Список категорий',
-				categoryList: categoryList
-			});
+			res.locals.categoryList = categoryList;
+			next();
 			// res.send(categoryList);
 		})
 		.catch((error) => {
 			next(error);
 		});
+};
+
+//GET /category
+exports.getCategoryList = (req, res) =>{
+	res.render('category/index', {
+		title: 'Список категорий'
+	});
 };
 
 //GET /category/new
@@ -50,7 +57,9 @@ exports.getCategoryBySlug = (req, res, next) => {
 		.findOne({slug: req.params.slug});
 	getCategoryBySlug
 		.then((category) =>{
-			res.send(category);
+			res.category = category;
+			res.locals.category = category;
+			next();
 		})
 		.catch((error)=>{
 			next(error);

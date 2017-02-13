@@ -94,6 +94,7 @@ app.use((req, res, next) => {
   }
   next();
 });
+app.use(categoryController.getAllCategoryToRes);
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
@@ -120,11 +121,11 @@ app.get('/category', categoryController.getCategoryList);
 app.get('/category/new', categoryController.getNewCategory);
 app.post('/category', categoryController.postNewCategory);
 app.post('/category/new', categoryController.postNewCategory);
-app.get('/category/:slug', categoryController.getCategoryBySlug);
+app.get('/category/:slug', categoryController.getCategoryBySlug, productController.getProductsListByCategorySlug);
 app.post('/category/:slug', categoryController.postCategoryBySlug);
 app.delete('/category/:slug', categoryController.deleteCategoryBySlug, categoryController.getCategoryList);
 app.get('/product', productController.getProductsList);
-app.get('/category/:slug/products', productController.getProductsListByCategorySlug);
+// app.get('/category/:slug/products', productController.getProductsListByCategorySlug);
 app.get('/product/new', productController.getNewProduct);
 app.post('/product/new', productController.postNewProduct);
 app.get('/product/:slug', productController.getProductBySlug);
