@@ -1,0 +1,17 @@
+extends ../layout
+
+block content
+  .page-header
+    h1 Удаление категории #{category.title}
+
+  .row
+    form.form-horizontal(method='POST')
+      .form-group
+        .col-sm-6
+          button.col-sm-12.btn.btn-danger(type='submit', disabled=!isAdmin)
+            i.fa.fa-floppy-o
+            | Удалить категорию
+        .col-sm-6
+          a.col-sm-12.btn.btn-primary(disabled=!isAdmin, href='/category')
+            i.fa.fa-floppy-o
+            | Отменить удаление

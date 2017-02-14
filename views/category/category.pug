@@ -19,7 +19,7 @@ block content
           textarea.form-control(name='description', id='description', placeholder='Описание', rows='7', required, disabled=!isAdmin) #{categoryDescription}
       .form-group
         .col-sm-offset-3.col-sm-7
-          button.col-sm-7.btn.btn-primary(type='submit', disabled=!isAdmin)
+          button.col-sm-12.btn.btn-primary(type='submit', disabled=!isAdmin)
             if categoryTitle
               i.fa.fa-floppy-o
               | Обновить категорию

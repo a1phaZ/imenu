@@ -92,14 +92,22 @@ exports.postCategoryBySlug = (req, res ,next) => {
 };
 
 //DELETE /delete/:slug
-exports.deleteCategoryBySlug = (req, res, next) => {
-	Category.findOneAndRemove({slug: req.params.slug}, (err, category) =>{
-		if (err) {return next(err);}
-		req.flash('success', {msg: 'Категория успешно удалена'});
-		next();
+exports.getDeleteCategoryBySlug = (req, res) => {
+	res.render('category/delete',{
+		title: 'Удаление категории'
 	});
 }
 
+//DELETE /delete/:slug
+exports.postDeleteCategoryBySlug = (req, res, next) => {
+	Category.remove({slug: req.params.slug}, (err) =>{
+		if (err) {return next(err);}
+		req.flash('success', {msg: 'Категория успешно удалена'});
+		res.redirect('/category');
+	});
+}
+
+/****/
 exports.getCategoryBySlugMiddleware = (req, res, next) => {
 	let getCategoryBySlug = Category
 		.findOne({slug: req.params.slug});
