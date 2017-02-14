@@ -94,6 +94,11 @@ app.use((req, res, next) => {
   }
   next();
 });
+//Admin?
+app.use((req, res, next)=>{
+  res.isAdmin = req.user.email === process.env.ADMIN_EMAIL;
+  next();
+});
 app.use(categoryController.getAllCategoryToRes);
 app.use(express.static(path.join(__dirname, 'public')));
 
