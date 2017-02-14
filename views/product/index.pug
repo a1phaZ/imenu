@@ -6,7 +6,7 @@ block content
       ul.category-menu
         li.dropdown(class=(title == 'Dashboard') ? 'active' : undefined)
           h1(data-toggle='dropdown') #{category.title}
-            i.caret
+            i.fa.fa-caret-square-o-down
           ul.dropdown-menu
             li
               a(href='/update/'+category.slug) Редактировать

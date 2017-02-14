@@ -128,16 +128,16 @@ app.post('/signup', userController.postSignup);
 app.get('/category', categoryController.getCategoryList);
 app.get('/new', categoryController.getNewCategory);
 app.post('/new', categoryController.postNewCategory);
-app.get('/category/:slug', categoryController.getCategoryBySlugMiddleware, productController.getProductsListByCategorySlug);
 app.get('/update/:slug', categoryController.getCategoryBySlug);
 app.post('/update/:slug', categoryController.postCategoryBySlug);
 app.get('/delete/:slug', categoryController.getCategoryBySlugMiddleware, categoryController.getDeleteCategoryBySlug);
-app.post('/delete/:slug', categoryController.postDeleteCategoryBySlug/*, categoryController.getCategoryList*/);
+app.post('/delete/:slug', categoryController.postDeleteCategoryBySlug);
 
 //Product
-app.get('/product', productController.getProductsList);
+app.get('/category/:slug', categoryController.getCategoryBySlugMiddleware, productController.getProductsListByCategorySlug);
 app.get('/category/:slug/new', productController.getNewProduct);
 app.post('/category/:slug/new', productController.postNewProduct);
+app.get('/product', productController.getProductsList);
 app.get('/product/:slug', productController.getProductBySlug);
 app.post('/product/:slug', productController.postProductBySlug);
 app.post('/product/:slug', productController.deleteProductBySlug, productController.getProductsList);
