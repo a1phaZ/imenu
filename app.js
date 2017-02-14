@@ -96,7 +96,9 @@ app.use((req, res, next) => {
 });
 //Admin?
 app.use((req, res, next)=>{
-  res.isAdmin = req.user.email === process.env.ADMIN_EMAIL;
+  if (req.user){
+    res.isAdmin = req.user.email === process.env.ADMIN_EMAIL;
+  }
   next();
 });
 app.use(categoryController.getAllCategoryToRes);
@@ -126,7 +128,8 @@ app.post('/signup', userController.postSignup);
 app.get('/category', categoryController.getCategoryList);
 app.get('/new', categoryController.getNewCategory);
 app.post('/new', categoryController.postNewCategory);
-app.get('/update/:slug', categoryController.getCategoryBySlug, productController.getProductsListByCategorySlug);
+app.get('/category/:slug', categoryController.getCategoryBySlugMiddleware, productController.getProductsListByCategorySlug);
+app.get('/update/:slug', categoryController.getCategoryBySlug);
 app.post('/update/:slug', categoryController.postCategoryBySlug);
 app.delete('/delete/:slug', categoryController.deleteCategoryBySlug, categoryController.getCategoryList);
 

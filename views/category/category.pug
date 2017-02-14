@@ -1,0 +1,29 @@
+extends ../layout
+
+block content
+  .page-header
+    if categoryTitle
+      h1 #{categoryTitle}
+    else 
+      h1 Новая категория
+
+  .row
+    form.form-horizontal(method='POST')
+      input(type='hidden', name='_csrf', value=_csrf)
+      .form-group
+        label.col-sm-3.control-label(for='title') Название
+        .col-sm-7
+          input.form-control(type='text', name='title', id='title', placeholder='Название', autofocus, required, value=categoryTitle, disabled=!isAdmin)
+      .form-group
+        label.col-sm-3.control-label(for='description') Описание
+        .col-sm-7
+          textarea.form-control(name='description', id='description', placeholder='Описание', rows='7', required, disabled=!isAdmin) #{categoryDescription}
+      .form-group
+        .col-sm-offset-3.col-sm-7
+          button.col-sm-7.btn.btn-primary(type='submit', disabled=!isAdmin)
+            if categoryTitle
+              i.fa.fa-floppy-o
+              | Обновить категорию
+            else
+              i.fa.fa-plus
+              | Создать категорию

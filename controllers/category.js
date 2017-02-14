@@ -56,9 +56,11 @@ exports.getCategoryBySlug = (req, res, next) => {
 		.findOne({slug: req.params.slug});
 	getCategoryBySlug
 		.then((category) =>{
-			res.category = category;
-			res.locals.category = category;
-			next();
+			res.render('category/category',{
+				title: 'Новая категория',
+				categoryTitle: category.title,
+				categoryDescription: category.description
+			});
 		})
 		.catch((error)=>{
 			next(error);
@@ -98,3 +100,17 @@ exports.deleteCategoryBySlug = (req, res, next) => {
 		next();
 	});
 }
+
+exports.getCategoryBySlugMiddleware = (req, res, next) => {
+	let getCategoryBySlug = Category
+		.findOne({slug: req.params.slug});
+	getCategoryBySlug
+		.then((category) =>{
+			res.category = category;
+			res.locals.category = category;
+			next();
+		})
+		.catch((error)=>{
+			next(error);
+		});
+};
