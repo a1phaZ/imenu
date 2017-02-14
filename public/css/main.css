@@ -8943,6 +8943,10 @@ button.close {
   -moz-border-radius: 6px 0 6px 6px;
   border-radius: 6px 0 6px 6px; }
 
+.category-menu {
+  list-style-type: none;
+  padding: 0; }
+
 html {
   position: relative;
   min-height: 100%; }
