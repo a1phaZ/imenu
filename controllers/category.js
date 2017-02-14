@@ -91,14 +91,14 @@ exports.postCategoryBySlug = (req, res ,next) => {
 		});
 };
 
-//DELETE /delete/:slug
+//DELETE GET /delete/:slug
 exports.getDeleteCategoryBySlug = (req, res) => {
 	res.render('category/delete',{
 		title: 'Удаление категории'
 	});
 }
 
-//DELETE /delete/:slug
+//DELETE POST /delete/:slug
 exports.postDeleteCategoryBySlug = (req, res, next) => {
 	Category.remove({slug: req.params.slug}, (err) =>{
 		if (err) {return next(err);}

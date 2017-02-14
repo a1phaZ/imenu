@@ -1,8 +1,24 @@
 extends ../layout
 
 block content
-	.page-header
-		h1 #{category.title}
+  .page-header
+    if isAdmin
+      ul.category-menu
+        li.dropdown(class=(title == 'Dashboard') ? 'active' : undefined)
+          h1(data-toggle='dropdown') #{category.title}
+            i.caret
+          ul.dropdown-menu
+            li
+              a(href='/update/'+category.slug) Редактировать
+            li
+              a(href='/category/'+category.slug) Просмотр категории
+            li
+              a(href='/category/'+category.slug+'/new') Создать в категории
+            li.divider
+            li
+              a(href='/delete/'+category.slug) Удалить категорию
+    else
+      h1 #{category.title}
 
-	.row
-		include product.list.mixin.pug
+  .row
+    include product.list.mixin.pug

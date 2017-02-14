@@ -27,7 +27,7 @@ exports.getProductsListByCategorySlug = (req, res, next) =>{
 		.then((productList) => {
 			res.render('product/index',{
 				productList: productList,
-				title: 'Список блюд'
+				title: res.category.title
 			});
 		})
 		.catch((error) => {
