@@ -24,21 +24,20 @@ exports.getCategoryList = (req, res) =>{
 	});
 };
 
-//GET /category/new
+//GET /new
 exports.getNewCategory = (req, res) =>{
 	res.render('category/category', {
 		title: 'Новая категория'
 	});
 };
 
-//POST /category
-//POST /category/new
+//POST /new
 exports.postNewCategory = (req, res, next) =>{
 	req.assert('title', 'Название не должно быть пустым').notEmpty();
 	const errors = req.validationErrors();
 	if (errors){
 		req.flash('errors', errors);
-		return res.redirect('/category/new');
+		return res.redirect('/new');
 	}
 	const category = new Category({
 		title: req.body.title,
@@ -51,7 +50,7 @@ exports.postNewCategory = (req, res, next) =>{
 	});
 };
 
-//GET /category/:slug
+//GET /update/:slug
 exports.getCategoryBySlug = (req, res, next) => {
 	let getCategoryBySlug = Category
 		.findOne({slug: req.params.slug});
@@ -66,13 +65,13 @@ exports.getCategoryBySlug = (req, res, next) => {
 		});
 };
 
-//POST /category/:slug
+//POST /update/:slug
 exports.postCategoryBySlug = (req, res ,next) => {
 	req.assert('title', 'Название не должно быть пустым').notEmpty();
 	const errors = req.validationErrors();
 	if (errors){
 		req.flash('errors', errors);
-		return res.redirect('/category'+req.params.slug);
+		return res.redirect('/update/'+req.params.slug);
 	}
 	let getCategoryBySlug = Category
 		.findOne({slug: req.params.slug});
@@ -91,7 +90,7 @@ exports.postCategoryBySlug = (req, res ,next) => {
 		});
 };
 
-//DELETE /category/:slug
+//DELETE /delete/:slug
 exports.deleteCategoryBySlug = (req, res, next) => {
 	Category.findOneAndRemove({slug: req.params.slug}, (err, category) =>{
 		if (err) {return next(err);}
