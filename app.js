@@ -135,8 +135,8 @@ app.delete('/delete/:slug', categoryController.deleteCategoryBySlug, categoryCon
 
 //Product
 app.get('/product', productController.getProductsList);
-app.get('/product/new', productController.getNewProduct);
-app.post('/product/new', productController.postNewProduct);
+app.get('/category/:slug/new', productController.getNewProduct);
+app.post('/category/:slug/new', productController.postNewProduct);
 app.get('/product/:slug', productController.getProductBySlug);
 app.post('/product/:slug', productController.postProductBySlug);
 app.delete('/product/:slug', productController.deleteProductBySlug, productController.getProductsList);

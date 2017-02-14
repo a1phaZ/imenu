@@ -17,6 +17,15 @@
               i.caret
             ul.dropdown-menu
               include category.menu.mixin.pug
+          if isAdmin
+            li.dropdown(class=(title == 'Dashboard') ? 'active' : undefined)
+              a.dropdown-toggle(href='#', data-toggle='dropdown') Администрирование
+                i.caret
+              ul.dropdown-menu
+                li
+                  a(href='/new') Создать категорию
+                li.divider
+                include category.menu.admin.mixin.pug
               
           li(class=(title == 'Order') ? 'active' : undefined)
             a(href='/order') 

@@ -1,0 +1,16 @@
+mixin category-menu(category)
+  li.dropdown-submenu
+    a(href='#', data-toggle='dropdown') #{category.title}
+    ul.dropdown-menu
+      li
+        a(href='/update/'+category.slug) Редактировать
+      li
+        a(href='/category/'+category.slug) Просмотр категории
+      li
+        a(href='/category/'+category.slug+'/new') Создать в категории
+      li.divider
+      li
+        a(href='/delete/'+category.slug) Удалить категорию
+
+for category in categoryList
+  +category-menu(category)
