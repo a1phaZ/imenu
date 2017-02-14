@@ -94,14 +94,14 @@ app.use((req, res, next) => {
   }
   next();
 });
+app.use(categoryController.getAllCategoryToRes);
 //Admin?
 app.use((req, res, next)=>{
   if (req.user){
-    res.isAdmin = req.user.email === process.env.ADMIN_EMAIL;
+    res.locals.isAdmin = (req.user.email.toLowerCase() == process.env.ADMIN_EMAIL.toLowerCase());
   }
   next();
 });
-app.use(categoryController.getAllCategoryToRes);
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);

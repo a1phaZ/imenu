@@ -10,7 +10,6 @@ exports.getAllCategoryToRes = (req, res, next) =>{
 		.then((categoryList) => {
 			res.locals.categoryList = categoryList;
 			next();
-			// res.send(categoryList);
 		})
 		.catch((error) => {
 			next(error);
