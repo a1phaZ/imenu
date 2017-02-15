@@ -3,11 +3,11 @@ extends ../layout
 block content
   .page-header
     if categoryTitle
-      h1 #{categoryTitle}
+      h1 #{categoryTitle.toUpperCase()}
     else 
       h1 Новая категория
   .row
-    form.form-horizontal(method='POST')
+    form.form-horizontal.col-sm-12(method='POST')
       input(type='hidden', name='_csrf', value=_csrf)
       .form-group
         label.col-sm-3.control-label(for='title') Название

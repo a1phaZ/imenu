@@ -5,7 +5,7 @@ block content
     if isAdmin
       ul.category-menu
         li.dropdown(class=(title == 'Dashboard') ? 'active' : undefined)
-          h1(data-toggle='dropdown') #{category.title}
+          h1(data-toggle='dropdown') #{category.title.toUpperCase()}
             i.fa.fa-caret-square-o-down
           ul.dropdown-menu
             li
@@ -16,7 +16,7 @@ block content
             li
               a(href='/delete/'+category.slug) Удалить категорию
     else
-      h1 #{category.title}
+      h1 #{category.title.toUpperCase()}
 
   .row
     include product.list.mixin.pug

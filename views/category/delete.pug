@@ -5,13 +5,11 @@ block content
     h1 Удаление категории #{category.title}
 
   .row
-    form.form-horizontal(method='POST')
+    form.form-horizontal.col-sm-12.col-md-6.col-lg-4.col-md-offset-3.col-lg-offset-4(method='POST')
       .form-group
-        .col-sm-6
-          button.col-sm-12.btn.btn-danger(type='submit', disabled=!isAdmin)
-            i.fa.fa-floppy-o
-            | Удалить категорию
-        .col-sm-6
-          a.col-sm-12.btn.btn-primary(disabled=!isAdmin, href='/category')
-            i.fa.fa-floppy-o
-            | Отменить удаление
+        button.form-control.btn.btn-danger(type='submit', disabled=!isAdmin)
+          i.fa.fa-floppy-o
+          | Удалить категорию
+        a.form-control.btn.btn-primary(disabled=!isAdmin, href='/category')
+          i.fa.fa-floppy-o
+          | Отменить удаление
