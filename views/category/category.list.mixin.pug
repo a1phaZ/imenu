@@ -4,8 +4,9 @@ mixin category-list(category)
 			.category-card-header
 				a(href='/category/'+category.slug)
 					img(src='http://placehold.it/500x500', class='img-responsive logo category-card-logo')
-					h2.category-title #{category.title}
-			.category-card-description #{category.description}
+					.category-card-description
+						h2.category-title #{category.title}
+						| #{category.description}
 
 for category in categoryList
 	+category-list(category)

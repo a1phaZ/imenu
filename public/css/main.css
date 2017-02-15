@@ -8950,6 +8950,26 @@ button.close {
 span.small {
   color: gray; }
 
+.category-card .category-card-header a {
+  position: relative; }
+  .category-card .category-card-header a img.logo {
+    min-width: 100%;
+    object-fit: cover;
+    max-height: 300px; }
+  .category-card .category-card-header a:hover .category-card-description {
+    opacity: 1; }
+  .category-card .category-card-header a .category-card-description {
+    opacity: 0.5;
+    position: absolute;
+    background-color: #fff;
+    color: #000;
+    bottom: 0;
+    margin: 1em;
+    padding: 1em; }
+    .category-card .category-card-header a .category-card-description .category-title {
+      margin: 0;
+      width: 300px; }
+
 html {
   position: relative;
   min-height: 100%; }
