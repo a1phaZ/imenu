@@ -1,0 +1,46 @@
+extends ../layout
+
+block content
+  .page-header
+    if category.title
+      h1 #{category.title}
+      if productTitle
+        h2 #{productTitle}
+      else 
+        h2 Добавить в категорию #{category.title}
+  .row
+    form.form-horizontal(method='POST')
+      input(type='hidden', name='_csrf', value=_csrf)
+      .form-group
+        label.col-sm-3.control-label(for='title') Название
+        .col-sm-7
+          input.form-control(type='text', name='title', id='title', placeholder='Название', autofocus, required, value=productTitle, disabled=!isAdmin)
+      .form-group
+        label.col-sm-3.control-label(for='description') Описание
+        .col-sm-7
+          textarea.form-control(name='description', id='description', placeholder='Описание', rows='7', required, disabled=!isAdmin) #{productDescription} 
+      .form-group
+        label.col-sm-3.control-label(for='composition') Состав
+        .col-sm-7
+          textarea.form-control(name='composition', id='composition', placeholder='Описание', rows='7', required, disabled=!isAdmin) #{productComposition}
+      .form-group
+        label.col-sm-3.control-label(for='price') Цена, руб.
+        .col-sm-7
+          input(type='number', size="5", name="price", id='price', min="0", step='5', value=productPrice, disabled=!isAdmin)
+      .form-group
+        label.col-sm-3.control-label(for='waiting') Время ожидания, мин.
+        .col-sm-7
+          input(type='number', size="5", name="waiting", id='waiting', min="0", step='10', value=productWaiting, disabled=!isAdmin)
+      .form-group
+        label.col-sm-3.control-label(for='discount') Скидка, %
+        .col-sm-7
+          input(type='number', size="5", name="discount", id='discount', min="0", step='10', value=productWaiting, disabled=!isAdmin)
+      .form-group
+        .col-sm-offset-3.col-sm-7
+          button.col-sm-12.btn.btn-primary(type='submit', disabled=!isAdmin)
+            if productTitle
+              i.fa.fa-floppy-o
+              | Обновить
+            else
+              i.fa.fa-plus
+              | Создать

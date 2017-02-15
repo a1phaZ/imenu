@@ -137,7 +137,7 @@ app.post('/delete/:slug', categoryController.postDeleteCategoryBySlug);
 
 //Product
 app.get('/category/:slug', categoryController.getCategoryBySlugMiddleware, productController.getProductsListByCategorySlug);
-app.get('/category/:slug/new', productController.getNewProduct);
+app.get('/category/:slug/new', categoryController.getCategoryBySlugMiddleware, productController.getNewProduct);
 app.post('/category/:slug/new', productController.postNewProduct);
 app.get('/product', productController.getProductsList);
 app.get('/product/:slug', productController.getProductBySlug);
