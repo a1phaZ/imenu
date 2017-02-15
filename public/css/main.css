@@ -8947,6 +8947,9 @@ button.close {
   list-style-type: none;
   padding: 0; }
 
+span.small {
+  color: gray; }
+
 html {
   position: relative;
   min-height: 100%; }
