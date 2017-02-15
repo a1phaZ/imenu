@@ -95,6 +95,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use(categoryController.getAllCategoryToRes);
+app.use(categoryController.getCategoryBySlugMiddleware);
 //Admin?
 app.use((req, res, next)=>{
   if (req.user){
@@ -136,9 +137,10 @@ app.get('/delete/:slug', categoryController.getCategoryBySlugMiddleware, categor
 app.post('/delete/:slug', categoryController.postDeleteCategoryBySlug);
 
 //Product
+//TODO Подумать надо роутингом
 app.get('/category/:slug', categoryController.getCategoryBySlugMiddleware, productController.getProductsListByCategorySlug);
 app.get('/category/:slug/new', categoryController.getCategoryBySlugMiddleware, productController.getNewProduct);
-app.post('/category/:slug/new', productController.postNewProduct);
+app.post('/category/:slug/new', categoryController.getCategoryBySlugMiddleware, productController.postNewProduct);
 app.get('/product', productController.getProductsList);
 app.get('/product/:slug', productController.getProductBySlug);
 app.post('/product/:slug', productController.postProductBySlug);

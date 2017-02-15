@@ -19,7 +19,7 @@ exports.getProductsList = (req, res, next) =>{
 // GET /category/:slug
 exports.getProductsListByCategorySlug = (req, res, next) =>{
 	let getProductsList = Product
-		.find({category: res.category._id})
+		.find({category: res.locals.category._id})
 		.populate({
 			path: 'category'
 		});
@@ -27,7 +27,7 @@ exports.getProductsListByCategorySlug = (req, res, next) =>{
 		.then((productList) => {
 			res.render('product/index',{
 				productList: productList,
-				title: res.category.title
+				title: res.locals.category.title
 			});
 		})
 		.catch((error) => {
@@ -45,23 +45,23 @@ exports.getNewProduct = (req, res) =>{
 };
 
 /**
- * POST /product/new
+ * POST /category/:slug/new
  */
 exports.postNewProduct = (req, res, next) =>{
 	req.assert('title', 'Название не должно быть пустым').notEmpty();
-	req.assert('category', 'Выберите категорию').notEmpty();
+	req.assert('composition', 'Состав не должен быть пустым').notEmpty();
 	req.assert('price', 'Цена не должна быть пустой').notEmpty();
 	req.assert('waiting', 'Введите время ожидания').notEmpty();
 	const errors = req.validationErrors();
 	if (errors){
 		req.flash('errors', errors);
-		return req.redirect('/products/new');
+		return res.redirect('/products/new');
 	}
 	const product = new Product({
 		title: req.body.title,
 		description:  req.body.description || '',
 		composition:  req.body.composition || '',
-		category: req.body.category,
+		category: res.locals.category._id,
 		price: req.body.price,
 		waiting: req.body.waiting,
 		discount:  req.body.discount || 0
@@ -69,7 +69,7 @@ exports.postNewProduct = (req, res, next) =>{
 	product.save(req.body.title, (err)=>{
 		if (err) {return next(err);}
 		req.flash('success', {msg: 'Товар успешно создан' });
-		res.redirect('/products');
+		res.redirect('/category/'+req.params.slug);
 	});
 };
 
@@ -84,6 +84,15 @@ exports.getProductBySlug = (req, res, next) =>{
 		});
 	getProductBySlug
 		.then((product)=>{
+				res.render('product/product', {
+					title: product.title,
+					productTitle: product.title,
+					productDescription: product.description,
+					productComposition: product.composition,
+					productPrice: product.price,
+					productWaiting: product.waiting,
+					productDiscount: product.discount
+				});
 			res.send(product);
 		})
 		.catch((errors)=>{

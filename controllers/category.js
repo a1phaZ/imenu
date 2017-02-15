@@ -56,7 +56,7 @@ exports.getCategoryBySlug = (req, res, next) => {
 	getCategoryBySlug
 		.then((category) =>{
 			res.render('category/category',{
-				title: 'Новая категория',
+				title: category.title,
 				categoryTitle: category.title,
 				categoryDescription: category.description
 			});
@@ -113,7 +113,6 @@ exports.getCategoryBySlugMiddleware = (req, res, next) => {
 		.findOne({slug: req.params.slug});
 	getCategoryBySlug
 		.then((category) =>{
-			res.category = category;
 			res.locals.category = category;
 			next();
 		})

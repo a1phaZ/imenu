@@ -34,7 +34,7 @@ block content
       .form-group
         label.col-sm-3.control-label(for='discount') Скидка, %
         .col-sm-7
-          input.form-control(type='number', size="5", name="discount", id='discount', min="0", max="100", step='5', value=productWaiting, disabled=!isAdmin, required)
+          input.form-control(type='number', size="5", name="discount", id='discount', min="0", max="100", step='5', value=productDiscount, disabled=!isAdmin, required)
       .form-group
         .col-sm-offset-3.col-sm-7
           button.col-sm-12.btn.btn-primary(type='submit', disabled=!isAdmin)
