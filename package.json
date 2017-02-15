@@ -1,9 +1,9 @@
 {
   "name": "imenu",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
+    "start": "node ./bin/www",
     "test": "mocha --timeout 15000 --reporter spec"
   },
   "dependencies": {
@@ -41,6 +41,11 @@
     "serve-favicon": "~2.3.0",
     "socket.io": "^1.7.2",
     "transliteration": "^1.5.2"
+  },
+  "main": "app.js",
+  "engines":{
+  	"node": "6.9.1",
+  	"npm": "3.10.8"
   },
   "devDependencies": {
     "chai": "^3.5.0",

@@ -104,7 +104,9 @@ app.use((req, res, next)=>{
 });
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
+// app.use('/', index);
+//index page
+app.get('/', categoryController.getCategoryList);
 app.use('/users', users);
 //Account
 app.get('/login', userController.getLogin);
