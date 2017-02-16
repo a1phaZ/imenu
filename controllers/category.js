@@ -106,7 +106,8 @@ exports.getDeleteCategoryBySlug = (req, res, next) => {
 		then((category)=>{
 			if (category) {
 				res.render('category/delete',{
-					title: 'Удаление категории'
+					title: 'Удаление категории',
+					categoryTitle: category.title
 				});
 			} else {
 				const err = new Error();

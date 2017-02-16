@@ -15,10 +15,16 @@ $(document).ready(function() {
   		for (var i = 1; i < crumbs.length-1; i++) {
   			url += '/'+crumbs[i];
   			if (crumbs[i] != 'update' && crumbs[i] != 'delete' ){
+          if (crumbs[i] == 'category'){
+            crumbs[i] = 'Категории';
+          } else if ($('#category-header')[0]){
+            crumbs[i] = $('#category-header')[0].innerText;
+          }
   				breadcrumb.append('<li><a href='+url+'>'+crumbs[i]+'</a></li>');
   			}
   		}
-  		breadcrumb.append('<li class="active">'+crumbs[crumbs.length-1]+'</li>');
+
+  		breadcrumb.append('<li class="active">'+$("#page-header")[0].innerText+'</li>');
   	} else {
   		breadcrumb.append('<li class="active">Главная</li>');
   	}

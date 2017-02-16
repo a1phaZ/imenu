@@ -3,9 +3,9 @@ extends ../layout
 block content
   .page-header
     if categoryTitle
-      h1 #{categoryTitle.toUpperCase()}
+      h1#page-header #{categoryTitle.toUpperCase()}
     else 
-      h1 Новая категория
+      h1#page-header Новая категория
   .row
     form.form-horizontal.col-sm-12(method='POST')
       input(type='hidden', name='_csrf', value=_csrf)
