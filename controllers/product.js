@@ -109,6 +109,7 @@ exports.getProductBySlug = (req, res, next) =>{
 							const template = res.locals.isAdmin ? 'product/product' : 'product/view';
 							res.render(template, {
 								title: product.title,
+								productId: product._id,
 								productTitle: product.title,
 								productSlug: product.slug,
 								productDescription: product.description,

@@ -3,9 +3,9 @@ extends ../layout
 block content
   .page-header
     if categoryTitle
-      h1 #{categoryTitle.toUpperCase()}
+      h1#category-title #{categoryTitle.toUpperCase()}
       if productTitle
-        h2 #{productTitle}
+        h2#product-title #{productTitle}
       else 
         h2 Добавить в категорию #{categoryTitle}
   .row

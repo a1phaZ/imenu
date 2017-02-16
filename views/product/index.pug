@@ -5,7 +5,9 @@ block content
     if isAdmin
       ul.category-menu
         li.dropdown(class=(title == 'Dashboard') ? 'active' : undefined)
-          h1(data-toggle='dropdown') #{categoryTitle.toUpperCase()}
+          h1(data-toggle='dropdown') 
+            span#category-title
+              | #{categoryTitle.toUpperCase()}
             i.fa.fa-caret-square-o-down
           ul.dropdown-menu
             li
