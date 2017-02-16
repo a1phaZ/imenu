@@ -113,6 +113,12 @@ exports.getCategoryBySlugMiddleware = (req, res, next) => {
 		.findOne({slug: req.params.slug});
 	getCategoryBySlug
 		.then((category) =>{
+			if (category == null){
+				const err = new Error();
+				err.status = 404;
+				err.message = 'Категория не найдена';
+				next(err);
+			}
 			res.locals.category = category;
 			next();
 		})
