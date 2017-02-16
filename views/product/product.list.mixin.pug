@@ -2,10 +2,10 @@ mixin product-list(product)
 	.col-lg-3.col-md-4.col-sm-6
 		.product-card
 			.product-card-header
-				a(href='/category/'+categorySlug+'/'+productSlug)
+				a(href='/category/'+category.slug+'/'+product.slug)
 					img(src='http://placehold.it/500x500', class='img-responsive logo product-card-logo')
-					h2.product-title #{productTitle}
-			.product-card-description #{productDescription}
+					h2.product-title #{product.title}
+			.product-card-description #{product.description}
 
 for product in productList
 	+product-list(product)

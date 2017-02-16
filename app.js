@@ -141,7 +141,7 @@ app.post('/delete/:slug', categoryController.postDeleteCategoryBySlug);
 app.get('/category/:slug', categoryController.getCategoryBySlugMiddleware, productController.getProductsListByCategorySlug);
 app.get('/category/:slug/new', categoryController.getCategoryBySlugMiddleware, productController.getNewProduct);
 app.post('/category/:slug/new', categoryController.getCategoryBySlugMiddleware, productController.postNewProduct);
-app.get('/category/:slug/:productSlug', productController.getProductBySlug);
+app.get('/category/:slug/:productSlug', categoryController.getCategoryBySlugMiddleware, productController.getProductBySlug);
 app.post('/category/:slug/:productSlug', productController.postProductBySlug);
 app.post('/category/:slug/:productSlug', productController.deleteProductBySlug);
 

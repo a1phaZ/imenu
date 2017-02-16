@@ -68,18 +68,17 @@ exports.getProductBySlug = (req, res, next) =>{
 		});
 	getProductBySlug
 		.then((product)=>{
-				res.render('product/product', {
-					title: product.title,
-					productTitle: product.title,
-					productDescription: product.description,
-					productComposition: product.composition,
-					productPrice: product.price,
-					productWaiting: product.waiting,
-					productDiscount: product.discount,
-					categoryTitle: product.category.title,
-					categorySlug: product.category.slug
-				});
-			res.send(product);
+			const template = res.locals.isAdmin ? 'product/product' : 'product/view';
+			res.render(template, {
+				title: product.title,
+				productTitle: product.title,
+				productSlug: product.slug,
+				productDescription: product.description,
+				productComposition: product.composition,
+				productPrice: product.price,
+				productWaiting: product.waiting,
+				productDiscount: product.discount
+			});
 		})
 		.catch((errors)=>{
 			next(error);

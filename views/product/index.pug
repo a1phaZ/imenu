@@ -5,18 +5,18 @@ block content
     if isAdmin
       ul.category-menu
         li.dropdown(class=(title == 'Dashboard') ? 'active' : undefined)
-          h1(data-toggle='dropdown') #{categoryTitle.toUpperCase()}
+          h1(data-toggle='dropdown') #{category.title.toUpperCase()}
             i.fa.fa-caret-square-o-down
           ul.dropdown-menu
             li
-              a(href='/update/'+categorySlug) Редактировать
+              a(href='/update/'+category.slug) Редактировать
             li
-              a(href='/category/'+categorySlug+'/new') Создать в категории
+              a(href='/category/'+category.slug+'/new') Создать в категории
             li.divider
             li
-              a(href='/delete/'+categorySlug) Удалить категорию
+              a(href='/delete/'+category.slug) Удалить категорию
     else
-      h1 #{categoryTitle.toUpperCase()}
+      h1 #{category.title.toUpperCase()}
 
   .row
     include product.list.mixin.pug
