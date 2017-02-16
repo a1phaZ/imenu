@@ -129,21 +129,20 @@ app.post('/signup', userController.postSignup);
 // app.post('/contact', contactController.postContact);
 //Category
 app.get('/category', categoryController.getCategoryList);
-app.get('/new', categoryController.getNewCategory);
-app.post('/new', categoryController.postNewCategory);
-app.get('/update/:slug', categoryController.getCategoryBySlug);
-app.post('/update/:slug', categoryController.postCategoryBySlug);
-app.get('/delete/:slug', categoryController.getDeleteCategoryBySlug);
-app.post('/delete/:slug', categoryController.postDeleteCategoryBySlug);
+app.get('/new', passportConfig.isAuthenticated, categoryController.getNewCategory);
+app.post('/new', passportConfig.isAuthenticated, categoryController.postNewCategory);
+app.get('/update/:slug', passportConfig.isAuthenticated, categoryController.getCategoryBySlug);
+app.post('/update/:slug', passportConfig.isAuthenticated, categoryController.postCategoryBySlug);
+app.get('/delete/:slug', passportConfig.isAuthenticated, categoryController.getDeleteCategoryBySlug);
+app.post('/delete/:slug', passportConfig.isAuthenticated, categoryController.postDeleteCategoryBySlug);
 
 //Product
-//TODO Подумать надо роутингом
 app.get('/category/:slug', productController.getProductsListByCategorySlug);
-app.get('/category/:slug/new', productController.getNewProduct);
-app.post('/category/:slug/new', productController.postNewProduct);
+app.get('/category/:slug/new', passportConfig.isAuthenticated, productController.getNewProduct);
+app.post('/category/:slug/new', passportConfig.isAuthenticated, productController.postNewProduct);
 app.get('/category/:slug/:productSlug', productController.getProductBySlug);
-app.post('/category/:slug/:productSlug', productController.postProductBySlug);
-app.post('/category/:slug/:productSlug', productController.deleteProductBySlug);
+app.post('/category/:slug/:productSlug', passportConfig.isAuthenticated, productController.postProductBySlug);
+app.post('/category/:slug/:productSlug', passportConfig.isAuthenticated, productController.deleteProductBySlug);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

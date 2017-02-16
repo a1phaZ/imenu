@@ -42,11 +42,12 @@ exports.getProductsListByCategorySlug = (req, res, next) =>{
  */
 exports.getNewProduct = (req, res, next) =>{
 	const getCategoryBySlug = Category.findOne({slug: req.params.slug});
-	getProductBySlug.
+	getCategoryBySlug.
 		then((category)=>{
 			if (category){
 				res.render('product/product', {
-					title: 'Новый продукт'
+					title: 'Новый продукт',
+					categoryTitle: category.title
 				});
 			} else {
 				const err = new Error();
