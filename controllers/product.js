@@ -1,21 +1,5 @@
 const Product = require('../models/Product');
 
-// GET /product
-exports.getProductsList = (req, res, next) =>{
-	let getProductsList = Product
-		.find()
-		.populate({
-			path: 'category'
-		});
-	getProductsList
-		.then((productsList) => {
-			res.send(productsList);
-		})
-		.catch((error) => {
-			next(error);
-		});
-};
-
 // GET /category/:slug
 exports.getProductsListByCategorySlug = (req, res, next) =>{
 	let getProductsList = Product
@@ -74,11 +58,11 @@ exports.postNewProduct = (req, res, next) =>{
 };
 
 /**
- * GET /product/:slug
+ * GET /category/:slug/:productSlug
  */
 exports.getProductBySlug = (req, res, next) =>{
 	let getProductBySlug = Product
-		.findOne({slug: req.params.slug})
+		.findOne({slug: req.params.productSlug})
 		.populate({
 			path: 'category'
 		});

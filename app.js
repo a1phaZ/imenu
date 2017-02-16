@@ -141,10 +141,9 @@ app.post('/delete/:slug', categoryController.postDeleteCategoryBySlug);
 app.get('/category/:slug', categoryController.getCategoryBySlugMiddleware, productController.getProductsListByCategorySlug);
 app.get('/category/:slug/new', categoryController.getCategoryBySlugMiddleware, productController.getNewProduct);
 app.post('/category/:slug/new', categoryController.getCategoryBySlugMiddleware, productController.postNewProduct);
-app.get('/product', productController.getProductsList);
-app.get('/product/:slug', productController.getProductBySlug);
-app.post('/product/:slug', productController.postProductBySlug);
-app.post('/product/:slug', productController.deleteProductBySlug, productController.getProductsList);
+app.get('/category/:slug/:productSlug', productController.getProductBySlug);
+app.post('/category/:slug/:productSlug', productController.postProductBySlug);
+app.post('/category/:slug/:productSlug', productController.deleteProductBySlug);
 
 
 // catch 404 and forward to error handler
