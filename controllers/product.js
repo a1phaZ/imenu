@@ -75,7 +75,9 @@ exports.getProductBySlug = (req, res, next) =>{
 					productComposition: product.composition,
 					productPrice: product.price,
 					productWaiting: product.waiting,
-					productDiscount: product.discount
+					productDiscount: product.discount,
+					categoryTitle: product.category.title,
+					categorySlug: product.category.slug
 				});
 			res.send(product);
 		})
