@@ -74,20 +74,29 @@ exports.postNewProduct = (req, res, next) =>{
 		req.flash('errors', errors);
 		return res.redirect('/products/new');
 	}
-	const product = new Product({
-		title: req.body.title,
-		description:  req.body.description || '',
-		composition:  req.body.composition || '',
-		category: res.locals.category._id,
-		price: req.body.price,
-		waiting: req.body.waiting,
-		discount:  req.body.discount || 0
-	});
-	product.save(req.body.title, (err)=>{
-		if (err) {return next(err);}
-		req.flash('success', {msg: 'Товар успешно создан' });
-		res.redirect('/category/'+req.params.slug);
-	});
+	const getCategoryBySlug = Category.findOne({slug: req.params.slug});
+	getCategoryBySlug.
+		then((category)=>{
+			if (category){
+				const product = new Product({
+					title: req.body.title,
+					description:  req.body.description || '',
+					composition:  req.body.composition || '',
+					category: category._id,
+					price: req.body.price,
+					waiting: req.body.waiting,
+					discount:  req.body.discount || 0
+				});
+				product.save(req.body.title, (err)=>{
+					if (err) {return next(err);}
+					req.flash('success', {msg: 'Товар успешно создан' });
+					res.redirect('/category/'+req.params.slug);
+				});
+			}
+		}).
+		catch((error)=>{
+			next(error);
+		});	
 };
 
 /**
