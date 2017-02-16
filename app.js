@@ -95,7 +95,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use(categoryController.getAllCategoryToRes);
-app.use(categoryController.getCategoryBySlugMiddleware);
+// app.use(categoryController.getCategoryBySlugMiddleware);
 //Admin?
 app.use((req, res, next)=>{
   if (req.user){

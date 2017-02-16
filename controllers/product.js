@@ -16,7 +16,9 @@ exports.getProductsListByCategorySlug = (req, res, next) =>{
 					.then((productList) => {
 						res.render('product/index',{
 							productList: productList,
-							title: category.title
+							title: category.title,
+							categoryTitle: category.title,
+							categorySlug: category.slug
 						});
 					})
 					.catch((error) => {
@@ -112,7 +114,9 @@ exports.getProductBySlug = (req, res, next) =>{
 								productComposition: product.composition,
 								productPrice: product.price,
 								productWaiting: product.waiting,
-								productDiscount: product.discount
+								productDiscount: product.discount,
+								categoryTitle: category.title,
+								categorySlug: category.slug
 							});
 						} else {
 							const err = new Error();

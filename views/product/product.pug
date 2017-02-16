@@ -2,12 +2,12 @@ extends ../layout
 
 block content
   .page-header
-    if category.title
-      h1 #{category.title.toUpperCase()}
+    if categoryTitle
+      h1 #{categoryTitle.toUpperCase()}
       if productTitle
         h2 #{productTitle}
       else 
-        h2 Добавить в категорию #{category.title}
+        h2 Добавить в категорию #{categoryTitle}
   .row
     form.form-horizontal.col-sm-12(method='POST')
       input(type='hidden', name='_csrf', value=_csrf)
