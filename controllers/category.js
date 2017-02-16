@@ -1,7 +1,7 @@
 const Category = require('../models/Category');
 
 /**
- * comment
+ * Middleware for menu
  */
 exports.getAllCategoryToRes = (req, res, next) =>{
 	let getCategoryList = Category
@@ -55,11 +55,18 @@ exports.getCategoryBySlug = (req, res, next) => {
 		.findOne({slug: req.params.slug});
 	getCategoryBySlug
 		.then((category) =>{
-			res.render('category/category',{
-				title: category.title,
-				categoryTitle: category.title,
-				categoryDescription: category.description
-			});
+			if (category) {
+				res.render('category/category',{
+					title: category.title,
+					categoryTitle: category.title,
+					categoryDescription: category.description
+				});
+			} else {
+				const err = new Error();
+				err.status = 404;
+				err.message = 'Категория не найдена';
+				next(err);
+			}
 		})
 		.catch((error)=>{
 			next(error);
@@ -86,16 +93,31 @@ exports.postCategoryBySlug = (req, res ,next) => {
 				res.redirect('/category');
 			});
 		})
-		.catch((errors)=>{
+		.catch((error)=>{
 			next(error);
 		});
 };
 
 //DELETE GET /delete/:slug
-exports.getDeleteCategoryBySlug = (req, res) => {
-	res.render('category/delete',{
-		title: 'Удаление категории'
-	});
+exports.getDeleteCategoryBySlug = (req, res, next) => {
+	let getCategoryBySlug = Category
+		.findOne({slug: req.params.slug});
+	getCategoryBySlug.
+		then((category)=>{
+			if (category) {
+				res.render('category/delete',{
+					title: 'Удаление категории'
+				});
+			} else {
+				const err = new Error();
+				err.status = 404;
+				err.message = 'Невозможно удалить несуществующую категорию';
+				next(err);
+			}
+		}).
+		catch((error)=>{
+			next(error);
+		});
 }
 
 //DELETE POST /delete/:slug
@@ -113,12 +135,6 @@ exports.getCategoryBySlugMiddleware = (req, res, next) => {
 		.findOne({slug: req.params.slug});
 	getCategoryBySlug
 		.then((category) =>{
-			if (category == null){
-				const err = new Error();
-				err.status = 404;
-				err.message = 'Категория не найдена';
-				next(err);
-			}
 			res.locals.category = category;
 			next();
 		})

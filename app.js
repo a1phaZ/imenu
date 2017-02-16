@@ -133,18 +133,17 @@ app.get('/new', categoryController.getNewCategory);
 app.post('/new', categoryController.postNewCategory);
 app.get('/update/:slug', categoryController.getCategoryBySlug);
 app.post('/update/:slug', categoryController.postCategoryBySlug);
-app.get('/delete/:slug', categoryController.getCategoryBySlugMiddleware, categoryController.getDeleteCategoryBySlug);
+app.get('/delete/:slug', categoryController.getDeleteCategoryBySlug);
 app.post('/delete/:slug', categoryController.postDeleteCategoryBySlug);
 
 //Product
 //TODO Подумать надо роутингом
-app.get('/category/:slug', categoryController.getCategoryBySlugMiddleware, productController.getProductsListByCategorySlug);
-app.get('/category/:slug/new', categoryController.getCategoryBySlugMiddleware, productController.getNewProduct);
-app.post('/category/:slug/new', categoryController.getCategoryBySlugMiddleware, productController.postNewProduct);
-app.get('/category/:slug/:productSlug', categoryController.getCategoryBySlugMiddleware, productController.getProductBySlug);
+app.get('/category/:slug', productController.getProductsListByCategorySlug);
+app.get('/category/:slug/new', productController.getNewProduct);
+app.post('/category/:slug/new', productController.postNewProduct);
+app.get('/category/:slug/:productSlug', productController.getProductBySlug);
 app.post('/category/:slug/:productSlug', productController.postProductBySlug);
 app.post('/category/:slug/:productSlug', productController.deleteProductBySlug);
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

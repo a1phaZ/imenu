@@ -1,31 +1,61 @@
 const Product = require('../models/Product');
+const Category = require('../models/Category');
 
 // GET /category/:slug
 exports.getProductsListByCategorySlug = (req, res, next) =>{
-	let getProductsList = Product
-		.find({category: res.locals.category._id})
-		.populate({
-			path: 'category'
-		});
-	getProductsList
-		.then((productList) => {
-			res.render('product/index',{
-				productList: productList,
-				title: res.locals.category.title
-			});
-		})
-		.catch((error) => {
+	let getCategoryBySlug = Category.findOne({slug: req.params.slug});
+	getCategoryBySlug.
+		then((category)=>{
+			if (category){
+				let getProductsList = Product
+					.find({category: category._id})
+					.populate({
+						path: 'category'
+					});
+				getProductsList
+					.then((productList) => {
+						res.render('product/index',{
+							productList: productList,
+							title: category.title
+						});
+					})
+					.catch((error) => {
+						next(error);
+					});
+			} else {
+				const err = new Error();
+				err.status = 404;
+				err.message = 'Категория не найдена';
+				next(err);
+			}
+		}).
+		catch((error)=>{
 			next(error);
-		});
+		})
+	
 };
 
 /**
- * GET /product/new
+ * GET /category/:slug/new
  */
-exports.getNewProduct = (req, res) =>{
-	res.render('product/product', {
-		title: 'Новый продукт'
-	});
+exports.getNewProduct = (req, res, next) =>{
+	const getCategoryBySlug = Category.findOne({slug: req.params.slug});
+	getProductBySlug.
+		then((category)=>{
+			if (category){
+				res.render('product/product', {
+					title: 'Новый продукт'
+				});
+			} else {
+				const err = new Error();
+				err.status = 404;
+				err.message = 'Категория не найдена';
+				next(err);
+			}
+		}).
+		catch((error)=>{
+			next(error);
+		});
 };
 
 /**
@@ -61,36 +91,57 @@ exports.postNewProduct = (req, res, next) =>{
  * GET /category/:slug/:productSlug
  */
 exports.getProductBySlug = (req, res, next) =>{
-	let getProductBySlug = Product
-		.findOne({slug: req.params.productSlug})
-		.populate({
-			path: 'category'
-		});
-	getProductBySlug
-		.then((product)=>{
-			const template = res.locals.isAdmin ? 'product/product' : 'product/view';
-			res.render(template, {
-				title: product.title,
-				productTitle: product.title,
-				productSlug: product.slug,
-				productDescription: product.description,
-				productComposition: product.composition,
-				productPrice: product.price,
-				productWaiting: product.waiting,
-				productDiscount: product.discount
-			});
+	let getCategoryBySlug = Category.findOne({slug: req.params.slug});
+	getCategoryBySlug
+		.then((category)=>{
+			if(category){
+				let getProductBySlug = Product
+					.findOne({slug: req.params.productSlug})
+					.populate({
+						path: 'category'
+					});
+				getProductBySlug
+					.then((product)=>{
+						if (product){
+							const template = res.locals.isAdmin ? 'product/product' : 'product/view';
+							res.render(template, {
+								title: product.title,
+								productTitle: product.title,
+								productSlug: product.slug,
+								productDescription: product.description,
+								productComposition: product.composition,
+								productPrice: product.price,
+								productWaiting: product.waiting,
+								productDiscount: product.discount
+							});
+						} else {
+							const err = new Error();
+							err.status = 404;
+							err.message = 'Продукт не найден';
+							next(err);
+						}
+					})
+					.catch((error)=>{
+						next(error);
+					});	
+				} else {
+					const err = new Error();
+					err.status = 404;
+					err.message = 'Категория не найдена';
+					next(err);
+				}
 		})
-		.catch((errors)=>{
+		.catch((error)=>{
 			next(error);
-		});	
+		})
+
 };
 
 /**
- * POST /product/:slug
+ * POST /category/:slug/:productSlug
  */
 exports.postProductBySlug = (req, res, next) =>{
 	req.assert('title', 'Название не должно быть пустым').notEmpty();
-	req.assert('category', 'Выберите категорию').notEmpty();
 	req.assert('price', 'Цена не должна быть пустой').notEmpty();
 	req.assert('waiting', 'Введите время ожидания').notEmpty();
 	const errors = req.validationErrors();
@@ -99,13 +150,12 @@ exports.postProductBySlug = (req, res, next) =>{
 		return req.redirect('/products/new');
 	}
 	let getProductBySlug = Product
-			.findOne({slug: req.params.slug});
+			.findOne({slug: req.params.productSlug});
 		getProductBySlug
 			.then((product)=>{
 				title = req.body.title;
 				description = req.body.description || '';
 				composition = req.body.composition || '';
-				category = req.body.category;
 				price = req.body.price;
 				waiting = req.body.waiting;
 				discount = req.body.discount || 0 ;
@@ -115,7 +165,7 @@ exports.postProductBySlug = (req, res, next) =>{
 					req.redirect('/product');
 				});
 			})
-			.catch((errors)=>{
+			.catch((error)=>{
 				next(error);
 			});
 };
