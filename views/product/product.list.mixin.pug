@@ -2,29 +2,20 @@ mixin product-list(product)
   .col-lg-3.col-md-4.col-sm-6
     .product-card
       .product-card-header
-        a(href='/category/'+categorySlug+'/'+product.slug)
-          img(src='http://placehold.it/500x500', class='img-responsive logo product-card-logo')
-          h2.product-title #{product.title}
+        img(src='http://placehold.it/800x500', class='img-responsive logo product-card-logo')
+        span.discount.green #{product.discount} 
+          i.fa.fa-percent
       .product-card-description 
-        ul
-          li 
-            i.fa.fa-list-alt
-            | #{product.description}
-          li 
-            i.fa.fa-list-ol
-            | #{product.composition}
-          li 
-            i.fa.fa-rub
-            | #{product.price}
-          li 
-            i.fa.fa-clock-o
-            | #{product.waiting}
-          li 
-            i.fa.fa-percent
-            | #{product.discount}
-      button.form-control.btn.btn-success()
-        i.fa.fa-plus
-        | Добавить к заказу
+        h3.product-title
+          a(href='/category/'+categorySlug+'/'+product.slug) #{product.title}
+        span.product-description #{product.description}
+        span.product-composition #{product.composition}
+        span.product-price.red #{product.price}
+          i.fa.fa-rub
+        span.product-waiting 
+          i.fa.fa-clock-o #{product.waiting}
+        button.btn.btn-danger.cart-add-btn()
+          i.fa.fa-shopping-cart
 
 
 for product in productList

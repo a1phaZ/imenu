@@ -164,25 +164,46 @@ exports.postProductBySlug = (req, res, next) =>{
 		req.flash('errors', errors);
 		return req.redirect('/products/new');
 	}
-	let getProductBySlug = Product
-			.findOne({slug: req.params.productSlug});
-		getProductBySlug
-			.then((product)=>{
-				title = req.body.title;
-				description = req.body.description || '';
-				composition = req.body.composition || '';
-				price = req.body.price;
-				waiting = req.body.waiting;
-				discount = req.body.discount || 0 ;
-				product.save(req.body.title, (err)=>{
-					if (err) {return next(err);}
-					req.flash('success', {msg: 'Информация о товаре успешно обновлена'});
-					req.redirect('/product');
-				});
-			})
-			.catch((error)=>{
-				next(error);
-			});
+	let getCategoryBySlug = Category.findOne({slug: req.params.slug});
+	getCategoryBySlug.
+		then((category)=>{
+			if(category){
+				let getProductBySlug = Product
+						.findOne({slug: req.params.productSlug});
+					getProductBySlug
+						.then((product)=>{
+							if(product){
+								product.title = req.body.title;
+								product.description = req.body.description || '';
+								product.composition = req.body.composition || '';
+								product.price = req.body.price;
+								product.waiting = req.body.waiting;
+								product.discount = req.body.discount || 0 ;
+								product.save(req.body.title, (err)=>{
+									if (err) {return next(err);}
+									req.flash('success', {msg: 'Информация о товаре успешно обновлена'});
+									res.redirect('/category/'+category.slug);
+								});
+							} else {
+								const err = new Error();
+								err.status = 404;
+								err.message = 'Продукт не найден';
+								next(err);
+							}
+						})
+						.catch((error)=>{
+							next(error);
+						});
+			} else {
+				const err = new Error();
+				err.status = 404;
+				err.message = 'Категория не найдена';
+				next(err);
+			}
+		})
+		.catch((error)=>{
+			next(error);
+		});
 };
 
 /**

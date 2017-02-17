@@ -8,6 +8,7 @@
 @import "./category-menu";
 @import "./style.scss";
 @import "./category-card";
+@import "./product-card";
 
 // Scaffolding
 // -------------------------
@@ -20,6 +21,7 @@ html {
 body {
   padding-top: 60px;
   margin-bottom: 75px;
+  background-image: url("/img/bg.png");
 }
 
 footer {
