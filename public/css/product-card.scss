@@ -36,6 +36,7 @@
 		padding: 1em;
 		.product-title{
 			margin: 0;
+			margin-bottom: 0.5em;
 		}
 		.cart-add-btn {
 			border-radius: 50%;
@@ -43,12 +44,16 @@
 			width: 50px;
 			position: absolute;
 			top: -25px;
-			right: 25px;
+			right: 1em;
 			font-size: 1.2em;
 		}
 		span{
 			display: block;
 			color: #777;
+		}
+		.product-description,
+		.product-composition{
+			margin-bottom: 1em;
 		}
 		.red{
 			color: #bf351f;

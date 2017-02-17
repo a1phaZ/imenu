@@ -6,8 +6,11 @@ mixin product-list(product)
         span.discount.green #{product.discount} 
           i.fa.fa-percent
       .product-card-description 
-        h3.product-title
-          a(href='/category/'+categorySlug+'/'+product.slug) #{product.title}
+        h2.product-title
+          if isAdmin
+            a(href='/category/'+categorySlug+'/'+product.slug) #{product.title}
+          else 
+            | #{product.title}
         span.product-description #{product.description}
         span.product-composition #{product.composition}
         span.product-price.red #{product.price}
