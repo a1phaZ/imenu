@@ -13,6 +13,10 @@
         | Menu
     .collapse.navbar-collapse
       ul.nav.navbar-nav
+        li(class=(title == 'Order') ? 'active' : undefined)
+          a#order(href='/order') 
+            | Заказ
+            span.badge#order-count
         if user
           li.dropdown(class=(title == 'List') ? 'active' : undefined)
             a.dropdown-toggle(href='#', data-toggle='dropdown') Категории
@@ -29,10 +33,6 @@
                 li.divider
                 include category.menu.admin.mixin.pug
               
-        li(class=(title == 'Order') ? 'active' : undefined)
-          a#order(href='/order') 
-            | Заказ
-            span.badge#order-count
           //- li(class=(title == 'API Examples') ? 'active' : undefined)
           //-   a(href='/api') API Examples
           //- li(class=(title == 'Contact') ? 'active' : undefined)
