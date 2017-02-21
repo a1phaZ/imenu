@@ -23,6 +23,7 @@ const users              = require('./routes/users');
 const userController     = require('./controllers/user');
 const categoryController = require('./controllers/category');
 const productController  = require('./controllers/product');
+const orderController  = require('./controllers/order');
 
 /**
  * API keys and Passport configuration.
@@ -143,6 +144,9 @@ app.post('/category/:slug/new', passportConfig.isAuthenticated, productControlle
 app.get('/category/:slug/:productSlug', productController.getProductBySlug);
 app.post('/category/:slug/:productSlug', passportConfig.isAuthenticated, productController.postProductBySlug);
 app.post('/category/:slug/:productSlug', passportConfig.isAuthenticated, productController.deleteProductBySlug);
+
+//Order
+app.post('/order', orderController.getNewOrder);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

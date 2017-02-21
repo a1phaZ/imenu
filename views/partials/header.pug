@@ -30,7 +30,7 @@
                 include category.menu.admin.mixin.pug
               
         li(class=(title == 'Order') ? 'active' : undefined)
-          a(href='/order') 
+          a#order(href='/order') 
             | Заказ
             span.badge#order-count
           //- li(class=(title == 'API Examples') ? 'active' : undefined)

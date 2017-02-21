@@ -1,7 +1,19 @@
 $(document).ready(function() {
 
   // Place JavaScript code here...
-  
+
+  //show cart function
+  function showCart() {
+    var xmlhttp = getXmlHttp();
+    xmlhttp.open("POST", "/order", true);
+    xmlhttp.onreadystatechange = function(){
+      if (xmlhttp.readyState != 4) return
+    }
+    var lsProducts = localStorage.products ? localStorage.products : [];
+    console.log(lsProducts);
+    xmlhttp.send(lsProducts);
+  }
+
   //add to cart handler
   function addToCart(e) {
     e.preventDefault();
@@ -25,11 +37,14 @@ $(document).ready(function() {
     }
   }
 
+  //addEventListeners
   //add handler add to cart
   var elements = $('.cart-add-btn');
   for (var i = 0; i < elements.length; i++) {
     elements[i].addEventListener('click', addToCart);
   }
+  // var order = $('#order');
+  // order[0].addEventListener('click', showCart);
   
   //Breadcrumbs
   function getBreadcrumbs() {

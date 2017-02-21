@@ -51,11 +51,13 @@ exports.getOrderCloseList = (req, res, next) =>{
 };
 
 /**
- * GET /order/new
+ * GET /order
  * Страница оформления заказа
  */
 exports.getNewOrder = (req, res) =>{
-	res.render('order/order', {
-		title: 'Новый заказ'
-	});
+	console.log(req);
+	res.send(req.body);
+	// res.render('order/order', {
+	// 	title: 'Новый заказ'
+	// });
 };
