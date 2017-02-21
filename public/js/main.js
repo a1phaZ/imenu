@@ -1,6 +1,7 @@
 $(document).ready(function() {
 
   // Place JavaScript code here...
+  
   //add to cart handler
   function addToCart(e) {
     e.preventDefault();
@@ -9,6 +10,18 @@ $(document).ready(function() {
       var products = localStorage.products ? JSON.parse(localStorage.products) : [];
       products.push(cartItem);
       localStorage.products = JSON.stringify(products);
+      var count = JSON.parse(localStorage.products).length;
+      setOrderCount(count);
+    }
+  }
+
+  function setOrderCount(count) {
+    $('#order-count')[0].innerText = count;
+  }
+
+  function getOrderCount() {
+    if (localStorage){
+      return localStorage.products ? JSON.parse(localStorage.products).length : 0;
     }
   }
 
@@ -45,5 +58,13 @@ $(document).ready(function() {
   		breadcrumb.append('<li class="active">Главная</li>');
   	}
   }
-  getBreadcrumbs();
+
+  //Initialize
+  function init() {
+    getBreadcrumbs();
+    setOrderCount(getOrderCount());
+  }
+
+  init();
+  
 });
