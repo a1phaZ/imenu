@@ -17,8 +17,8 @@ mixin product-list(product)
           i.fa.fa-rub
         span.product-waiting 
           i.fa.fa-clock-o #{product.waiting}
-        button.btn.btn-danger.cart-add-btn()
-          i.fa.fa-shopping-cart
+        button.btn.btn-danger.cart-add-btn(data-product-id=product._id)
+          i.fa.fa-shopping-cart(data-product-id=product._id)
 
 
 for product in productList
