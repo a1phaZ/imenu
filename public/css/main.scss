@@ -4,13 +4,13 @@
 @import "lib/font-awesome/font-awesome";
 
 @import "themes/default/default";
-// @import "./sub-menu";
 @import "./category-menu";
 @import "./style.scss";
 @import "./category-card";
 @import "./product-card";
-@import "./header";
+@import "./sub-menu";
 
+@import url('https://fonts.googleapis.com/css?family=Play:400,700');
 // Scaffolding
 // -------------------------
 
@@ -23,6 +23,8 @@ body {
   padding-top: 60px;
   margin-bottom: 75px;
   background-image: url("/img/bg.png");
+  font-family: 'Play', sans-serif;
+  font-weight:300;
 }
 
 footer {
@@ -50,7 +52,13 @@ textarea {
 .navbar-nav img {
   width: 30px;
   height: 30px;
-  margin: -15px 15px -15px;
+  margin: -15px 15px -15px 0;
+}
+
+.random img{
+  width: inherit !important;
+  height: inherit !important;
+  margin: 0;
 }
 
 // Alerts

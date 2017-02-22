@@ -1,21 +1,73 @@
-nav.greedy-nav.navbar.navbar-default.navbar-fixed-top
-  button
-    div.hamburger
-  ul.visible-links
-    li
-      a(href='#') navigation
-    li
-      a(href='#') navigation
-    li
-      a(href='#') navigation
-    li
-      a(href='#') navigation
-    li
-      a(href='#') navigation
-    li
-      a(href='#') navigation
-    li
-      a(href='#') navigation
-    li
-      a(href='#') navigation
-  ul.hidden-links.hidden
+nav.navbar.navbar-default.navbar-fixed-top
+  .navbar-header
+    button.navbar-toggle(type='button', data-toggle='collapse', data-target='.js-navbar-collapse')
+      span.sr-only Toggle navigation
+      span.icon-bar
+      span.icon-bar
+      span.icon-bar
+    a.navbar-brand(href='/')
+      i.fa.fa-bars
+      | i
+      span.small nteractive
+      | Menu
+  .collapse.navbar-collapse.js-navbar-collapse
+    ul.nav.navbar-nav
+      li.dropdown.dropdown-large(class=(title == 'Order') ? 'active' : undefined)
+        a#order(href='/order') 
+          | Заказ
+          span.badge.order-count
+      li.dropdown.dropdown-large
+        a.dropdown-toggle(href='#', data-toggle='dropdown')
+          | Категории 
+          b.caret
+        ul.dropdown-menu.dropdown-menu-large.row
+          include category.menu.mixin.pug
+      if isAdmin
+        li.dropdown.dropdown-large
+          a.dropdown-toggle(href='#', data-toggle='dropdown')
+            | Администрирование
+            b.caret
+          ul.dropdown-menu.dropdown-menu-large.row
+            include category.menu.admin.mixin.pug
+    ul.nav.navbar-nav.navbar-right.user-menu
+      if !user
+        li.dropdown.dropdown-large(class=(title == 'Login') ? 'active' : undefined)
+          a(href='/login') 
+            i.fa.fa-sign-in
+            | Войти
+        li.dropdown.dropdown-large(class=(title == 'Create Account') ? 'active' : undefined)
+          a(href='/signup') 
+            i.fa.fa-user-plus
+            | Создать аккаунт
+      else
+        li.dropdown.dropdown-large(class=(title == 'Account Management') ? 'active' : undefined)
+          a.dropdown-toggle(href='#', data-toggle='dropdown')
+            if user.profile.picture
+              img(src=user.profile.picture)
+            else
+              img(src=user.gravatar(60))
+            span= user.profile.name || user.email || user.id
+            b.caret
+          ul.dropdown-menu.dropdown-menu-large.row
+            li.col-sm-6
+              li.dropdown-header Управление заказами
+              li
+                a(href='/order')
+                  i.fa.fa-first-order
+                  | Мой заказ
+                  span.badge.order-count
+              li
+                a(href='/history') 
+                  i.fa.fa-history
+                  | История заказов
+              li.divider
+            li.col-sm-6
+              li.dropdown-header Управление аккаунтом
+              li
+                a(href='/account') 
+                  i.fa.fa-user
+                  | Мой аккаунт
+              li
+                a(href='/logout') 
+                  i.fa.fa-sign-out
+                  | Выход

@@ -1,6 +1,11 @@
 mixin category-menu(category)
-	li
-		a(href='/category/'+category.slug) #{category.title}
+  li.col-xs-6.col-sm-4
+    ul
+      li.dropdown-header.text-center #{category.title}
+      li
+        .random.text-center
+          a(href='/category/'+category.slug)
+            img(src='http://placehold.it/200x150')
 
 for category in categoryList
-	+category-menu(category)
+  +category-menu(category)
