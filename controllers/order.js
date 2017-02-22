@@ -61,3 +61,39 @@ exports.getNewOrder = (req, res) =>{
 	// 	title: 'Новый заказ'
 	// });
 };
+
+/**
+ * POST /order/add
+ */
+exports.postOrderAdd = (req, res, next) =>{
+	if (req.body.orderId) {
+		const FindOrderByIdAndUpdate = Order.findOne({_id: req.body.orderId});
+		FindOrderByIdAndUpdate.
+			then((order)=>{
+				if (order){
+					order.orderList.push({cartItemId: req.body.cartItemId});
+					order.save((err)=>{
+						if (err) next(err);
+						res.send(order);
+					});
+				} else {
+					const order = new Order();
+					order.orderList.push({cartItemId: req.body.cartItemId});
+					order.save((err)=>{
+						if (err) next(err);
+						res.send(order);
+					});
+				}
+			}).
+			catch((err)=>{
+				next(err);
+			});
+	} else {
+		const order = new Order();
+		order.orderList.push({cartItemId: req.body.cartItemId});
+		order.save((err)=>{
+			if (err) next(err);
+			res.send(order);
+		});
+	}
+};

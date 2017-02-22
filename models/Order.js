@@ -8,7 +8,7 @@ const orderSchema = new mongoose.Schema({
 	},
 	description: {type: String},
 	orderList: [{
-		productId: {
+		cartItemId:{
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Product'
 		}

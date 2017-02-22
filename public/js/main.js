@@ -2,40 +2,43 @@ $(document).ready(function() {
 
   // Place JavaScript code here...
 
+  // function ajax(options) {
+  //   return new Promise(function(resolve, reject) {
+  //     $.ajax(options).done(resolve).fail(reject);
+  //   });
+  // }
 
-
-  //show cart function
-  function showCart() {
-    var xmlhttp = getXmlHttp();
-    xmlhttp.open("POST", "/order", true);
-    xmlhttp.onreadystatechange = function(){
-      if (xmlhttp.readyState != 4) return
-    }
-    var lsProducts = localStorage.products ? localStorage.products : [];
-    console.log(lsProducts);
-    xmlhttp.send(lsProducts);
-  }
+  
 
   //add to cart handler
   function addToCart(e) {
     e.preventDefault();
     if (e.target.attributes['data-product-id']){
-      var cartItem = e.target.attributes['data-product-id'].value;
-      var products = localStorage.products ? JSON.parse(localStorage.products) : [];
-      products.push(cartItem);
-      localStorage.products = JSON.stringify(products);
-      var count = JSON.parse(localStorage.products).length;
-      setOrderCount(count);
-    }
-  }
-
-  function setOrderCount(count) {
-    $('#order-count')[0].innerText = count;
-  }
-
-  function getOrderCount() {
-    if (localStorage){
-      return localStorage.products ? JSON.parse(localStorage.products).length : 0;
+      var cartItemId = e.target.attributes['data-product-id'].value;
+      var orderId = localStorage.orderId ? localStorage.orderId : null;
+      $.ajax({
+        url: '/order/add', 
+        method: 'POST',
+        data: {
+          cartItemId, 
+          orderId
+        },
+        beforeSend: function(request) {
+          return request.setRequestHeader('X-CSRF-Token', $("meta[name='csrf-token']").attr('content'));
+        }
+      }).done(function(result) {
+        console.log(result);
+        if (!localStorage.orderId || localStorage.orderId != result._id) {
+          localStorage.orderId = result._id;
+        }
+      }).fail(function (err) {
+        console.log(err);
+      });
+      // var products = localStorage.products ? JSON.parse(localStorage.products) : [];
+      // products.push(cartItem);
+      // localStorage.products = JSON.stringify(products);
+      // var count = JSON.parse(localStorage.products).length;
+      // setOrderCount(count);
     }
   }
 

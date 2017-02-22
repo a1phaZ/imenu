@@ -75,6 +75,13 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+app.use((req, res, next) => {
+  if (req.path === '/api/upload') {
+    next();
+  } else {
+    lusca.csrf({cookie: false})(req, res, next);
+  }
+});
 app.use(lusca.xframe('SAMEORIGIN'));
 app.use(lusca.xssProtection(true));
 app.use((req, res, next) => {
@@ -146,7 +153,8 @@ app.post('/category/:slug/:productSlug', passportConfig.isAuthenticated, product
 app.post('/category/:slug/:productSlug', passportConfig.isAuthenticated, productController.deleteProductBySlug);
 
 //Order
-app.post('/order', orderController.getNewOrder);
+// app.post('/order', orderController.getNewOrder);
+app.post('/order/add', orderController.postOrderAdd);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
