@@ -54,12 +54,34 @@ exports.getOrderCloseList = (req, res, next) =>{
  * GET /order
  * Страница оформления заказа
  */
-exports.getNewOrder = (req, res) =>{
-	console.log(req);
-	res.send(req.body);
-	// res.render('order/order', {
-	// 	title: 'Новый заказ'
-	// });
+exports.getOrder = (req, res, next) =>{
+	if (req.params.id){
+		const findOrderById = Order
+			.findOne({_id: req.params.id})
+			.populate([{
+				path: 'orderList.cartItemId'
+			},{
+				path: 'userId'
+			}]);
+		findOrderById.
+			then((order)=>{
+				if (order){
+					res.render('order/index',{
+						orderList: order.orderList,
+						title: 'Заказ №'+order._id
+					});
+					// res.send(order);
+				} else {
+					const err = new Error();
+					err.status = 404;
+					err.message = 'Заказ не найден';
+					next(err);
+				}
+			}).
+			catch((err)=>{
+				next(err);
+			})
+	}
 };
 
 /**
@@ -71,14 +93,26 @@ exports.postOrderAdd = (req, res, next) =>{
 		FindOrderByIdAndUpdate.
 			then((order)=>{
 				if (order){
-					order.orderList.push({cartItemId: req.body.cartItemId});
+					const idInOrderList = order.orderList.filter((item)=>{
+						if (item.cartItemId == req.body.cartItemId){
+							item.count +=1;
+							return true;
+						} 
+						return false;
+					});
+					console.log(idInOrderList);
+					if (idInOrderList.length === 0){
+						order.orderList.push({cartItemId: req.body.cartItemId, count: 1});
+					}
+					
+					console.log(order.orderList);
 					order.save((err)=>{
 						if (err) next(err);
 						res.send(order);
 					});
 				} else {
 					const order = new Order();
-					order.orderList.push({cartItemId: req.body.cartItemId});
+					order.orderList.push({cartItemId: req.body.cartItemId, count: 1});
 					order.save((err)=>{
 						if (err) next(err);
 						res.send(order);
@@ -90,7 +124,7 @@ exports.postOrderAdd = (req, res, next) =>{
 			});
 	} else {
 		const order = new Order();
-		order.orderList.push({cartItemId: req.body.cartItemId});
+		order.orderList.push({cartItemId: req.body.cartItemId, count: 1});
 		order.save((err)=>{
 			if (err) next(err);
 			res.send(order);

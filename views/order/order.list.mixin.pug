@@ -1,0 +1,19 @@
+-var inTotal = 0;
+mixin order-list(cartItem)
+  .col-sm-12
+    .order-card
+      .row
+        .col-xs-2
+          img.img-responsive(src='http://placehold.it/500x500')
+        .col-xs-8
+          h4 #{cartItem.cartItemId.title}
+          p #{cartItem.cartItemId.description}
+          
+        .col-xs-2
+          input.form-control(type='number', size="5", name="count", id='count', min="0", max="50", step='1', value=cartItem.count)
+          p.product-price.red 
+            =cartItem.cartItemId.price*cartItem.count
+            -inTotal += cartItem.cartItemId.price*cartItem.count;
+            i.fa.fa-rub
+for cartItem in orderList
+  +order-list(cartItem)

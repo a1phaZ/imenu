@@ -30,21 +30,19 @@ $(document).ready(function() {
         if (!localStorage.orderId || localStorage.orderId != result._id) {
           localStorage.orderId = result._id;
           localStorage.orderCount = result.orderList.length;
+          setOrderCount();
+          setOrderLink();
         } else {
           localStorage.orderCount = result.orderList.length;
           var orderCounts = $('.order-count');
           orderCounts.each(function(){
             $(this)[0].innerText = result.orderList.length;
           });
+          setOrderLink();
         }
       }).fail(function (err) {
         console.log(err);
       });
-      // var products = localStorage.products ? JSON.parse(localStorage.products) : [];
-      // products.push(cartItem);
-      // localStorage.products = JSON.stringify(products);
-      // var count = JSON.parse(localStorage.products).length;
-      // setOrderCount(count);
     }
   }
 
@@ -53,6 +51,20 @@ $(document).ready(function() {
       var orderCounts = $('.order-count');
       orderCounts.each(function(){
         $(this)[0].innerText = localStorage.orderCount;
+      });
+    }
+  }
+
+  function setOrderLink() {
+    if (localStorage && localStorage.orderId){
+      var orders = $('.order');
+      orders.each(function(){
+        $(this).attr("href", '/order/'+localStorage.orderId);
+      });
+    } else {
+      var orders = $('.order');
+      orders.each(function(){
+        $(this).removeAttr('href');
       });
     }
   }
@@ -98,6 +110,7 @@ $(document).ready(function() {
   function init() {
     getBreadcrumbs();
     setOrderCount();
+    setOrderLink();
   }
 
   init();

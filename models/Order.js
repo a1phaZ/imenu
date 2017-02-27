@@ -11,7 +11,8 @@ const orderSchema = new mongoose.Schema({
 		cartItemId:{
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Product'
-		}
+		},
+		count: {type: Number}
 	}],
 	sum: {type: Number},
 	closed: {type: Boolean}
