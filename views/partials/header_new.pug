@@ -13,7 +13,7 @@ nav.navbar.navbar-default.navbar-fixed-top
   .collapse.navbar-collapse.js-navbar-collapse
     ul.nav.navbar-nav
       li.dropdown.dropdown-large(class=(title == 'Order') ? 'active' : undefined)
-        a#order(href='/order') 
+        a.order(href='/order') 
           | Заказ
           span.badge.order-count
       li.dropdown.dropdown-large
@@ -52,7 +52,7 @@ nav.navbar.navbar-default.navbar-fixed-top
             li.col-sm-6
               li.dropdown-header Управление заказами
               li
-                a(href='/order')
+                a.order(href='/order')
                   i.fa.fa-first-order
                   | Мой заказ
                   span.badge.order-count

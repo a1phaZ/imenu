@@ -27,9 +27,15 @@ $(document).ready(function() {
           return request.setRequestHeader('X-CSRF-Token', $("meta[name='csrf-token']").attr('content'));
         }
       }).done(function(result) {
-        console.log(result);
         if (!localStorage.orderId || localStorage.orderId != result._id) {
           localStorage.orderId = result._id;
+          localStorage.orderCount = result.orderList.length;
+        } else {
+          localStorage.orderCount = result.orderList.length;
+          var orderCounts = $('.order-count');
+          orderCounts.each(function(){
+            $(this)[0].innerText = result.orderList.length;
+          });
         }
       }).fail(function (err) {
         console.log(err);
@@ -39,6 +45,15 @@ $(document).ready(function() {
       // localStorage.products = JSON.stringify(products);
       // var count = JSON.parse(localStorage.products).length;
       // setOrderCount(count);
+    }
+  }
+
+  function setOrderCount() {
+    if (localStorage && localStorage.orderCount){
+      var orderCounts = $('.order-count');
+      orderCounts.each(function(){
+        $(this)[0].innerText = localStorage.orderCount;
+      });
     }
   }
 
@@ -82,7 +97,7 @@ $(document).ready(function() {
   //Initialize
   function init() {
     getBreadcrumbs();
-    //setOrderCount(getOrderCount());
+    setOrderCount();
   }
 
   init();
