@@ -131,3 +131,44 @@ exports.postOrderAdd = (req, res, next) =>{
 		});
 	}
 };
+
+/**
+ * POST /order/change
+ */
+exports.postOrderChange = (req, res, next) =>{
+	if (req.body.orderId){
+		let FindOrderByIdAndUpdate = Order
+			.findOne({_id: req.body.orderId})
+			.populate({
+				path: 'orderList.cartItemId'
+			});
+		FindOrderByIdAndUpdate
+			.then((order)=>{
+				if (order){
+					order.orderList.forEach((item)=>{
+						if(item.cartItemId._id == req.body.cartItemId){
+							item.count = req.body.cartItemCount;
+						}
+					});
+					order.save((err)=>{
+						if (err) next(err);
+						console.log(order);
+						res.send(order);
+					});
+				} else {
+					const err = new Error();
+					err.status = 404;
+					err.message = 'Заказ не найден';
+					next(err);
+				}
+			})
+			.catch((err)=>{
+				next(err);
+			});	
+	}	else {
+		const err = new Error();
+		err.status = 404;
+		err.message = 'Заказ не найден';
+		next(err);
+	}
+};

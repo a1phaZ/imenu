@@ -3,8 +3,9 @@ mixin product-list(product)
     .product-card
       .product-card-header
         img(src='http://placehold.it/800x500', class='img-responsive logo product-card-logo')
-        span.discount.green #{product.discount} 
-          i.fa.fa-percent
+        if product.discount !=0
+          span.discount.green #{product.discount} 
+            i.fa.fa-percent
       .product-card-description 
         h2.product-title
           if isAdmin

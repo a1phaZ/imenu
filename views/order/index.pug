@@ -7,6 +7,8 @@ block content
 	.row
 		include order.list.mixin.pug
 	hr
-	.pull-right
-		| Итого: #{inTotal}
+	h4.pull-right.total
+		strong
+			| Итого: 
+			span#total #{inTotalWithDiscount}
 		i.fa.fa-rub

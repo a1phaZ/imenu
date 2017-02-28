@@ -1,5 +1,6 @@
 $(document).ready(function() {
 
+  
   // Place JavaScript code here...
 
   // function ajax(options) {
@@ -69,14 +70,70 @@ $(document).ready(function() {
     }
   }
 
+  function reDrawPrice(result){
+    var orderList = result.orderList;
+    var orderTotalPrice = 0;
+    orderList.forEach(function(item){
+      var cartItem = item.cartItemId;
+      var itemCount = $('[data-cart-item-id = '+cartItem._id+']')[0];
+      var itemPrice = $('#'+cartItem._id+'-price')[0];
+      var itemDiscount = $('#'+cartItem._id+'-discount')[0];
+      var itemTotal = $('#'+cartItem._id+'-total')[0];
+      itemCount.value = item.count;
+      itemPrice.innerText = cartItem.price;
+      if (itemDiscount){
+        itemDiscount.innerText = cartItem.discount;
+      }
+      var total = Math.round(cartItem.price*item.count/((cartItem.discount+100)/100));
+      itemTotal.innerText = total;
+      
+      orderTotalPrice += total;
+      console.log(orderTotalPrice);
+      //$('#total')[0];
+      //orderTotal.innerText = total;
+    });
+    console.log(orderTotalPrice);
+    $('#total')[0].innerText = orderTotalPrice;
+  }
+
+  function changeCartItemCount(e){
+    e.preventDefault();
+    if (e.target.attributes['data-cart-item-id']){
+      var cartItemId = e.target.attributes['data-cart-item-id'].value;
+      var cartItemCount = e.target.value;
+      var orderId = localStorage.orderId ? localStorage.orderId : null;
+      $.ajax({
+        url: '/order/change', 
+        method: 'POST',
+        data: {
+          cartItemId,
+          cartItemCount, 
+          orderId
+        },
+        beforeSend: function(request) {
+          return request.setRequestHeader('X-CSRF-Token', $("meta[name='csrf-token']").attr('content'));
+        }
+      })
+      .done(function(result){
+        reDrawPrice(result);
+      })
+      .fail(function (err) {
+        console.log(err);
+      });
+    }
+  }
+
   //addEventListeners
   //add handler add to cart
-  var elements = $('.cart-add-btn');
+  var elements;
+  elements = $('.cart-add-btn');
   for (var i = 0; i < elements.length; i++) {
     elements[i].addEventListener('click', addToCart);
   }
-  // var order = $('#order');
-  // order[0].addEventListener('click', showCart);
+  elements = $('.cart-item-count');
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].addEventListener('change', changeCartItemCount);
+  }
   
   //Breadcrumbs
   function getBreadcrumbs() {
