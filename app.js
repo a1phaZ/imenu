@@ -155,7 +155,8 @@ app.post('/category/:slug/:productSlug', passportConfig.isAuthenticated, product
 //Order
 // app.post('/order', orderController.getNewOrder);
 app.post('/order/add', orderController.postOrderAdd);
-app.get('/order/:id', orderController.getOrder);
+app.get('/order/:id', passportConfig.isAuthenticated, orderController.getOrder);
+app.post('/order/change', orderController.postOrderChange);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

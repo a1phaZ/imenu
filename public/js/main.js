@@ -1,5 +1,6 @@
 $(document).ready(function() {
 
+  var elements;
   // Place JavaScript code here...
 
   // function ajax(options) {
@@ -69,14 +70,42 @@ $(document).ready(function() {
     }
   }
 
+  function changeCartItemCount(e){
+    e.preventDefault();
+    if (e.target.attributes['data-cart-item-id']){
+      var cartItemId = e.target.attributes['data-cart-item-id'].value;
+      var cartItemCount = e.target.value;
+      var orderId = localStorage.orderId ? localStorage.orderId : null;
+      $.ajax({
+        url: '/order/change', 
+        method: 'POST',
+        data: {
+          cartItemId,
+          cartItemCount, 
+          orderId
+        },
+        beforeSend: function(request) {
+          return request.setRequestHeader('X-CSRF-Token', $("meta[name='csrf-token']").attr('content'));
+        }
+      }).done(function(result) {
+        //$('#'+cartItemId).innerText = 
+        console.log('done');
+      }).fail(function (err) {
+        console.log(err);
+      });
+    }
+  }
+
   //addEventListeners
   //add handler add to cart
-  var elements = $('.cart-add-btn');
+  elements = $('.cart-add-btn');
   for (var i = 0; i < elements.length; i++) {
     elements[i].addEventListener('click', addToCart);
   }
-  // var order = $('#order');
-  // order[0].addEventListener('click', showCart);
+  elements = $('.cart-item-count');
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].addEventListener('change', changeCartItemCount);
+  }
   
   //Breadcrumbs
   function getBreadcrumbs() {

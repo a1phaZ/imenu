@@ -7,6 +7,9 @@ block content
 	.row
 		include order.list.mixin.pug
 	hr
-	.pull-right
+	.pull-right.total
 		| Итого: #{inTotal}
+		i.fa.fa-rub
+	.pull-right.total
+		| Итого с учетом скидки: #{inTotalWithDiscount}
 		i.fa.fa-rub

@@ -1,7 +1,8 @@
 -var inTotal = 0;
+-var inTotalWithDiscount = 0;
 mixin order-list(cartItem)
   .col-sm-12
-    .order-card
+    .order-card-item
       .row
         .col-xs-2
           img.img-responsive(src='http://placehold.it/500x500')
@@ -10,10 +11,18 @@ mixin order-list(cartItem)
           p #{cartItem.cartItemId.description}
           
         .col-xs-2
-          input.form-control(type='number', size="5", name="count", id='count', min="0", max="50", step='1', value=cartItem.count)
-          p.product-price.red 
-            =cartItem.cartItemId.price*cartItem.count
-            -inTotal += cartItem.cartItemId.price*cartItem.count;
-            i.fa.fa-rub
+          input.form-control(type='number', size="5", name="count", class='cart-item-count', min="0", max="50", step='1', value=cartItem.count, data-cart-item-id=cartItem.cartItemId._id)
+          span.pull-right.product-price.red(id=cartItem.cartItemId._id) Цена: 
+            span #{cartItem.cartItemId.price}
+              i.fa.fa-rub
+          span.pull-right.product-discount.green(id=cartItem.cartItemId._id+'-discount') Скидка: 
+            span #{cartItem.cartItemId.discount}
+              i.fa.fa-percent
+          span.pull-right.product-total.red(id=cartItem.cartItemId._id+'-total') Итого: 
+            span
+              =Math.round(cartItem.cartItemId.price*cartItem.count/((cartItem.cartItemId.discount+100)/100))
+              -inTotal += cartItem.cartItemId.price*cartItem.count;
+              -inTotalWithDiscount += Math.round(cartItem.cartItemId.price*cartItem.count/((cartItem.cartItemId.discount+100)/100));
+              i.fa.fa-rub
 for cartItem in orderList
   +order-list(cartItem)
