@@ -1,4 +1,3 @@
--var inTotal = 0;
 -var inTotalWithDiscount = 0;
 mixin order-list(cartItem)
   .col-sm-12
@@ -6,23 +5,29 @@ mixin order-list(cartItem)
       .row
         .col-xs-2
           img.img-responsive(src='http://placehold.it/500x500')
-        .col-xs-8
+        .col-xs-7
           h4 #{cartItem.cartItemId.title}
           p #{cartItem.cartItemId.description}
           
-        .col-xs-2
+        .col-xs-2.price-block(id=cartItem.cartItemId._id)
           input.form-control(type='number', size="5", name="count", class='cart-item-count', min="0", max="50", step='1', value=cartItem.count, data-cart-item-id=cartItem.cartItemId._id)
-          span.pull-right.product-price.red(id=cartItem.cartItemId._id) Цена: 
-            span #{cartItem.cartItemId.price}
-              i.fa.fa-rub
-          span.pull-right.product-discount.green(id=cartItem.cartItemId._id+'-discount') Скидка: 
-            span #{cartItem.cartItemId.discount}
+          span.pull-right.product-price.red Цена: 
+            strong
+              span(id=cartItem.cartItemId._id+'-price') #{cartItem.cartItemId.price}
+            i.fa.fa-rub
+          if cartItem.cartItemId.discount != 0
+            span.pull-right.product-discount.green Скидка: 
+              strong
+                span(id=cartItem.cartItemId._id+'-discount') #{cartItem.cartItemId.discount}
               i.fa.fa-percent
-          span.pull-right.product-total.red(id=cartItem.cartItemId._id+'-total') Итого: 
-            span
-              =Math.round(cartItem.cartItemId.price*cartItem.count/((cartItem.cartItemId.discount+100)/100))
-              -inTotal += cartItem.cartItemId.price*cartItem.count;
-              -inTotalWithDiscount += Math.round(cartItem.cartItemId.price*cartItem.count/((cartItem.cartItemId.discount+100)/100));
-              i.fa.fa-rub
+          span.pull-right.product-total.red Итого: 
+            strong
+              span(id=cartItem.cartItemId._id+'-total')
+                =Math.round(cartItem.cartItemId.price*cartItem.count/((cartItem.cartItemId.discount+100)/100))
+                -inTotalWithDiscount += Math.round(cartItem.cartItemId.price*cartItem.count/((cartItem.cartItemId.discount+100)/100));
+            i.fa.fa-rub
+        .col-xs-1
+          a.btn.btn-danger(href="#", aria-label="Delete")
+            i.fa.fa-trash-o(data-cart-item-id=cartItem.cartItemId._id, aria-hidden="true", style="margin-right: 0px;")
 for cartItem in orderList
   +order-list(cartItem)
