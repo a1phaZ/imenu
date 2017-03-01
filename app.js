@@ -156,6 +156,7 @@ app.post('/category/:slug/:productSlug', passportConfig.isAuthenticated, product
 // app.post('/order', orderController.getNewOrder);
 app.post('/order/add', orderController.postOrderAdd);
 app.get('/order/:id', passportConfig.isAuthenticated, orderController.getOrder);
+app.post('/order/:id', passportConfig.isAuthenticated, orderController.postOrder);
 app.post('/order/change', orderController.postOrderChange);
 app.post('/order/item-delete', orderController.postOrderItemDelete);
 

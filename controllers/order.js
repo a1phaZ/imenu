@@ -136,6 +136,7 @@ exports.postOrderAdd = (req, res, next) =>{
  * POST /order/change
  */
 exports.postOrderChange = (req, res, next) =>{
+	console.log('orderId: ', req.body.orderId);
 	if (req.body.orderId){
 		let FindOrderByIdAndUpdate = Order
 			.findOne({_id: req.body.orderId})
@@ -213,4 +214,42 @@ exports.postOrderItemDelete = (req, res, next) =>{
 		err.message = 'Заказ не найден';
 		next(err);
 	}
+};
+
+/**
+ * POST /order/:id
+ */
+exports.postOrder = (req, res, next) =>{
+	req.assert('comment', 'Пожалуйста, напишите комментарий').notEmpty();
+	const errors = req.validationErrors();
+	if (errors){
+		req.flash('errors', errors);
+		return res.redirect('/order/'+req.params.id);
+	}
+	let FindOrderByIdAndUpdate = Order
+			.findOne({_id: req.params.id})
+			.populate({
+				path: 'orderList.cartItemId'
+			});
+		FindOrderByIdAndUpdate
+			.then((order)=>{
+				if(order){
+					order.userId = req.user._id;
+					order.comment = req.body.comment;
+					order.status = 1;
+					order.closed = false;
+					order.save((err)=>{
+						if (err) next(err);
+						res.send(order);
+					});
+				} else {
+					const err = new Error();
+					err.status = 404;
+					err.message = 'Заказ не найден';
+					next(err);
+				}
+			})
+			.catch((err)=>{
+				next(err);
+			});
 };

@@ -96,8 +96,11 @@ $(document).ready(function() {
     e.preventDefault();
     if (e.target.attributes['data-cart-item-id']){
       var cartItemId = e.target.attributes['data-cart-item-id'].value;
+      console.log(cartItemId);
       var cartItemCount = e.target.value;
+      console.log(cartItemCount);
       var orderId = localStorage.orderId ? localStorage.orderId : null;
+      console.log(orderId);
       $.ajax({
         url: '/order/change', 
         method: 'POST',
