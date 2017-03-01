@@ -28,6 +28,11 @@ nav.navbar.navbar-default.navbar-fixed-top
             | Администрирование
             b.caret
           ul.dropdown-menu.dropdown-menu-large.row
+            li.col-sm-4
+              ul
+                li
+                  a(href='/new') Создать категорию
+                li.divider
             include category.menu.admin.mixin.pug
     ul.nav.navbar-nav.navbar-right.user-menu
       if !user
