@@ -75,7 +75,7 @@ $(document).ready(function() {
     var orderTotalPrice = 0;
     orderList.forEach(function(item){
       var cartItem = item.cartItemId;
-      var itemCount = $('[data-cart-item-id = '+cartItem._id+']')[0];
+      var itemCount = $('.cart-item-count[data-cart-item-id = '+cartItem._id+']')[0];
       var itemPrice = $('#'+cartItem._id+'-price')[0];
       var itemDiscount = $('#'+cartItem._id+'-discount')[0];
       var itemTotal = $('#'+cartItem._id+'-total')[0];
@@ -88,11 +88,7 @@ $(document).ready(function() {
       itemTotal.innerText = total;
       
       orderTotalPrice += total;
-      console.log(orderTotalPrice);
-      //$('#total')[0];
-      //orderTotal.innerText = total;
     });
-    console.log(orderTotalPrice);
     $('#total')[0].innerText = orderTotalPrice;
   }
 
@@ -123,6 +119,35 @@ $(document).ready(function() {
     }
   }
 
+  function deleteCartItem(e) {
+    e.preventDefault();
+    if (e.target.attributes['data-cart-item-id']){
+      var cartItemId = e.target.attributes['data-cart-item-id'].value;
+      var cartItem = $('.order-cart-item[data-cart-item-id = '+cartItemId+']');
+      var orderId = localStorage.orderId ? localStorage.orderId : null;
+      $.ajax({
+        url: '/order/item-delete',
+        method: 'POST',
+        data: {
+          cartItemId,
+          orderId
+        },
+        beforeSend: function(request) {
+          return request.setRequestHeader('X-CSRF-Token', $("meta[name='csrf-token']").attr('content'));
+        }
+      })
+      .done(function(result){
+        localStorage.orderCount = result.orderList.length;
+        cartItem.remove();
+        setOrderCount();
+        reDrawPrice(result);
+      })
+      .fail(function(err){
+        console.log(err);
+      });
+    }
+  }
+
   //addEventListeners
   //add handler add to cart
   var elements;
@@ -133,6 +158,10 @@ $(document).ready(function() {
   elements = $('.cart-item-count');
   for (var i = 0; i < elements.length; i++) {
     elements[i].addEventListener('change', changeCartItemCount);
+  }
+  elements = $('[aria-label="Delete"]');
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].addEventListener('click', deleteCartItem);
   }
   
   //Breadcrumbs

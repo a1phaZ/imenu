@@ -152,7 +152,6 @@ exports.postOrderChange = (req, res, next) =>{
 					});
 					order.save((err)=>{
 						if (err) next(err);
-						console.log(order);
 						res.send(order);
 					});
 				} else {
@@ -166,6 +165,49 @@ exports.postOrderChange = (req, res, next) =>{
 				next(err);
 			});	
 	}	else {
+		const err = new Error();
+		err.status = 404;
+		err.message = 'Заказ не найден';
+		next(err);
+	}
+};
+
+/**
+ * POST /order/item-delete
+ */
+exports.postOrderItemDelete = (req, res, next) =>{
+	if (req.body.orderId){
+		let FindOrderByIdAndUpdate = Order
+				.findOne({_id: req.body.orderId})
+				.populate({
+					path: 'orderList.cartItemId'
+				});
+			FindOrderByIdAndUpdate
+				.then((order)=>{
+					if(order){
+						let itemPosition;
+						order.orderList.forEach((item, i)=>{
+							if(item.cartItemId._id == req.body.cartItemId){
+								itemPosition = i;
+							}
+						});
+						order.orderList.splice(itemPosition, 1);
+						order.save((err)=>{
+							if (err) next(err);
+							console.log(order);
+							res.send(order);
+						});
+					} else {
+						const err = new Error();
+						err.status = 404;
+						err.message = 'Заказ не найден';
+						next(err);
+					}
+				})
+				.catch((err)=>{
+					next(err);
+				});
+	} else {
 		const err = new Error();
 		err.status = 404;
 		err.message = 'Заказ не найден';
