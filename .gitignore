@@ -2,3 +2,4 @@ node_modules
 public/css/*.css
 bower_components
 *.log*
+.env*
