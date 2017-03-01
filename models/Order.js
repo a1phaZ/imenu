@@ -6,7 +6,7 @@ const orderSchema = new mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User'
 	},
-	description: {type: String},
+	comment: {type: String},
 	orderList: [{
 		cartItemId:{
 			type: mongoose.Schema.Types.ObjectId,
@@ -15,6 +15,7 @@ const orderSchema = new mongoose.Schema({
 		count: {type: Number}
 	}],
 	sum: {type: Number},
+	status: {type: Number},
 	closed: {type: Boolean}
 });
 

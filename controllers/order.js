@@ -152,7 +152,10 @@ exports.postOrderChange = (req, res, next) =>{
 					});
 					order.save((err)=>{
 						if (err) next(err);
+<<<<<<< HEAD
 						console.log(order);
+=======
+>>>>>>> dev
 						res.send(order);
 					});
 				} else {
@@ -171,4 +174,89 @@ exports.postOrderChange = (req, res, next) =>{
 		err.message = 'Заказ не найден';
 		next(err);
 	}
+<<<<<<< HEAD
+=======
+};
+
+/**
+ * POST /order/item-delete
+ */
+exports.postOrderItemDelete = (req, res, next) =>{
+	if (req.body.orderId){
+		let FindOrderByIdAndUpdate = Order
+				.findOne({_id: req.body.orderId})
+				.populate({
+					path: 'orderList.cartItemId'
+				});
+			FindOrderByIdAndUpdate
+				.then((order)=>{
+					if(order){
+						let itemPosition;
+						order.orderList.forEach((item, i)=>{
+							if(item.cartItemId._id == req.body.cartItemId){
+								itemPosition = i;
+							}
+						});
+						order.orderList.splice(itemPosition, 1);
+						order.save((err)=>{
+							if (err) next(err);
+							console.log(order);
+							res.send(order);
+						});
+					} else {
+						const err = new Error();
+						err.status = 404;
+						err.message = 'Заказ не найден';
+						next(err);
+					}
+				})
+				.catch((err)=>{
+					next(err);
+				});
+	} else {
+		const err = new Error();
+		err.status = 404;
+		err.message = 'Заказ не найден';
+		next(err);
+	}
+};
+
+/**
+ * POST /order/:id
+ */
+exports.postOrder = (req, res, next) =>{
+	req.assert('comment', 'Пожалуйста, напишите комментарий').notEmpty();
+	const errors = req.validationErrors();
+	if (errors){
+		req.flash('errors', errors);
+		return res.redirect('/order/'+req.params.id);
+	}
+	let FindOrderByIdAndUpdate = Order
+			.findOne({_id: req.params.id})
+			.populate({
+				path: 'orderList.cartItemId'
+			});
+		FindOrderByIdAndUpdate
+			.then((order)=>{
+				if(order){
+					order.userId = req.user._id;
+					order.comment = req.body.comment;
+					order.status = 1;
+					order.closed = false;
+					order.save((err)=>{
+						if (err) next(err);
+						req.flash('success', {msg: 'Заказ №'+order._id+' успешно отправлен'});
+						res.redirect('/');
+					});
+				} else {
+					const err = new Error();
+					err.status = 404;
+					err.message = 'Заказ не найден';
+					next(err);
+				}
+			})
+			.catch((err)=>{
+				next(err);
+			});
+>>>>>>> dev
 };
