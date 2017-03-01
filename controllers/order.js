@@ -152,10 +152,6 @@ exports.postOrderChange = (req, res, next) =>{
 					});
 					order.save((err)=>{
 						if (err) next(err);
-<<<<<<< HEAD
-						console.log(order);
-=======
->>>>>>> dev
 						res.send(order);
 					});
 				} else {
@@ -174,8 +170,6 @@ exports.postOrderChange = (req, res, next) =>{
 		err.message = 'Заказ не найден';
 		next(err);
 	}
-<<<<<<< HEAD
-=======
 };
 
 /**
@@ -258,5 +252,4 @@ exports.postOrder = (req, res, next) =>{
 			.catch((err)=>{
 				next(err);
 			});
->>>>>>> dev
 };
