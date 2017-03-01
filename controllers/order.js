@@ -136,7 +136,6 @@ exports.postOrderAdd = (req, res, next) =>{
  * POST /order/change
  */
 exports.postOrderChange = (req, res, next) =>{
-	console.log('orderId: ', req.body.orderId);
 	if (req.body.orderId){
 		let FindOrderByIdAndUpdate = Order
 			.findOne({_id: req.body.orderId})
@@ -240,7 +239,8 @@ exports.postOrder = (req, res, next) =>{
 					order.closed = false;
 					order.save((err)=>{
 						if (err) next(err);
-						res.send(order);
+						req.flash('success', {msg: 'Заказ №'+order._id+' успешно отправлен'});
+						res.redirect('/');
 					});
 				} else {
 					const err = new Error();
