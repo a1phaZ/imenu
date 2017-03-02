@@ -9,8 +9,11 @@
 @import "./category-card";
 @import "./product-card";
 @import "./sub-menu";
+@import "./order";
 
-@import url('https://fonts.googleapis.com/css?family=Play:400,700');
+// @import url('https://fonts.googleapis.com/css?family=Play:400,700');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+// @import url('http://allfont.ru/allfont.css?fonts=europe_ext');
 // Scaffolding
 // -------------------------
 
@@ -23,8 +26,14 @@ body {
   padding-top: 60px;
   margin-bottom: 75px;
   background-image: url("/img/bg.png");
-  font-family: 'Play', sans-serif;
+  font-family: 'Open Sans', sans-serif;
+  //font-family: 'Play', sans-serif;
+  //font-family: 'Europe_Ext', arial;
   font-weight:300;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: 'Open Sans', sans-serif;
 }
 
 footer {

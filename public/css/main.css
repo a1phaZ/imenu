@@ -5,7 +5,7 @@
  * Licensed under MIT (https://github.com/twbs/blob/master/LICENSE)
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
-@import url("https://fonts.googleapis.com/css?family=Play:400,700");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans");
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
@@ -8910,6 +8910,13 @@ button.close {
 span.small {
   color: gray; }
 
+.navbar-brand span.small {
+  display: none; }
+
+@media (min-width: 768px) {
+  .navbar-brand span.small {
+    display: inline; } }
+
 .category-card {
   overflow: hidden; }
   .category-card .category-card-header a {
@@ -9045,6 +9052,24 @@ span.small {
   .user-menu {
     margin-right: 0px; } }
 
+.order-cart-item {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center; }
+  .order-cart-item div {
+    flex: 1 100%; }
+  .order-cart-item .cart-item-title {
+    padding: 0 15px; }
+  .order-cart-item .cart-item-img {
+    flex: 1 20%; }
+  .order-cart-item .price-block,
+  .order-cart-item .cart-item-count {
+    flex: 1 20%;
+    min-width: 50px; }
+  .order-cart-item .delete-btn {
+    flex: 1 10%; }
+
 html {
   position: relative;
   min-height: 100%; }
@@ -9053,8 +9078,11 @@ body {
   padding-top: 60px;
   margin-bottom: 75px;
   background-image: url("/img/bg.png");
-  font-family: 'Play', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-weight: 300; }
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: 'Open Sans', sans-serif; }
 
 footer {
   position: absolute;

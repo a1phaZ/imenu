@@ -4,8 +4,7 @@ block content
   .page-header
     h1#page-header Заказ
 
-  .row
-    include order.list.mixin.pug
+  include order.list.mixin.pug
   hr
   h4.text-right.total
     strong
@@ -27,5 +26,5 @@ block content
       
       .form-group
         .col-sm-12
-          button.col-sm-12.btn.btn-success(type='submit')
+          button.col-sm-12.btn.btn-success.form-control(type='submit')
             | Отправить заказ
