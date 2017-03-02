@@ -10,12 +10,15 @@ nav.navbar.navbar-default.navbar-fixed-top
       | i
       span.small nteractive
       | Menu
-  .collapse.navbar-collapse.js-navbar-collapse
     ul.nav.navbar-nav
       li.dropdown.dropdown-large(class=(title == 'Order') ? 'active' : undefined)
         a.order(href='/order') 
           | Заказ
           span.badge.order-count
+  .collapse.navbar-collapse.js-navbar-collapse
+    ul.nav.navbar-nav
+      li.dropdown.dropdown-large(class=(title == 'Order') ? 'active' : undefined)
+        
       li.dropdown.dropdown-large
         a.dropdown-toggle(href='#', data-toggle='dropdown')
           | Категории 
