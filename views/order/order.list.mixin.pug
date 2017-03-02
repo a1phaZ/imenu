@@ -8,18 +8,18 @@ mixin order-list(cartItem)
         h4 #{cartItem.cartItemId.title}
         p #{cartItem.cartItemId.description}
         
-      .col-xs-12.col-sm-2.price-block(id=cartItem.cartItemId._id)
+      .col-xs-12.col-sm-2.price-block.text-right(id=cartItem.cartItemId._id)
         input.form-control(type='number', size="5", name="count", class='cart-item-count', min="0", max="50", step='1', value=cartItem.count, data-cart-item-id=cartItem.cartItemId._id)
-        span.pull-right.product-price.red Цена: 
+        span.product-price.red Цена: 
           strong
             span(id=cartItem.cartItemId._id+'-price') #{cartItem.cartItemId.price}
           i.fa.fa-rub
         if cartItem.cartItemId.discount != 0
-          span.pull-right.product-discount.green Скидка: 
+          span.product-discount.green Скидка: 
             strong
               span(id=cartItem.cartItemId._id+'-discount') #{cartItem.cartItemId.discount}
             i.fa.fa-percent
-        span.pull-right.product-total.red Итого: 
+        span.product-total.red Итого: 
           strong
             span(id=cartItem.cartItemId._id+'-total')
               =Math.round(cartItem.cartItemId.price*cartItem.count/((cartItem.cartItemId.discount+100)/100))
