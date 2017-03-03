@@ -13,7 +13,7 @@ exports.getLogin = (req, res) => {
     return res.redirect('/');
   }
   res.render('account/login', {
-    title: 'Login'
+    title: 'Войти'
   });
 };
 
@@ -22,8 +22,8 @@ exports.getLogin = (req, res) => {
  * Sign in using email and password.
  */
 exports.postLogin = (req, res, next) => {
-  req.assert('email', 'Email is not valid').isEmail();
-  req.assert('password', 'Password cannot be blank').notEmpty();
+  req.assert('email', 'Некорректный адрес электронной почты').isEmail();
+  req.assert('password', 'Пароль не должен быть пустым').notEmpty();
   req.sanitize('email').normalizeEmail({ remove_dots: false });
 
   const errors = req.validationErrors();
@@ -41,7 +41,7 @@ exports.postLogin = (req, res, next) => {
     }
     req.logIn(user, (err) => {
       if (err) { return next(err); }
-      req.flash('success', { msg: 'Success! You are logged in.' });
+      req.flash('success', { msg: 'Вы успешно вошли в систему' });
       res.redirect(req.session.returnTo || '/');
     });
   })(req, res, next);
@@ -65,7 +65,7 @@ exports.getSignup = (req, res) => {
     return res.redirect('/');
   }
   res.render('account/signup', {
-    title: 'Create Account'
+    title: 'Создать аккаунт'
   });
 };
 
@@ -74,9 +74,9 @@ exports.getSignup = (req, res) => {
  * Create a new local account.
  */
 exports.postSignup = (req, res, next) => {
-  req.assert('email', 'Email is not valid').isEmail();
-  req.assert('password', 'Password must be at least 4 characters long').len(4);
-  req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
+  req.assert('email', 'Некорректный адрес электронной почты').isEmail();
+  req.assert('password', 'Пароль должен состоять более чем из 4 символов').len(4);
+  req.assert('confirmPassword', 'Пароли не совпадают').equals(req.body.password);
   req.sanitize('email').normalizeEmail({ remove_dots: false });
 
   const errors = req.validationErrors();
@@ -94,7 +94,7 @@ exports.postSignup = (req, res, next) => {
   User.findOne({ email: req.body.email }, (err, existingUser) => {
     if (err) { return next(err); }
     if (existingUser) {
-      req.flash('errors', { msg: 'Account with that email address already exists.' });
+      req.flash('errors', { msg: 'Аккаунт с данным адресом уже существует' });
       return res.redirect('/signup');
     }
     user.save((err) => {
@@ -115,7 +115,7 @@ exports.postSignup = (req, res, next) => {
  */
 exports.getAccount = (req, res) => {
   res.render('account/profile', {
-    title: 'Account Management'
+    title: 'Управление аккаунтом'
   });
 };
 
@@ -124,7 +124,7 @@ exports.getAccount = (req, res) => {
  * Update profile information.
  */
 exports.postUpdateProfile = (req, res, next) => {
-  req.assert('email', 'Please enter a valid email address.').isEmail();
+  req.assert('email', 'Введите корректный адрес электронной почты').isEmail();
   req.sanitize('email').normalizeEmail({ remove_dots: false });
 
   const errors = req.validationErrors();
@@ -144,12 +144,12 @@ exports.postUpdateProfile = (req, res, next) => {
     user.save((err) => {
       if (err) {
         if (err.code === 11000) {
-          req.flash('errors', { msg: 'The email address you have entered is already associated with an account.' });
+          req.flash('errors', { msg: 'Введенный адрес электронной почты уже занят' });
           return res.redirect('/account');
         }
         return next(err);
       }
-      req.flash('success', { msg: 'Profile information has been updated.' });
+      req.flash('success', { msg: 'Информация профиля обновлена' });
       res.redirect('/account');
     });
   });
@@ -160,8 +160,8 @@ exports.postUpdateProfile = (req, res, next) => {
  * Update current password.
  */
 exports.postUpdatePassword = (req, res, next) => {
-  req.assert('password', 'Password must be at least 4 characters long').len(4);
-  req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
+  req.assert('password', 'Пароль должен состоять более чем из 4 символов').len(4);
+  req.assert('confirmPassword', 'Пароли не совпадают').equals(req.body.password);
 
   const errors = req.validationErrors();
 
@@ -175,7 +175,7 @@ exports.postUpdatePassword = (req, res, next) => {
     user.password = req.body.password;
     user.save((err) => {
       if (err) { return next(err); }
-      req.flash('success', { msg: 'Password has been changed.' });
+      req.flash('success', { msg: 'Пароль был изменен' });
       res.redirect('/account');
     });
   });
@@ -189,7 +189,7 @@ exports.postDeleteAccount = (req, res, next) => {
   User.remove({ _id: req.user.id }, (err) => {
     if (err) { return next(err); }
     req.logout();
-    req.flash('info', { msg: 'Your account has been deleted.' });
+    req.flash('info', { msg: 'Ваш аккаунт был удален' });
     res.redirect('/');
   });
 };
@@ -206,7 +206,7 @@ exports.getOauthUnlink = (req, res, next) => {
     user.tokens = user.tokens.filter(token => token.kind !== provider);
     user.save((err) => {
       if (err) { return next(err); }
-      req.flash('info', { msg: `${provider} account has been unlinked.` });
+      req.flash('info', { msg: `${provider} аккаунт был отвязан от Вашего профиля.` });
       res.redirect('/account');
     });
   });
@@ -226,11 +226,11 @@ exports.getReset = (req, res, next) => {
     .exec((err, user) => {
       if (err) { return next(err); }
       if (!user) {
-        req.flash('errors', { msg: 'Password reset token is invalid or has expired.' });
+        req.flash('errors', { msg: 'Токен сброса пароля не верный или просрочен.' });
         return res.redirect('/forgot');
       }
       res.render('account/reset', {
-        title: 'Password Reset'
+        title: 'Сбросить пароль'
       });
     });
 };
@@ -240,8 +240,8 @@ exports.getReset = (req, res, next) => {
  * Process the reset password request.
  */
 exports.postReset = (req, res, next) => {
-  req.assert('password', 'Password must be at least 4 characters long.').len(4);
-  req.assert('confirm', 'Passwords must match.').equals(req.body.password);
+  req.assert('password', 'Пароль должен состоять более чем из 4 символов.').len(4);
+  req.assert('confirm', 'Пароли не совпадают.').equals(req.body.password);
 
   const errors = req.validationErrors();
 
@@ -258,7 +258,7 @@ exports.postReset = (req, res, next) => {
         .exec((err, user) => {
           if (err) { return next(err); }
           if (!user) {
-            req.flash('errors', { msg: 'Password reset token is invalid or has expired.' });
+            req.flash('errors', { msg: 'Токен сброса пароля не верный или просрочен.' });
             return res.redirect('back');
           }
           user.password = req.body.password;
@@ -282,12 +282,12 @@ exports.postReset = (req, res, next) => {
       });
       const mailOptions = {
         to: user.email,
-        from: 'hackathon@starter.com',
-        subject: 'Your Hackathon Starter password has been changed',
-        text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
+        from: 'imenu@alphaz.ru',
+        subject: 'Ваш пароль был изменен',
+        text: `Добрый день,\n\nЭто подтверждение того, что пароль для аккаунта ${user.email} был изменен.\n`
       };
       transporter.sendMail(mailOptions, (err) => {
-        req.flash('success', { msg: 'Success! Your password has been changed.' });
+        req.flash('success', { msg: 'Ваш пароль был изменен' });
         done(err);
       });
     }
@@ -306,7 +306,7 @@ exports.getForgot = (req, res) => {
     return res.redirect('/');
   }
   res.render('account/forgot', {
-    title: 'Forgot Password'
+    title: 'Забыли пароль?'
   });
 };
 
@@ -315,7 +315,7 @@ exports.getForgot = (req, res) => {
  * Create a random token, then the send user an email with a reset link.
  */
 exports.postForgot = (req, res, next) => {
-  req.assert('email', 'Please enter a valid email address.').isEmail();
+  req.assert('email', 'Пожалуйста, введите корректный адрес электронной почты').isEmail();
   req.sanitize('email').normalizeEmail({ remove_dots: false });
 
   const errors = req.validationErrors();
@@ -336,7 +336,7 @@ exports.postForgot = (req, res, next) => {
       User.findOne({ email: req.body.email }, (err, user) => {
         if (err) { return done(err); }
         if (!user) {
-          req.flash('errors', { msg: 'Account with that email address does not exist.' });
+          req.flash('errors', { msg: 'Аккаунт с данным адресом не зарегистрирован' });
           return res.redirect('/forgot');
         }
         user.passwordResetToken = token;
@@ -356,15 +356,15 @@ exports.postForgot = (req, res, next) => {
       });
       const mailOptions = {
         to: user.email,
-        from: 'hackathon@starter.com',
-        subject: 'Reset your password on Hackathon Starter',
-        text: `You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n
-          Please click on the following link, or paste this into your browser to complete the process:\n\n
+        from: 'imenu@alphaz.ru',
+        subject: 'Сброс пароля',
+        text: `Вы получили это письмо, потому что Вы (или кто-то другой) запросили сброс пароля для вашего аккаунта.\n\n
+          Пожалуйста, перейдите по данной ссылке для завершения процесса сброса пароля\n\n
           http://${req.headers.host}/reset/${token}\n\n
-          If you did not request this, please ignore this email and your password will remain unchanged.\n`
+          Если Вы не запрашивали изменение пароля, проигнорируйте данное письмо, Ваш пароль останется без изменения\n`
       };
       transporter.sendMail(mailOptions, (err) => {
-        req.flash('info', { msg: `An e-mail has been sent to ${user.email} with further instructions.` });
+        req.flash('info', { msg: `Письмо с инструкциями по сбросу пароля отправлено на ${user.email}. Проверьте Вашу почту.` });
         done(err);
       });
     }
