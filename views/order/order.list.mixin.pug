@@ -10,7 +10,7 @@ mixin order-list(cartItem)
             span(id=cartItem.cartItemId._id+'-discount') #{cartItem.cartItemId.discount}
             i.fa.fa-percent
       //- p #{cartItem.cartItemId.composition}  
-    input.form-control.text-center.cart-item-count(type='number', size="5", name="count", class='cart-item-count', min="0", max="50", step='1', value=cartItem.count, data-cart-item-id=cartItem.cartItemId._id)
+    input.form-control.text-center.cart-item-count(type='number', size="5", name="count", class='cart-item-count', min="0", max="50", step='1', value=cartItem.count, data-cart-item-id=cartItem.cartItemId._id, disabled=orderStatus?true:false)
     .price-block.text-center(id=cartItem.cartItemId._id)
       span.product-price.red(style="display: none;") Цена: 
         strong
@@ -24,6 +24,6 @@ mixin order-list(cartItem)
             -inTotalWithDiscount += Math.round(cartItem.cartItemId.price*cartItem.count/((cartItem.cartItemId.discount+100)/100));
         i.fa.fa-rub
     .delete-btn.text-right
-      i.btn.btn-danger.fa.fa-trash-o(data-cart-item-id=cartItem.cartItemId._id, aria-label="Delete", aria-hidden="true", style="margin-right: 0px;")
+      i.btn.btn-danger.fa.fa-trash-o(data-cart-item-id=cartItem.cartItemId._id, aria-label="Delete", aria-hidden="true", style="margin-right: 0px;", disabled=orderStatus?true:false)
 for cartItem in orderList
   +order-list(cartItem)

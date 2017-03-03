@@ -68,6 +68,8 @@ exports.getOrder = (req, res, next) =>{
 				if (order){
 					res.render('order/index',{
 						orderList: order.orderList,
+						orderStatus: order.status,
+						orderComment: order.comment,
 						title: 'Заказ №'+order._id
 					});
 					// res.send(order);

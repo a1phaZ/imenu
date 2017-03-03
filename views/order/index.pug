@@ -18,7 +18,7 @@ block content
       .form-group
         label.col-xs-12.control-label(for='comment') Комментарий к заказу
         .col-xs-12
-          textarea.form-control(name='comment', id='comment', placeholder='Комментарий к заказу', rows='7', required) #{categoryDescription}
+          textarea.form-control(name='comment', id='comment', placeholder='Комментарий к заказу', rows='7', required, disabled=orderStatus?true:false) #{orderComment}
           span.small
             | В комментарии к заказу 
             strong обязательно 
@@ -26,5 +26,5 @@ block content
       
       .form-group
         .col-sm-12
-          button.col-sm-12.btn.btn-success.form-control(type='submit')
+          button.col-sm-12.btn.btn-success(type='submit', disabled=orderStatus?true:false)
             | Отправить заказ
