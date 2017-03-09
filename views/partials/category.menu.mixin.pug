@@ -5,7 +5,7 @@ mixin category-menu(category)
       li
         .random.text-center
           a(href='/category/'+category.slug)
-            img(src='http://placehold.it/200x150')
+            img.category-logo(src='/uploads/'+category.logo)
 
 for category in categoryList
   +category-menu(category)

@@ -7,8 +7,12 @@ block content
     else 
       h1#page-header Новая категория
   .row
-    form.form-horizontal.col-sm-12(method='POST')
+    form.form-horizontal.col-sm-12(role='form', enctype='multipart/form-data', method='POST')
       input(type='hidden', name='_csrf', value=_csrf)
+      .form-group
+        label.col-sm-3.control-label Изображение
+        .col-sm-7.logo-section
+          input(type='file', class='btn btn-primary', name='imageFile', id='imageFile', accept="image/*")
       .form-group
         label.col-sm-3.control-label(for='title') Название
         .col-sm-7

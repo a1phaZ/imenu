@@ -40,7 +40,8 @@ exports.postNewCategory = (req, res, next) =>{
 	}
 	const category = new Category({
 		title: req.body.title,
-		description: req.body.description ? req.body.description : ''
+		description: req.body.description ? req.body.description : '',
+		logo: req.file ? req.file.filename : 'placeholder.jpg'
 	});
 	category.save(req.body.title, (err)=>{
 		if (err) {return next(err);}
@@ -87,6 +88,10 @@ exports.postCategoryBySlug = (req, res ,next) => {
 		.then((category)=>{
 			category.title = req.body.title;
 			category.description = req.body.description || '';
+			console.log(req.file);
+			if (req.file){
+				category.logo      = req.file.filename;
+			}
 			category.save(req.body.title, (err)=>{
 				if (err) {return next(err);}
 				req.flash('success', {msg: 'Информация о категории успешно обновлена'});

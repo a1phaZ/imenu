@@ -2,7 +2,7 @@ mixin product-list(product)
   .col-lg-3.col-md-4.col-sm-6
     .product-card
       .product-card-header
-        img(src='http://placehold.it/800x500', class='img-responsive logo product-card-logo')
+        img(src='/uploads/'+product.logo, class='img-responsive logo product-card-logo')
         if product.discount !=0
           span.discount.green #{product.discount} 
             i.fa.fa-percent

@@ -2,7 +2,7 @@
 mixin order-list(cartItem)
   .order-cart-item(data-cart-item-id=cartItem.cartItemId._id)
     .cart-item-img
-      img.img-responsive(src='http://placehold.it/500x500')
+      img.img-responsive(src='/uploads/'+cartItem.cartItemId.logo)
     .cart-item-title
       p #{cartItem.cartItemId.title} 
         if cartItem.cartItemId.discount != 0
