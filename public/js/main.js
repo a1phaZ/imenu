@@ -3,14 +3,6 @@ $(document).ready(function() {
   
   // Place JavaScript code here...
 
-  // function ajax(options) {
-  //   return new Promise(function(resolve, reject) {
-  //     $.ajax(options).done(resolve).fail(reject);
-  //   });
-  // }
-
-  
-
   //add to cart handler
   function addToCart(e) {
     e.preventDefault();
@@ -30,14 +22,20 @@ $(document).ready(function() {
       }).done(function(result) {
         if (!localStorage.orderId || localStorage.orderId != result._id) {
           localStorage.orderId = result._id;
-          localStorage.orderCount = result.orderList.length;
+          var orderListCount = result.orderList.length;
+          var hystoryListCount = result.hystoryList.length;
+          localStorage.orderCount = orderListCount + hystoryListCount;
           setOrderCount();
           setOrderLink();
         } else {
-          localStorage.orderCount = result.orderList.length;
+          var orderListCount = result.orderList.length;
+          var hystoryListCount = result.hystoryList.length;
+          localStorage.orderCount = orderListCount + hystoryListCount;
           var orderCounts = $('.order-count');
           orderCounts.each(function(){
-            $(this)[0].innerText = result.orderList.length;
+            var orderListCount = result.orderList.length;
+            var hystoryListCount = result.hystoryList.length;
+            $(this)[0].innerText = orderListCount + hystoryListCount;
           });
           setOrderLink();
         }
@@ -73,7 +71,25 @@ $(document).ready(function() {
   function reDrawPrice(result){
     var orderList = result.orderList;
     var orderTotalPrice = 0;
+    var hystoryList = result.hystoryList;
     orderList.forEach(function(item){
+      var cartItem = item.cartItemId;
+      var itemCount = $('.cart-item-count[data-cart-item-id = '+cartItem._id+']')[0];
+      var itemPrice = $('#'+cartItem._id+'-price')[0];
+      var itemDiscount = $('#'+cartItem._id+'-discount')[0];
+      var itemTotal = $('#'+cartItem._id+'-total')[0];
+      itemCount.value = item.count;
+      itemPrice.innerText = cartItem.price;
+      if (itemDiscount){
+        itemDiscount.innerText = cartItem.discount;
+      }
+      var total = Math.round(cartItem.price*item.count/((cartItem.discount+100)/100));
+      itemTotal.innerText = total;
+      
+      orderTotalPrice += total;
+    });
+    hystoryList.forEach(function(item){
+      console.log(item);
       var cartItem = item.cartItemId;
       var itemCount = $('.cart-item-count[data-cart-item-id = '+cartItem._id+']')[0];
       var itemPrice = $('#'+cartItem._id+'-price')[0];
@@ -140,7 +156,9 @@ $(document).ready(function() {
         }
       })
       .done(function(result){
-        localStorage.orderCount = result.orderList.length;
+        var orderListCount = result.orderList.length;
+        var hystoryListCount = result.hystoryList.length;
+        localStorage.orderCount = orderListCount + hystoryListCount;
         cartItem.remove();
         setOrderCount();
         reDrawPrice(result);

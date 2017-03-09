@@ -14,6 +14,13 @@ const orderSchema = new mongoose.Schema({
 		},
 		count: {type: Number}
 	}],
+	hystoryList: [{
+		cartItemId:{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Product'
+		},
+		count: {type: Number}
+	}],
 	sum: {type: Number},
 	status: {type: Number},
 	closed: {type: Boolean}

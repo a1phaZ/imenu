@@ -51,7 +51,7 @@ exports.getOrderCloseList = (req, res, next) =>{
 };
 
 /**
- * GET /order
+ * GET /order/:id
  * Страница оформления заказа
  */
 exports.getOrder = (req, res, next) =>{
@@ -62,16 +62,20 @@ exports.getOrder = (req, res, next) =>{
 				path: 'orderList.cartItemId'
 			},{
 				path: 'userId'
+			},{
+				path: 'hystoryList.cartItemId'
 			}]);
 		findOrderById.
 			then((order)=>{
 				if (order){
 					res.render('order/index',{
 						orderList: order.orderList,
+						hystoryList: order.hystoryList,
 						orderStatus: order.status,
 						orderComment: order.comment,
 						title: 'Заказ №'+order._id
 					});
+					console.log(order);
 					// res.send(order);
 				} else {
 					const err = new Error();
@@ -141,9 +145,11 @@ exports.postOrderChange = (req, res, next) =>{
 	if (req.body.orderId){
 		let FindOrderByIdAndUpdate = Order
 			.findOne({_id: req.body.orderId})
-			.populate({
+			.populate([{
 				path: 'orderList.cartItemId'
-			});
+			},{
+				path: 'hystoryList.cartItemId'
+			}]);
 		FindOrderByIdAndUpdate
 			.then((order)=>{
 				if (order){
@@ -181,9 +187,11 @@ exports.postOrderItemDelete = (req, res, next) =>{
 	if (req.body.orderId){
 		let FindOrderByIdAndUpdate = Order
 				.findOne({_id: req.body.orderId})
-				.populate({
+				.populate([{
 					path: 'orderList.cartItemId'
-				});
+				},{
+					path: 'hystoryList.cartItemId'
+				}]);
 			FindOrderByIdAndUpdate
 				.then((order)=>{
 					if(order){
@@ -228,10 +236,7 @@ exports.postOrder = (req, res, next) =>{
 		return res.redirect('/order/'+req.params.id);
 	}
 	let FindOrderByIdAndUpdate = Order
-			.findOne({_id: req.params.id})
-			.populate({
-				path: 'orderList.cartItemId'
-			});
+			.findOne({_id: req.params.id});
 		FindOrderByIdAndUpdate
 			.then((order)=>{
 				if(order){
@@ -239,9 +244,15 @@ exports.postOrder = (req, res, next) =>{
 					order.comment = req.body.comment;
 					order.status = 1;
 					order.closed = false;
+					order.orderList.forEach((item)=>{
+						order.hystoryList.push({cartItemId: item.cartItemId, count: item.count});
+					});					
+					order.orderList = [];
 					order.save((err)=>{
+						console.log(err);
 						if (err) next(err);
 						req.flash('success', {msg: 'Заказ №'+order._id+' успешно отправлен'});
+						//res.send(order);
 						res.redirect('/');
 					});
 				} else {
