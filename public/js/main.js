@@ -89,7 +89,6 @@ $(document).ready(function() {
       orderTotalPrice += total;
     });
     hystoryList.forEach(function(item){
-      console.log(item);
       var cartItem = item.cartItemId;
       var itemCount = $('.cart-item-count[data-cart-item-id = '+cartItem._id+']')[0];
       var itemPrice = $('#'+cartItem._id+'-price')[0];
@@ -112,11 +111,8 @@ $(document).ready(function() {
     e.preventDefault();
     if (e.target.attributes['data-cart-item-id']){
       var cartItemId = e.target.attributes['data-cart-item-id'].value;
-      console.log(cartItemId);
       var cartItemCount = e.target.value;
-      console.log(cartItemCount);
       var orderId = localStorage.orderId ? localStorage.orderId : null;
-      console.log(orderId);
       $.ajax({
         url: '/order/change', 
         method: 'POST',

@@ -75,8 +75,6 @@ exports.getOrder = (req, res, next) =>{
 						orderComment: order.comment,
 						title: 'Заказ №'+order._id
 					});
-					console.log(order);
-					// res.send(order);
 				} else {
 					const err = new Error();
 					err.status = 404;
@@ -106,12 +104,9 @@ exports.postOrderAdd = (req, res, next) =>{
 						} 
 						return false;
 					});
-					console.log(idInOrderList);
 					if (idInOrderList.length === 0){
 						order.orderList.push({cartItemId: req.body.cartItemId, count: 1});
 					}
-					
-					console.log(order.orderList);
 					order.save((err)=>{
 						if (err) next(err);
 						res.send(order);
@@ -204,7 +199,6 @@ exports.postOrderItemDelete = (req, res, next) =>{
 						order.orderList.splice(itemPosition, 1);
 						order.save((err)=>{
 							if (err) next(err);
-							console.log(order);
 							res.send(order);
 						});
 					} else {
@@ -249,7 +243,6 @@ exports.postOrder = (req, res, next) =>{
 					});					
 					order.orderList = [];
 					order.save((err)=>{
-						console.log(err);
 						if (err) next(err);
 						req.flash('success', {msg: 'Заказ №'+order._id+' успешно отправлен'});
 						//res.send(order);

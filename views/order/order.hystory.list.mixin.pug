@@ -24,6 +24,6 @@ mixin order-list(cartItem)
             -inTotalWithDiscount += Math.round(cartItem.cartItemId.price*cartItem.count/((cartItem.cartItemId.discount+100)/100));
         i.fa.fa-rub
     .delete-btn.text-right
-      i.btn.btn-danger.fa.fa-trash-o(data-cart-item-id=cartItem.cartItemId._id, aria-label="Delete", aria-hidden="true", style="margin-right: 0px;", disabled=orderStatus?true:false)
+      //- i.btn.btn-danger.fa.fa-trash-o(data-cart-item-id=cartItem.cartItemId._id, aria-label="Delete", aria-hidden="true", style="margin-right: 0px;", disabled=orderStatus?true:false)
 for cartItem in hystoryList
   +order-list(cartItem)
