@@ -171,6 +171,7 @@ app.get('/order/:id', passportConfig.isAuthenticated, orderController.getOrder);
 app.post('/order/change', orderController.postOrderChange);
 app.post('/order/item-delete', orderController.postOrderItemDelete);
 app.post('/order/:id', passportConfig.isAuthenticated, orderController.postOrder);
+app.get('/order-open', passportConfig.isAdmin, orderController.getOrderOpenList);
 
 
 // catch 404 and forward to error handler

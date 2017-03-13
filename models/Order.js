@@ -14,7 +14,7 @@ const orderSchema = new mongoose.Schema({
 		},
 		count: {type: Number}
 	}],
-	hystoryList: [{
+	historyList: [{
 		cartItemId:{
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Product'

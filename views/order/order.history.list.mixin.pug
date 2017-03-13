@@ -1,6 +1,6 @@
--var inTotalHystoryWithDiscount = 0;
+-var inTotalhistoryWithDiscount = 0;
 mixin order-list(cartItem)
-  .order-cart-item.hystory(data-cart-item-id=cartItem.cartItemId._id)
+  .order-cart-item.history(data-cart-item-id=cartItem.cartItemId._id)
     .cart-item-img
       img.img-responsive(src='/uploads/'+cartItem.cartItemId.logo)
     .cart-item-title
@@ -25,5 +25,6 @@ mixin order-list(cartItem)
         i.fa.fa-rub
     .delete-btn.text-right
       //- i.btn.btn-danger.fa.fa-trash-o(data-cart-item-id=cartItem.cartItemId._id, aria-label="Delete", aria-hidden="true", style="margin-right: 0px;", disabled=orderStatus?true:false)
-for cartItem in hystoryList
+-console.log(historyList)
+for cartItem in historyList
   +order-list(cartItem)

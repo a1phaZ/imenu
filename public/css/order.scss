@@ -23,3 +23,15 @@
 		flex: 1 10%;
 	}
 }
+
+.open-order{
+	.cart-item-title{
+		padding: 0;
+	}
+	.cart-item-title,
+	.cart-item-count{
+		p{
+			border-bottom: 1px dotted #eee;	
+		}
+	}
+}

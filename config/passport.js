@@ -288,3 +288,17 @@ exports.isAuthorized = (req, res, next) => {
     res.redirect(`/auth/${provider}`);
   }
 };
+
+/**
+ * Admin check middleware
+ */
+exports.isAdmin = (req, res, next) =>{
+  if(req.isAuthenticated()){
+    if (res.locals.isAdmin){
+      return next();
+    } else {
+      res.redirect('/');
+    }
+  }
+  res.redirect('/login');
+};

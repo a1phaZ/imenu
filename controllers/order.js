@@ -23,10 +23,19 @@ exports.getOrderList = (req, res, next) =>{
 exports.getOrderOpenList = (req, res, next) =>{
 	let getOrderOpenList = Order
 		.find()
-		.where('closed').equals(false);
+		.where('closed').equals(false)
+		.populate([{
+				path: 'orderList.cartItemId'
+			},{
+				path: 'userId'
+			},{
+				path: 'historyList.cartItemId'
+			}]);
 	getOrderOpenList
 		.then((orders) => {
-			res.send(orders);
+			res.render('order/order-open', {
+				orderOpenList: orders
+			});
 		})
 		.catch((error) => {
 			next(error);
@@ -63,14 +72,14 @@ exports.getOrder = (req, res, next) =>{
 			},{
 				path: 'userId'
 			},{
-				path: 'hystoryList.cartItemId'
+				path: 'historyList.cartItemId'
 			}]);
 		findOrderById.
 			then((order)=>{
 				if (order){
 					res.render('order/index',{
 						orderList: order.orderList,
-						hystoryList: order.hystoryList,
+						historyList: order.historyList,
 						orderStatus: order.status,
 						orderComment: order.comment,
 						title: 'Заказ №'+order._id
@@ -143,7 +152,7 @@ exports.postOrderChange = (req, res, next) =>{
 			.populate([{
 				path: 'orderList.cartItemId'
 			},{
-				path: 'hystoryList.cartItemId'
+				path: 'historyList.cartItemId'
 			}]);
 		FindOrderByIdAndUpdate
 			.then((order)=>{
@@ -185,7 +194,7 @@ exports.postOrderItemDelete = (req, res, next) =>{
 				.populate([{
 					path: 'orderList.cartItemId'
 				},{
-					path: 'hystoryList.cartItemId'
+					path: 'historyList.cartItemId'
 				}]);
 			FindOrderByIdAndUpdate
 				.then((order)=>{
@@ -239,7 +248,7 @@ exports.postOrder = (req, res, next) =>{
 					order.status = 1;
 					order.closed = false;
 					order.orderList.forEach((item)=>{
-						order.hystoryList.push({cartItemId: item.cartItemId, count: item.count});
+						order.historyList.push({cartItemId: item.cartItemId, count: item.count});
 					});					
 					order.orderList = [];
 					order.save((err)=>{

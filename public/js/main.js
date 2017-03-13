@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
   
   // Place JavaScript code here...
 
@@ -23,19 +22,19 @@ $(document).ready(function() {
         if (!localStorage.orderId || localStorage.orderId != result._id) {
           localStorage.orderId = result._id;
           var orderListCount = result.orderList.length;
-          var hystoryListCount = result.hystoryList.length;
-          localStorage.orderCount = orderListCount + hystoryListCount;
+          var historyListCount = result.historyList.length;
+          localStorage.orderCount = orderListCount + historyListCount;
           setOrderCount();
           setOrderLink();
         } else {
           var orderListCount = result.orderList.length;
-          var hystoryListCount = result.hystoryList.length;
-          localStorage.orderCount = orderListCount + hystoryListCount;
+          var historyListCount = result.historyList.length;
+          localStorage.orderCount = orderListCount + historyListCount;
           var orderCounts = $('.order-count');
           orderCounts.each(function(){
             var orderListCount = result.orderList.length;
-            var hystoryListCount = result.hystoryList.length;
-            $(this)[0].innerText = orderListCount + hystoryListCount;
+            var historyListCount = result.historyList.length;
+            $(this)[0].innerText = orderListCount + historyListCount;
           });
           setOrderLink();
         }
@@ -71,7 +70,7 @@ $(document).ready(function() {
   function reDrawPrice(result){
     var orderList = result.orderList;
     var orderTotalPrice = 0;
-    var hystoryList = result.hystoryList;
+    var historyList = result.historyList;
     orderList.forEach(function(item){
       var cartItem = item.cartItemId;
       var itemCount = $('.cart-item-count[data-cart-item-id = '+cartItem._id+']')[0];
@@ -88,7 +87,7 @@ $(document).ready(function() {
       
       orderTotalPrice += total;
     });
-    hystoryList.forEach(function(item){
+    historyList.forEach(function(item){
       var cartItem = item.cartItemId;
       var itemCount = $('.cart-item-count[data-cart-item-id = '+cartItem._id+']')[0];
       var itemPrice = $('#'+cartItem._id+'-price')[0];
@@ -153,8 +152,8 @@ $(document).ready(function() {
       })
       .done(function(result){
         var orderListCount = result.orderList.length;
-        var hystoryListCount = result.hystoryList.length;
-        localStorage.orderCount = orderListCount + hystoryListCount;
+        var historyListCount = result.historyList.length;
+        localStorage.orderCount = orderListCount + historyListCount;
         cartItem.remove();
         setOrderCount();
         reDrawPrice(result);
@@ -218,5 +217,16 @@ $(document).ready(function() {
 
   init();
   
+});
+
+$(function(){
+  var socket = io();
+  $('#send-order').submit(function(){
+    socket.emit('notify', localStorage.orderId);
+  });
+  socket.on('notify', function (msg) {
+    $('#notify')[0].style.display = 'inline-block';
+    $('#notify-audio')[0].play();
+  });
 });
 

@@ -8940,7 +8940,7 @@ span.small {
         margin: 0;
         width: 300px; }
 
-.hystory {
+.history {
   opacity: .7; }
 
 .product-card {
@@ -9079,6 +9079,13 @@ span.small {
     min-width: 50px; }
   .order-cart-item .delete-btn {
     flex: 1 10%; }
+
+.open-order .cart-item-title {
+  padding: 0; }
+
+.open-order .cart-item-title p,
+.open-order .cart-item-count p {
+  border-bottom: 1px dotted #eee; }
 
 html {
   position: relative;

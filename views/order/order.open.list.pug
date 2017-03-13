@@ -1,0 +1,44 @@
+-var inTotalhistoryWithDiscount = 0;
+mixin status(status)
+  if (status == 1)
+    span.label.label-success Новый
+
+mixin order(order)
+  .order-cart-item.open-order
+    .cart-item-title
+      p #{order.cartItemId.title}
+    .cart-item-count.text-right
+      p #{order.count}
+      -inTotalhistoryWithDiscount += Math.round(order.cartItemId.price*order.count/((order.cartItemId.discount+100)/100));
+
+mixin orderOpenList(item)
+  .panel.panel-default
+      .panel-heading(role='tab', id='heading'+item._id)
+        h4.panel-title
+          +status(item.status)
+          a(role='button', data-toggle='collapse', data-parent='#accordion', href='#'+item._id, aria-expanded='false', aria-controls=item._id)
+            |  Заказ №#{item._id}
+      .panel-collapse.collapse(role='tabpanel', aria-labelledby='heading'+item._id, id=item._id)
+        .panel-body
+          for order in item.historyList
+            +order(order)
+          strong Комментарий к заказу:
+          pre #{item.comment}
+          hr
+          h4.text-right.total
+            strong
+              | Итого: 
+              span#total 
+                =inTotalhistoryWithDiscount
+            i.fa.fa-rub
+          .row
+            form.form-horizontal.col-sm-12(method='POST')
+              input(type='hidden', name='_csrf', value=_csrf)
+              .form-group
+                .col-sm-12
+                  button.form-control.btn.btn-success(type='submit')
+                    | Принять заказ в работу
+
+#accordion.panel-group(role='tablist', aria-multiselectable='true')
+  for item in orderOpenList
+    +orderOpenList(item)

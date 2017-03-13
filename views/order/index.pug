@@ -6,17 +6,17 @@ block content
 
   include order.list.mixin.pug
   hr
-  include order.hystory.list.mixin.pug  
+  include order.history.list.mixin.pug  
   hr
   h4.text-right.total
     strong
       | Итого: 
       span#total 
-        =inTotalWithDiscount+inTotalHystoryWithDiscount
+        =inTotalWithDiscount+inTotalhistoryWithDiscount
     i.fa.fa-rub
   hr
   .row
-    form.form-horizontal.col-sm-12(method='POST')
+    form.form-horizontal.col-sm-12#send-order(method='POST')
       input(type='hidden', name='_csrf', value=_csrf)
       .form-group
         label.col-xs-12.control-label(for='comment') Комментарий к заказу
