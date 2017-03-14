@@ -86,7 +86,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-app.use(upload.single('imageFile'));
+//app.use(upload.single('imageFile'));
 app.use((req, res, next) => {
   // if (req.path === '/api/upload') {
   //   next();
@@ -172,6 +172,9 @@ app.post('/order/change', orderController.postOrderChange);
 app.post('/order/item-delete', orderController.postOrderItemDelete);
 app.post('/order/:id', passportConfig.isAuthenticated, orderController.postOrder);
 app.get('/order-open', passportConfig.isAdmin, orderController.getOrderOpenList);
+app.get('/order-close', passportConfig.isAdmin, orderController.getOrderCloseList);
+app.get('/order/:id/status', orderController.getOrderStatusById);
+app.post('/order/:id/status', passportConfig.isAdmin, orderController.changeOrderStatus);
 
 
 // catch 404 and forward to error handler

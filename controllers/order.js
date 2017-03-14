@@ -22,8 +22,12 @@ exports.getOrderList = (req, res, next) =>{
  */
 exports.getOrderOpenList = (req, res, next) =>{
 	let getOrderOpenList = Order
-		.find()
-		.where('closed').equals(false)
+		.find({
+			status: {
+				$lt:4
+			}
+		})
+		.sort({status: 1})
 		.populate([{
 				path: 'orderList.cartItemId'
 			},{
@@ -48,11 +52,23 @@ exports.getOrderOpenList = (req, res, next) =>{
  */
 exports.getOrderCloseList = (req, res, next) =>{
 	let getOrderCloseList = Order
-		.find()
-		.where('closed').equals(true);
+		.find({
+			status: {
+				$gt:3
+			}
+		})
+		.populate([{
+				path: 'orderList.cartItemId'
+			},{
+				path: 'userId'
+			},{
+				path: 'historyList.cartItemId'
+			}]);
 	getOrderCloseList
 		.then((orders) => {
-			res.send(orders);
+			res.render('order/order-close', {
+				orderOpenList: orders
+			});
 		})
 		.catch((error) => {
 			next(error);
@@ -246,7 +262,7 @@ exports.postOrder = (req, res, next) =>{
 					order.userId = req.user._id;
 					order.comment = req.body.comment;
 					order.status = 1;
-					order.closed = false;
+					//order.closed = false;
 					order.orderList.forEach((item)=>{
 						order.historyList.push({cartItemId: item.cartItemId, count: item.count});
 					});					
@@ -263,6 +279,48 @@ exports.postOrder = (req, res, next) =>{
 					err.message = 'Заказ не найден';
 					next(err);
 				}
+			})
+			.catch((err)=>{
+				next(err);
+			});
+};
+
+/**
+ * POST /order/:id/status
+ */
+exports.changeOrderStatus = (req, res, next) =>{
+	let getOrderById = Order
+			.findOne({_id: req.params.id});
+		getOrderById
+			.then((order)=>{
+				if(order){
+					order.status +=1;
+					//order.closed = (order.status == 4);
+					order.save((err)=>{
+						if (err) next(err);
+						res.send(order);
+					});
+				} else {
+					const err = new Error();
+					err.status = 404;
+					err.message = 'Заказ не найден';
+					next(err);
+				}
+			})
+			.catch((err)=>{
+				next(err);
+			});
+};
+
+/**
+ * GET /order/:id/status	
+ */
+exports.getOrderStatusById = (req, res, next) =>{
+	let getOrderById = Order
+			.findOne({_id: req.params.id});
+		getOrderById
+			.then((order)=>{
+				res.send(order);
 			})
 			.catch((err)=>{
 				next(err);

@@ -24,7 +24,7 @@ const orderSchema = new mongoose.Schema({
 	sum: {type: Number},
 	status: {type: Number},
 	closed: {type: Boolean}
-});
+},{timestamps: true});
 
 const Order = mongoose.model('Order', orderSchema);
 

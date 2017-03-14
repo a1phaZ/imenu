@@ -1,7 +1,24 @@
 -var inTotalhistoryWithDiscount = 0;
-mixin status(status)
-  if (status == 1)
-    span.label.label-success Новый
+mixin status(item)
+  if (item.status == 1)
+    span.label.label-success(data-order-item-id=item._id) Новый
+  if (item.status == 2)
+    span.label.label-warning(data-order-item-id=item._id) В работе
+  if (item.status == 3)
+    span.label.label-primary(data-order-item-id=item._id) Выдан
+  if (item.status == 4)
+    span.label.label-danger(data-order-item-id=item._id) Закрыт
+
+mixin status-btn(item)
+  if (item.status == 1)
+    button.form-control.btn.btn-warning(class='in-work', data-order-item-id=item._id)
+      | Принять заказ в работу
+  if (item.status == 2)
+    button.form-control.btn.btn-primary(class='out-work', data-order-item-id=item._id)
+      | Выдать заказ
+  if (item.status == 3)
+    button.form-control.btn.btn-danger(class='close', data-order-item-id=item._id)
+      | Закрыть заказ
 
 mixin order(order)
   .order-cart-item.open-order
@@ -15,9 +32,12 @@ mixin orderOpenList(item)
   .panel.panel-default
       .panel-heading(role='tab', id='heading'+item._id)
         h4.panel-title
-          +status(item.status)
+          +status(item)
           a(role='button', data-toggle='collapse', data-parent='#accordion', href='#'+item._id, aria-expanded='false', aria-controls=item._id)
-            |  Заказ №#{item._id}
+            |  Заказ №#{item._id} 
+          small 
+            =convert(item.updatedAt)
+            //- | #{item.updatedAt}
       .panel-collapse.collapse(role='tabpanel', aria-labelledby='heading'+item._id, id=item._id)
         .panel-body
           for order in item.historyList
@@ -31,13 +51,9 @@ mixin orderOpenList(item)
               span#total 
                 =inTotalhistoryWithDiscount
             i.fa.fa-rub
-          .row
-            form.form-horizontal.col-sm-12(method='POST')
-              input(type='hidden', name='_csrf', value=_csrf)
-              .form-group
-                .col-sm-12
-                  button.form-control.btn.btn-success(type='submit')
-                    | Принять заказ в работу
+          +status-btn(item)
+
+include ../functions/convertToLocalTime                  
 
 #accordion.panel-group(role='tablist', aria-multiselectable='true')
   for item in orderOpenList

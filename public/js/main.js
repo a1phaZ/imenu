@@ -1,6 +1,6 @@
 $(document).ready(function() {
   
-  // Place JavaScript code here...
+  // Place JavaScript code here...  
 
   //add to cart handler
   function addToCart(e) {
@@ -164,6 +164,56 @@ $(document).ready(function() {
     }
   }
 
+  function inWorkOrderItem(e) {
+    e.preventDefault();
+    if (e.target.attributes['data-order-item-id']){
+      var orderItemId = e.target.attributes['data-order-item-id'].value;
+      var status = e.target.className
+      $.ajax({
+        url: '/order/'+orderItemId+'/status',
+        method: 'POST',
+        beforeSend: function(request) {
+          return request.setRequestHeader('X-CSRF-Token', $("meta[name='csrf-token']").attr('content'));
+        }
+      })
+      .done(function(result){
+        var label = $('span[data-order-item-id='+orderItemId+']');
+        var button = $('button[data-order-item-id='+orderItemId+']');
+        label.removeClass('label-success label-warning label-primary label-danger');
+        button.removeClass('in-work out-work close btn-warning btn-primary btn-danger');
+        switch (result.status){
+          case 1:
+            label.addClass('label-success');
+            button.addClass('btn-success in-work');
+            label[0].innerText = 'Новый';
+            button[0].innerText = 'Принят заказ в работу';
+            break;
+          case 2: 
+            label.addClass('label-warning');
+            button.addClass('btn-primary out-work');
+            label[0].innerText = 'В работе';
+            button[0].innerText = 'Выдать заказ';
+            break;
+          case 3: 
+            label.addClass('label-primary');
+            button.addClass('btn-danger close');
+            label[0].innerText = 'Выдан';
+            button[0].innerText = 'Закрыть заказ';
+            break;
+          case 4: 
+            label.addClass('label-danger');
+            button[0].style.display = 'none';
+            label[0].innerText = 'Закрыт';
+            break;
+        }
+
+      })
+      .fail(function(err){
+        console.log(err);
+      })
+    }
+  }
+
   //addEventListeners
   //add handler add to cart
   var elements;
@@ -178,6 +228,18 @@ $(document).ready(function() {
   elements = $('[aria-label="Delete"]');
   for (var i = 0; i < elements.length; i++) {
     elements[i].addEventListener('click', deleteCartItem);
+  }
+  elements = $('.in-work');
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].addEventListener('click', inWorkOrderItem);
+  }
+  elements = $('.out-work');
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].addEventListener('click', inWorkOrderItem);
+  }
+  elements = $('.close');
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].addEventListener('click', inWorkOrderItem);
   }
   
   //Breadcrumbs
@@ -215,8 +277,26 @@ $(document).ready(function() {
     setOrderLink();
   }
 
-  init();
-  
+  $(function(){
+    var orderId = localStorage.orderId ? localStorage.orderId : null;
+    if (orderId){
+      $.ajax({
+        url: '/order/'+orderId+'/status',
+        method: 'GET'
+      })
+      .done(function(result){
+        if (result.status == 4) {
+          delete localStorage.orderId;
+          delete localStorage.orderCount;
+        }
+      })
+      .fail(function(err){
+        console.log(err);
+      });
+    }
+    init();
+  });
+
 });
 
 $(function(){
@@ -225,8 +305,14 @@ $(function(){
     socket.emit('notify', localStorage.orderId);
   });
   socket.on('notify', function (msg) {
-    $('#notify')[0].style.display = 'inline-block';
-    $('#notify-audio')[0].play();
+    var notify = $('#notify')[0];
+    var notifyAudio = $('#notify-audio')[0];
+    if (notify){
+      $('#notify')[0].style.display = 'inline-block';
+    }
+    if (notifyAudio){
+      $('#notify-audio')[0].play();
+    }
   });
 });
 
