@@ -119,7 +119,9 @@ app.use(categoryController.getAllCategoryToRes);
 //Admin?
 app.use((req, res, next)=>{
   if (req.user){
-    res.locals.isAdmin = (req.user.email.toLowerCase() == process.env.ADMIN_EMAIL.toLowerCase());
+    if (req.user.email){
+      res.locals.isAdmin = (req.user.email.toLowerCase() == process.env.ADMIN_EMAIL.toLowerCase());
+    }
   }
   next();
 });
