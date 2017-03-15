@@ -1,14 +1,15 @@
-const _ = require('lodash');
-const passport = require('passport');
-const request = require('request');
+const _                 = require('lodash');
+const passport          = require('passport');
+const request           = require('request');
 const InstagramStrategy = require('passport-instagram').Strategy;
-const LocalStrategy = require('passport-local').Strategy;
-const FacebookStrategy = require('passport-facebook').Strategy;
-const TwitterStrategy = require('passport-twitter').Strategy;
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-const OpenIDStrategy = require('passport-openid').Strategy;
-const OAuthStrategy = require('passport-oauth').OAuthStrategy;
-const OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
+const LocalStrategy     = require('passport-local').Strategy;
+const FacebookStrategy  = require('passport-facebook').Strategy;
+const TwitterStrategy   = require('passport-twitter').Strategy;
+const GoogleStrategy    = require('passport-google-oauth').OAuth2Strategy;
+const OpenIDStrategy    = require('passport-openid').Strategy;
+const OAuthStrategy     = require('passport-oauth').OAuthStrategy;
+const OAuth2Strategy    = require('passport-oauth').OAuth2Strategy;
+const VKontakteStrategy = require('passport-vkontakte').Strategy;
 
 const User = require('../models/User');
 
@@ -39,6 +40,66 @@ passport.use(new LocalStrategy({usernameField: 'email'}, (email, password, done)
       return done(null, false, { msg: 'Invalid email or password.' });
     });
   });
+}));
+
+/**
+ * VK
+ */
+passport.use(new VKontakteStrategy({
+  clientID: process.env.VKONTAKTE_APP_ID,
+  clientSecret: process.env.VKONTAKTE_APP_SECRET,
+  callbackURL: '/auth/vkontakte/callback',
+  profileFields: ['name', 'email', 'link', 'locale', 'timezone'],
+  passReqToCallback: true
+}, (req, accessToken, refreshToken, profile, done) => {
+  if (req.user) {
+    User.findOne({ vkontakte: profile.id }, (err, existingUser) => {
+      if (err) { return done(err); }
+      if (existingUser) {
+        req.flash('errors', { msg: 'There is already a Vkontakte account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
+        done(err);
+      } else {
+        User.findById(req.user.id, (err, user) => {
+          if (err) { return done(err); }
+          user.vkontakte = profile.id;
+          user.tokens.push({ kind: 'vkontakte', accessToken });
+          user.profile.name = user.profile.name || `${profile.name.givenName} ${profile.name.familyName}`;
+          user.profile.gender = user.profile.gender || profile._json.gender;
+          user.profile.picture = user.profile.picture || `https://graph.facebook.com/${profile.id}/picture?type=large`;
+          user.save((err) => {
+            req.flash('info', { msg: 'Vkontakte account has been linked.' });
+            done(err, user);
+          });
+        });
+      }
+    });
+  } else {
+    User.findOne({ vkontakte: profile.id }, (err, existingUser) => {
+      if (err) { return done(err); }
+      if (existingUser) {
+        return done(null, existingUser);
+      }
+      User.findOne({ email: profile._json.email }, (err, existingEmailUser) => {
+        if (err) { return done(err); }
+        if (existingEmailUser) {
+          req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with Vkontakte manually from Account Settings.' });
+          done(err);
+        } else {
+          const user = new User();
+          user.email = profile._json.email;
+          user.vkontakte = profile.id;
+          user.tokens.push({ kind: 'vkontakte', accessToken });
+          user.profile.name = `${profile.name.givenName} ${profile.name.familyName}`;
+          user.profile.gender = profile._json.gender;
+          user.profile.picture = `https://graph.facebook.com/${profile.id}/picture?type=large`;
+          user.profile.location = (profile._json.location) ? profile._json.location.name : '';
+          user.save((err) => {
+            done(err, user);
+          });
+        }
+      });
+    });
+  }
 }));
 
 /**
