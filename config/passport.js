@@ -79,18 +79,18 @@ passport.use(new VKontakteStrategy({
       if (existingUser) {
         return done(null, existingUser);
       }
-      User.findOne({ email: profile._json.email }, (err, existingEmailUser) => {
+      User.findOne({ email: profile.email }, (err, existingEmailUser) => {
         if (err) { return done(err); }
         if (existingEmailUser) {
           req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with Vkontakte manually from Account Settings.' });
           done(err);
         } else {
           const user = new User();
-          user.email = profile._json.email;
+          user.email = profile.email;
           user.vkontakte = profile.id;
           user.tokens.push({ kind: 'vkontakte', accessToken });
           user.profile.name = `${profile.name.givenName} ${profile.name.familyName}`;
-          user.profile.gender = profile._json.gender;
+          user.profile.gender = profile.gender;
           user.profile.picture = `https://graph.facebook.com/${profile.id}/picture?type=large`;
           user.profile.location = (profile._json.location) ? profile._json.location.name : '';
           user.save((err) => {
