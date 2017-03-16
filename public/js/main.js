@@ -311,13 +311,17 @@ $(document).ready(function() {
   $(function(){
     var socket = io();
     $('#send-order').submit(function(){
-      socket.emit('notify', localStorage.orderId);
+      socket.emit('notify', 'Новый заказ');
     });
+    $('#order-plz').click(function(){
+      socket.emit('notify', 'Закрыть заказ');
+    })
     socket.on('notify', function (msg) {
       var notify = $('#notify')[0];
       var notifyAudio = $('#notify-audio')[0];
       if (notify){
         $('#notify')[0].style.display = 'inline-block';
+        $('span.message__title')[0].innerText = msg;
         $('.message').fadeIn(400).delay(3000).fadeOut(400);
       }
       if (notifyAudio){
