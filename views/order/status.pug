@@ -1,0 +1,11 @@
+mixin status(orderStatus)
+  if (orderStatus == 1)
+    span.label.label-success Новый
+  if (orderStatus == 2)
+    span.label.label-warning В работе
+  if (orderStatus == 3)
+    span.label.label-primary Выдан
+  if (orderStatus == 4)
+    span.label.label-danger Закрыт
+
++status(orderStatus)
