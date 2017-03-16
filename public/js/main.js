@@ -241,6 +241,10 @@ $(document).ready(function() {
   for (var i = 0; i < elements.length; i++) {
     elements[i].addEventListener('click', inWorkOrderItem);
   }
+  elements=$('#btn-success');
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].addEventListener('click', closeNotify);
+  }
   
   //Breadcrumbs
   function getBreadcrumbs() {
@@ -277,6 +281,10 @@ $(document).ready(function() {
     setOrderLink();
   }
 
+  /**
+  * Проверка заказа
+  * Если закрыт - чистим localStorage
+  */
   $(function(){
     var orderId = localStorage.orderId ? localStorage.orderId : null;
     if (orderId){
@@ -297,22 +305,32 @@ $(document).ready(function() {
     init();
   });
 
+  /**
+  * Обработка уведомлений
+  */
+  $(function(){
+    var socket = io();
+    $('#send-order').submit(function(){
+      socket.emit('notify', localStorage.orderId);
+    });
+    socket.on('notify', function (msg) {
+      var notify = $('#notify')[0];
+      var notifyAudio = $('#notify-audio')[0];
+      if (notify){
+        $('#notify')[0].style.display = 'inline-block';
+        $('.message').fadeIn(400).delay(3000).fadeOut(400);
+      }
+      if (notifyAudio){
+        $('#notify-audio')[0].play();
+      }
+    });
+  });
+
+  function closeNotify(e) {
+    e.preventDefault();
+    $('#success').attr('style', 'display: none;');
+  }
+
 });
 
-$(function(){
-  var socket = io();
-  $('#send-order').submit(function(){
-    socket.emit('notify', localStorage.orderId);
-  });
-  socket.on('notify', function (msg) {
-    var notify = $('#notify')[0];
-    var notifyAudio = $('#notify-audio')[0];
-    if (notify){
-      $('#notify')[0].style.display = 'inline-block';
-    }
-    if (notifyAudio){
-      $('#notify-audio')[0].play();
-    }
-  });
-});
 
