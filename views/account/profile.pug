@@ -80,6 +80,11 @@ block content
   .form-horizontal
     .form-group
       .col-sm-offset-3.col-sm-4
+        if user.vkontakte
+          p: a.text-danger(href='/account/unlink/vkontakte') Отвязать Ваш VK аккаунт
+        else
+          p: a(href='/auth/vkontakte') Привязать Ваш VK аккаунт
+      .col-sm-offset-3.col-sm-4
         if user.instagram
           p: a.text-danger(href='/account/unlink/instagram') Отвязать Ваш Instagram аккаунт
         else
