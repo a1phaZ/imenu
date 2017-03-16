@@ -362,6 +362,7 @@ exports.getOrderStatusById = (req, res, next) =>{
 		getOrderById
 			.then((order)=>{
 				res.send(order);
+				next();
 			})
 			.catch((err)=>{
 				next(err);
