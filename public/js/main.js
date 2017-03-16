@@ -293,7 +293,7 @@ $(document).ready(function() {
         method: 'GET'
       })
       .done(function(result){
-        if (result.status == 4) {
+        if (!result || result.status == 4) {
           delete localStorage.orderId;
           delete localStorage.orderCount;
         }
