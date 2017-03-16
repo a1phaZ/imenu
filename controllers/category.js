@@ -88,7 +88,6 @@ exports.postCategoryBySlug = (req, res ,next) => {
 		.then((category)=>{
 			category.title = req.body.title;
 			category.description = req.body.description || '';
-			console.log(req.file);
 			if (req.file){
 				category.logo      = req.file.filename;
 			}

@@ -7,6 +7,14 @@ const orderSchema = new mongoose.Schema({
 		ref: 'User'
 	},
 	comment: {type: String},
+	orderPlz: {type: Boolean},
+	orderAdminList: [{
+		cartItemId:{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Product'
+		},
+		count: {type: Number}
+	}],
 	orderList: [{
 		cartItemId:{
 			type: mongoose.Schema.Types.ObjectId,
