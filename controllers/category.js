@@ -18,6 +18,8 @@ exports.getAllCategoryToRes = (req, res, next) =>{
 
 //GET /category
 exports.getCategoryList = (req, res) =>{
+	let ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
+	console.log(ip);
 	res.render('category/index', {
 		title: 'Список категорий'
 	});
