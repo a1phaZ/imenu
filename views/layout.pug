@@ -11,14 +11,23 @@ html
     link(rel='stylesheet', href='/css/main.css')
     link(rel='stylesheet', href='/components/spectre.css/dist/spectre.min.css')
     link(rel='stylesheet', href='/components/spectre.css/dist/spectre-exp.min.css')
+    link(rel='stylesheet', href='/components/spectre.css/docs/css/docs.min.css')
 
   body
-    include partials/header_new
+    include partials/header
 
-    .container.grid-960
+    .container.grid-1280
       include partials/flash
-      ol.breadcrumb#breadcrumb
-      block content
+      .columns
+        #category.docs-sidebar.column.col-2.col-md-12
+          block category
+        a(href="#category-close", id="category-close", class="docs-nav-clear")
+        .docs-content.column.col-8.col-md-12
+          ol.breadcrumb#breadcrumb
+          block content
+        #sidebar.docs-sidebar.column.col-2.col-md-12
+          block account
+        a(href="#sidebar-close", id="sidebar-close", class="docs-nav-clear")
 
     include partials/footer
     include partials/notify
