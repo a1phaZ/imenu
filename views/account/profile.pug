@@ -63,6 +63,21 @@ block content
           i.fa.fa-lock
           | Изменить пароль
 
+  
+    .page-header
+      h3 Конвертация профиля
+    form.form-horizontal
+      .form-group
+        label.col-sm-3.control-label(for='convert') Конвертировать в компанию
+        .col-sm-7
+          if !user.company
+            a.btn.btn-primary(href='/convert', name='convert', id='convert') 
+              i.fa.fa-refresh
+              | Конвертировать
+          else 
+            span.label.label-primary Компания #{user.company.name}
+
+
   .page-header
     h3 Удалить аккаунт
 

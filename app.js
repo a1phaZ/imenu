@@ -147,6 +147,8 @@ app.post('/account/delete', passportConfig.isAuthenticated, userController.postD
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
 app.get('/signup', userController.getSignup);
 app.post('/signup', userController.postSignup);
+app.get('/convert', userController.getConvertToCompany);
+app.post('/convert', userController.postConvertToCompany);
 
 // app.get('/contact', contactController.getContact);
 // app.post('/contact', contactController.postContact);

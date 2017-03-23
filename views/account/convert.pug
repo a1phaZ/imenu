@@ -1,0 +1,25 @@
+extends ../layout
+
+block content
+  .page-header
+    h3#page-header #{title}
+
+  form(method="POST")
+    input(type='hidden', name='_csrf', value=_csrf)
+    .form-group
+      label.form-label(for='company-name') Имя компании
+      input.form-input(type='text', id='company-name', name='companyName', placeholder='Имя компании', autofocus, required)
+    .form-group
+      label.form-label(for='company-address') Адрес
+      ul#company-address.form-group
+        li
+          label.form-label(for='company-address-region') Регион
+          input.form-input(type='text', id='company-address-region', name='companyAddressRegion', placeholder='Регион', required)
+        li
+          label.form-label(for='company-address-city') Город
+          input.form-input(type='text', id='company-address-city', name='companyAddressCity', placeholder='Город', required)
+        li
+          label.form-label(for='company-address-street') Адрес
+          input.form-input(type='text', id='company-address-street', name='companyAddressStreet', placeholder='Адрес', required)
+    .form-group
+      button.btn.btn-primary(type='submit') Конвертировать

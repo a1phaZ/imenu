@@ -9,11 +9,13 @@ html
     title #{title} - iMenu
     link(rel='shortcut icon', href='/favicon.png')
     link(rel='stylesheet', href='/css/main.css')
+    link(rel='stylesheet', href='/components/spectre.css/dist/spectre.min.css')
+    link(rel='stylesheet', href='/components/spectre.css/dist/spectre-exp.min.css')
 
   body
     include partials/header_new
 
-    .container
+    .container.grid-960
       include partials/flash
       ol.breadcrumb#breadcrumb
       block content

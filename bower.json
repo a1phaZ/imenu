@@ -1,0 +1,21 @@
+{
+  "name": "imenu",
+  "description": "",
+  "main": "app.js",
+  "authors": [
+    "a1phaZ <pride.ots@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/a1phaZ/imenu",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/components/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "spectre.css": "^0.2.10"
+  }
+}
