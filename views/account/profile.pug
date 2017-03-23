@@ -2,80 +2,76 @@ extends ../layout
 
 block content
   .page-header
-    h3#page-header Информация профиля
+    h3#page-header 
+      | Информация профиля
+      if user.company
+        | |
+        small.label.label-success Компания #{user.company.name}
 
-  form.form-horizontal(action='/account/profile', method='POST')
+  form(action='/account/profile', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
     .form-group
-      label.col-sm-3.control-label(for='email') Email
-      .col-sm-7
-        input.form-control(type='email', name='email', id='email', value=user.email)
+      label.form-label(for='email') Email
+      input.form-input(type='email', name='email', id='email', value=user.email)
     .form-group
-      label.col-sm-3.control-label(for='name') Имя
-      .col-sm-7
-        input.form-control(type='text', name='name', id='name', value=user.profile.name)
+      label.form-label(for='name') Имя
+      input.form-input(type='text', name='name', id='name', value=user.profile.name)
     .form-group
-      label.col-sm-3.control-label Пол
-      .col-sm-6
-        label.radio.col-sm-3
-          input(type='radio', checked=user.profile.gender=='male', name='gender', value='male', data-toggle='radio')
-          span Муж.
-        label.radio.col-sm-3
-          input(type='radio', checked=user.profile.gender=='female', name='gender', value='female', data-toggle='radio')
-          span Жен.
-        label.radio.col-sm-3
-          input(type='radio', checked=user.profile.gender=='other', name='gender', value='other', data-toggle='radio')
-          span Другой
+      label.form-label Пол
+      label.form-radio
+        input(type='radio', checked=user.profile.gender=='male', name='gender', value='male', data-toggle='radio')
+        i.form-icon 
+        | Муж.
+      label.form-radio
+        input(type='radio', checked=user.profile.gender=='female', name='gender', value='female', data-toggle='radio')
+        i.form-icon 
+        | Жен.
+      label.form-radio
+        input(type='radio', checked=user.profile.gender=='other', name='gender', value='other', data-toggle='radio')
+        i.form-icon 
+        | Другой
     .form-group
-      label.col-sm-3.control-label(for='location') Местоположение
-      .col-sm-7
-        input.form-control(type='text', name='location', id='location', value=user.profile.location)
+      label.form-label(for='location') Местоположение
+      input.form-input(type='text', name='location', id='location', value=user.profile.location)
     .form-group
-      label.col-sm-3.control-label(for='website') Web-сайт
-      .col-sm-7
-        input.form-control(type='text', name='website', id='website', value=user.profile.website)
+      label.form-label(for='website') Web-сайт
+      input.form-input(type='text', name='website', id='website', value=user.profile.website)
     .form-group
-      label.col-sm-3.control-label Gravatar
-      .col-sm-4
-        img(src=user.gravatar(), class='profile', width='100', height='100')
+      label.form-label Gravatar
+      img(src=user.gravatar(), class='profile', width='100', height='100')
     .form-group
-      .col-sm-offset-3.col-sm-4
-        button.btn.btn.btn-primary(type='submit')
-          i.fa.fa-pencil
-          | Обновить профиль
+      button.btn.btn.btn-primary(type='submit')
+        i.fa.fa-pencil
+        | Обновить профиль
 
   .page-header
     h3 Изменить пароль
 
-  form.form-horizontal(action='/account/password', method='POST')
+  form(action='/account/password', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
     .form-group
-      label.col-sm-3.control-label(for='password') Новый пароль
-      .col-sm-7
-        input.form-control(type='password', name='password', id='password')
+      label.form-label(for='password') Новый пароль
+      input.form-input(type='password', name='password', id='password')
     .form-group
-      label.col-sm-3.control-label(for='confirmPassword') Подтвердить пароль
-      .col-sm-7
-        input.form-control(type='password', name='confirmPassword', id='confirmPassword')
+      label.form-label(for='confirmPassword') Подтвердить пароль
+      input.form-input(type='password', name='confirmPassword', id='confirmPassword')
     .form-group
-      .col-sm-offset-3.col-sm-4
-        button.btn.btn-primary(type='submit')
-          i.fa.fa-lock
-          | Изменить пароль
+      button.btn.btn-primary(type='submit')
+        i.fa.fa-lock
+        | Изменить пароль
 
   
     .page-header
       h3 Конвертация профиля
     form.form-horizontal
       .form-group
-        label.col-sm-3.control-label(for='convert') Конвертировать в компанию
-        .col-sm-7
-          if !user.company
-            a.btn.btn-primary(href='/convert', name='convert', id='convert') 
-              i.fa.fa-refresh
-              | Конвертировать
-          else 
-            span.label.label-primary Компания #{user.company.name}
+        if !user.company
+          a.btn.btn-primary(href='/convert', name='convert', id='convert') 
+            i.fa.fa-refresh
+            | Конвертировать
+        else 
+          h5
+            small.label.label-danger Конвертация пройдена
 
 
   .page-header
@@ -83,49 +79,70 @@ block content
 
   form.form-horizontal(action='/account/delete', method='POST')
     .form-group
-      p.col-sm-offset-3.col-sm-4 Вы можете удалить аккаунт, но это действие не обратимо
+      mark Вы можете удалить аккаунт, но это действие не обратимо
+    .form-group
       input(type='hidden', name='_csrf', value=_csrf)
-      .col-sm-offset-3.col-sm-4
-        button.btn.btn-danger(type='submit')
-          i.fa.fa-trash
-          | Удалить мой аккаунт
+      button.btn.btn-danger(type='submit')
+        i.fa.fa-trash
+        | Удалить мой аккаунт
 
   .page-header
     h3 Привязать аккаунты
-  .form-horizontal
+  .form
     .form-group
-      .col-sm-offset-3.col-sm-4
-        if user.vkontakte
-          p: a.text-danger(href='/account/unlink/vkontakte') Отвязать Ваш VK аккаунт
-        else
-          p: a(href='/auth/vkontakte') Привязать Ваш VK аккаунт
-      .col-sm-offset-3.col-sm-4
-        if user.instagram
-          p: a.text-danger(href='/account/unlink/instagram') Отвязать Ваш Instagram аккаунт
-        else
-          p: a(href='/auth/instagram') Привязать Ваш Instagram аккаунт
-      .col-sm-offset-3.col-sm-4
-        if user.google
-          p: a.text-danger(href='/account/unlink/google') Отвязать Ваш Google аккаунт
-        else
-          p: a(href='/auth/google') Привязать Ваш Google аккаунт
-      .col-sm-offset-3.col-sm-4
-        if user.facebook
-          p: a.text-danger(href='/account/unlink/facebook') Отвязать Ваш Facebook аккаунт
-        else
-          p: a(href='/auth/facebook') Привязать Ваш Facebook аккаунт
-      .col-sm-offset-3.col-sm-4
-        if user.twitter
-          p: a.text-danger(href='/account/unlink/twitter') Отвязать Ваш Twitter аккаунт
-        else
-          p: a(href='/auth/twitter') Привязать Ваш Twitter аккаунт
-      .col-sm-offset-3.col-sm-4
-        if user.github
-          p: a.text-danger(href='/account/unlink/github') Отвязать Ваш GitHub аккаунт
-        else
-          p: a(href='/auth/github') Привязать Ваш GitHub аккаунт
-      .col-sm-offset-3.col-sm-4
-        if user.linkedin
-          p: a.text-danger(href='/account/unlink/linkedin') Отвязать Ваш LinkedIn аккаунт
-        else
-          p: a(href='/auth/linkedin') Привязать Ваш LinkedIn аккаунт
+      if user.vkontakte
+        a.btn.btn-danger(href='/account/unlink/vkontakte') 
+          i.fa.fa-minus
+          i.fa.fa-vk
+      else
+        a.btn.btn-primary(href='/auth/vkontakte') 
+          i.fa.fa-plus
+          i.fa.fa-vk
+      if user.instagram
+        a.btn.btn-danger(href='/account/unlink/instagram')
+          i.fa.fa-minus
+          i.fa.fa-instagram
+      else
+        a.btn.btn-primary(href='/auth/instagram')
+          i.fa.fa-plus
+          i.fa.fa-instagram
+      if user.google
+        a.btn.btn-primary.btn-danger(href='/account/unlink/google')
+          i.fa.fa-minus
+          i.fa.fa-google
+      else
+        a.btn.btn-primary(href='/auth/google')
+          i.fa.fa-plus
+          i.fa.fa-google
+      if user.facebook
+        a.btn.btn-primary.btn-danger(href='/account/unlink/facebook')
+          i.fa.fa-minus
+          i.fa.fa-facebook
+      else
+        a.btn.btn-primary(href='/auth/facebook')
+          i.fa.fa-plus
+          i.fa.fa-facebook
+      if user.twitter
+        a.btn.btn-primary.btn-danger(href='/account/unlink/twitter')
+          i.fa.fa-minus
+          i.fa.fa-twitter
+      else
+        a.btn.btn-primary(href='/auth/twitter')
+          i.fa.fa-plus
+          i.fa.fa-twitter
+      if user.github
+        a.btn.btn-primary.btn-danger(href='/account/unlink/github')
+          i.fa.fa-minus
+          i.fa.fa-github
+      else
+        a.btn.btn-primary(href='/auth/github')
+          i.fa.fa-plus
+          i.fa.fa-github
+      if user.linkedin
+        a.btn.btn-primary.btn-danger(href='/account/unlink/linkedin')
+          i.fa.fa-minus
+          i.fa.fa-linkedin
+      else
+        a.btn.btn-primary(href='/auth/linkedin')
+          i.fa.fa-plus
+          i.fa.fa-linkedin
