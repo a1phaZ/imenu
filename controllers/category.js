@@ -62,7 +62,8 @@ exports.getCategoryBySlug = (req, res, next) => {
 				res.render('category/category',{
 					title: category.title,
 					categoryTitle: category.title,
-					categoryDescription: category.description
+					categoryDescription: category.description,
+					categorySlug: category.slug
 				});
 			} else {
 				const err = new Error();
@@ -132,7 +133,7 @@ exports.postDeleteCategoryBySlug = (req, res, next) => {
 	Category.remove({slug: req.params.slug}, (err) =>{
 		if (err) {return next(err);}
 		req.flash('success', {msg: 'Категория успешно удалена'});
-		res.redirect('/category');
+		res.redirect('/');
 	});
 }
 

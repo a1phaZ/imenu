@@ -1,32 +1,47 @@
 extends ../layout
 
 block content
-  .page-header
+  header.text-center
     if categoryTitle
-      h1#page-header #{categoryTitle.toUpperCase()}
+      h1#page-header #{categoryTitle}
     else 
       h1#page-header Новая категория
-  .row
-    form.form-horizontal.col-sm-12(role='form', enctype='multipart/form-data', method='POST')
+  form.form-horizontal(role='form', enctype='multipart/form-data', method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
+    .form-group
+      .col-3.text-right.pr-10
+        label.form-label(for="iamgeFile") Изображение
+      .col-9
+        input.form-input(type='file', name='imageFile', id='imageFile', accept="image/*")
+    .form-group
+      .col-3.text-right.pr-10
+        label.form-label(for='title') Название
+      .col-9
+        input.form-input(type='text', name='title', id='title', placeholder='Название', autofocus, required, value=categoryTitle, disabled=!isAdmin)
+    .form-group
+      .col-3.text-right.pr-10
+        label.form-label(for='description') Описание
+      .col-9
+        textarea.form-input(name='description', id='description', placeholder='Описание', rows='7', required, disabled=!isAdmin) #{categoryDescription}
+    .form-group
+      .col-3
+      .col-9
+        button.btn.btn-primary(type='submit', disabled=!isAdmin)
+          if categoryTitle
+            i.fa.fa-floppy-o
+            span Обновить категорию
+          else
+            i.fa.fa-plus
+            span Создать категорию
+  if categoryTitle
+    .divider.text-center(data-content="ИЛИ")
+    form.form-horizontal(method='POST', action='/delete/'+categorySlug)
       input(type='hidden', name='_csrf', value=_csrf)
       .form-group
-        label.col-sm-3.control-label Изображение
-        .col-sm-7.logo-section
-          input(type='file', class='btn btn-primary', name='imageFile', id='imageFile', accept="image/*")
-      .form-group
-        label.col-sm-3.control-label(for='title') Название
-        .col-sm-7
-          input.form-control(type='text', name='title', id='title', placeholder='Название', autofocus, required, value=categoryTitle, disabled=!isAdmin)
-      .form-group
-        label.col-sm-3.control-label(for='description') Описание
-        .col-sm-7
-          textarea.form-control(name='description', id='description', placeholder='Описание', rows='7', required, disabled=!isAdmin) #{categoryDescription}
-      .form-group
-        .col-sm-offset-3.col-sm-7
-          button.col-sm-12.btn.btn-primary(type='submit', disabled=!isAdmin)
-            if categoryTitle
-              i.fa.fa-floppy-o
-              | Обновить категорию
-            else
-              i.fa.fa-plus
-              | Создать категорию
+        .col-3.text-right.pr-10
+          label.form-label(for='delete') Удалить категорию
+        .col-9
+          a.btn.btn-danger(href='#delete-modal' id='delete')
+            i.fa.fa-trash-o
+            span.hide-xs Удалить категорию
+          include delete
