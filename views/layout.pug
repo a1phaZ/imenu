@@ -8,10 +8,11 @@ html
     meta(name='csrf-token', content=_csrf)
     title #{title} - iMenu
     link(rel='shortcut icon', href='/favicon.png')
-    link(rel='stylesheet', href='/css/main.css')
+    //- link(rel='stylesheet', href='/css/main.css')
+    link(rel='stylesheet', href='/css/font-awesome.min.css')
     link(rel='stylesheet', href='/components/spectre.css/dist/spectre.min.css')
     link(rel='stylesheet', href='/components/spectre.css/dist/spectre-exp.min.css')
-    link(rel='stylesheet', href='/components/spectre.css/docs/css/docs.min.css')
+    link(rel='stylesheet', href='/css/docs.css')
 
   body
     include partials/header
@@ -20,13 +21,13 @@ html
       include partials/flash
       .columns
         #category.docs-sidebar.column.col-2.col-md-12
-          block category
+          include partials/category
         a(href="#category-close", id="category-close", class="docs-nav-clear")
         .docs-content.column.col-8.col-md-12
-          ol.breadcrumb#breadcrumb
+          ol.breadcrumb#breadcrumb(style="padding-top: 72px;")
           block content
         #sidebar.docs-sidebar.column.col-2.col-md-12
-          block account
+          include partials/account
         a(href="#sidebar-close", id="sidebar-close", class="docs-nav-clear")
 
     include partials/footer

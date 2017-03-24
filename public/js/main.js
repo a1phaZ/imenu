@@ -34,7 +34,7 @@ $(document).ready(function() {
           orderCounts.each(function(){
             var orderListCount = result.orderList.length;
             var historyListCount = result.historyList.length;
-            $(this)[0].innerText = orderListCount + historyListCount;
+            $(this).attr('data-badge', orderListCount + historyListCount ); //innerText = orderListCount + historyListCount;
           });
           setOrderLink();
         }
@@ -48,7 +48,7 @@ $(document).ready(function() {
     if (localStorage && localStorage.orderCount){
       var orderCounts = $('.order-count');
       orderCounts.each(function(){
-        $(this)[0].innerText = localStorage.orderCount;
+        $(this).attr('data-badge', localStorage.orderCount );
       });
     }
   }
@@ -255,7 +255,7 @@ $(document).ready(function() {
   	var breadcrumb = $('#breadcrumb');
   	if (crumbs.length != 0){
   		var url = origin;
-  		breadcrumb.append('<li><a href='+url+'>Главная</a></li>');
+  		breadcrumb.append('<li class="breadcrumb-item"><a href='+url+'>Главная</a></li>');
   		for (var i = 1; i < crumbs.length-1; i++) {
   			url += '/'+crumbs[i];
   			if (crumbs[i] != 'update' && crumbs[i] != 'delete' ){
@@ -264,13 +264,13 @@ $(document).ready(function() {
           } else if ($('#category-header')[0]){
             crumbs[i] = $('#category-header')[0].innerText;
           }
-  				breadcrumb.append('<li><a href='+url+'>'+crumbs[i]+'</a></li>');
+  				breadcrumb.append('<li class="breadcrumb-item"><a href='+url+'>'+crumbs[i]+'</a></li>');
   			}
   		}
 
-  		breadcrumb.append('<li class="active">'+$("#page-header")[0].innerText+'</li>');
+  		breadcrumb.append('<li class="active breadcrumb-item">'+$("#page-header")[0].innerText+'</li>');
   	} else {
-  		breadcrumb.append('<li class="active">Главная</li>');
+  		breadcrumb.append('<li class="active breadcrumb-item">Главная</li>');
   	}
   }
 
@@ -317,10 +317,12 @@ $(document).ready(function() {
       socket.emit('notify', 'Закрыть заказ');
     })
     socket.on('notify', function (msg) {
-      var notify = $('#notify')[0];
+      var notify = $('.notify');
       var notifyAudio = $('#notify-audio')[0];
       if (notify){
-        $('#notify')[0].style.display = 'inline-block';
+        notify.each(function(){
+          $(this)[0].style.display = 'inline-block';
+        });
         $('span.message__title')[0].innerText = msg;
         $('.message').fadeIn(400).delay(3000).fadeOut(400);
       }

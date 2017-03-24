@@ -107,7 +107,8 @@ app.use((req, res, next) => {
       req.path !== '/signup' &&
       !req.path.match(/^\/auth/) &&
       !req.path.match(/\./) && 
-      !req.path.match(/^\/uploads/)) {
+      !req.path.match(/^\/uploads/) &&
+      !req.path.match(/^\/order\/[0-9a-z]*\/status/)) {
     req.session.returnTo = req.path;
   } else if (req.user &&
       req.path == '/account') {
