@@ -1,26 +1,54 @@
 mixin product-list(product)
-  .col-lg-3.col-md-4.col-sm-6
-    .product-card
-      .product-card-header
-        img(src='/uploads/'+product.logo, class='img-responsive logo product-card-logo')
-        if product.discount !=0
-          span.discount.green #{product.discount} 
-            i.fa.fa-percent
-      .product-card-description 
-        h2.product-title
+  .column.col-3.col-xl-4.col-lg-4.col-md-4.col-sm-6.col-xs-12.flex
+    .card.rel
+      .card-image
+        if isAdmin
+          a(href='/category/'+categorySlug+'/'+product.slug)
+            img(class="img-responsive", src='/uploads/'+product.logo)
+        else
+          img(class="img-responsive", src='/uploads/'+product.logo)
+      .card-header
+        .card-title
           if isAdmin
             a(href='/category/'+categorySlug+'/'+product.slug) #{product.title}
           else 
             | #{product.title}
-        span.product-description #{product.description}
+        .card-subtitle #{product.description}
+      .card-body
+        if product.discount !=0
+          span.discount.label.label-success.abs #{product.discount} 
+            i.fa.fa-percent
         span.product-composition #{product.composition}
         span.product-price.red #{product.price}
           i.fa.fa-rub
         span.product-waiting 
           i.fa.fa-clock-o #{product.waiting}
         if !isAdmin
-          button.btn.btn-danger.cart-add-btn(data-product-id=product._id)
-            i.fa.fa-shopping-cart(data-product-id=product._id)
+          button.btn.btn-primary.cart-add-btn(data-product-id=product._id)
+            i.fa.fa-plus(data-product-id=product._id)
+
+  //- .col-lg-3.col-md-4.col-sm-6
+  //-   .product-card
+  //-     .product-card-header
+  //-       img(src='/uploads/'+product.logo, class='img-responsive logo product-card-logo')
+  //-       if product.discount !=0
+  //-         span.discount.green #{product.discount} 
+  //-           i.fa.fa-percent
+  //-     .product-card-description 
+  //-       h2.product-title
+  //-         if isAdmin
+  //-           a(href='/category/'+categorySlug+'/'+product.slug) #{product.title}
+  //-         else 
+  //-           | #{product.title}
+  //-       span.product-description #{product.description}
+  //-       span.product-composition #{product.composition}
+  //-       span.product-price.red #{product.price}
+  //-         i.fa.fa-rub
+  //-       span.product-waiting 
+  //-         i.fa.fa-clock-o #{product.waiting}
+  //-       if !isAdmin
+  //-         button.btn.btn-danger.cart-add-btn(data-product-id=product._id)
+  //-           i.fa.fa-shopping-cart(data-product-id=product._id)
 
 
 for product in productList
