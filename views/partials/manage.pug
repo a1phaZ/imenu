@@ -1,0 +1,74 @@
+ul.docs-nav.nav
+  if !user
+    li.nav-item
+      a(href='/login') 
+        i.fa.fa-sign-in
+        | Войти
+    li.nav-item
+      a(href='/signup') 
+        i.fa.fa-user-plus
+        | Создать аккаунт
+  else
+    li.nav-item
+      div.tile.tile-centered
+        div.tile-icon
+          if user.profile.picture
+            img.avatar(src=user.profile.picture)
+          else
+            img.avatar(src=user.gravatar(32))
+        div.tile-content
+          = user.profile.name || user.email || user.id
+      if !isAdmin
+        li.nav-item.divider
+        li.nav-item
+          a.order(href='/order')
+            i.fa.fa-first-order
+            | Мой заказ
+            span.badge.order-count
+        li.nav-item
+          a(href='/history') 
+            i.fa.fa-history
+            | История заказов
+      else
+        //- li.nav-item
+        //-   a(href='/dashboard') 
+        //-     | Управление
+        li.nav-item.divider(data-content="Управление")
+        ul.nav
+          li.nav-item
+            a(href='/new') Создать категорию
+          if categorySlug
+            .divider
+            li.nav-item
+              a(href='/update/'+categorySlug) Редактировать
+            li.nav-item
+              a(href='/category/'+categorySlug+'/new') Создать в категории
+            li.nav-item
+              a(href='#delete-modal', disabled=!isAdmin) Удалить
+              form.form-horizontal(method='POST', action='/delete/'+categorySlug)
+                input(type='hidden', name='_csrf', value=_csrf)
+                .form-group
+                  
+                  include ../category/delete
+        li.nav-item.divider(data-content="Заказы")
+        ul.nav
+          li.nav-item
+            a(href='/order-open') 
+              label.label.label-primary 2
+              | Открытые
+              span.badge.notify(aria-hidden='true', style='display: none;')
+          li.nav-item
+            a(href='/order-close') 
+              | Закрытые
+            audio#notify-audio
+              source(src='/notify/notify.mp3', type='audio/mpeg')
+    li.nav-item.divider(data-content="Аккаунт")
+    ul.nav
+      li.nav-item
+        a(href='/account') 
+          i.fa.fa-user
+          | Мой аккаунт
+      li.nav-item
+        a(href='/logout') 
+          i.fa.fa-sign-out
+          | Выход

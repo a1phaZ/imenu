@@ -1,24 +1,29 @@
 extends ../layout
 
 block content
-  .page-header
-    if isAdmin
-      ul.category-menu
-        li.dropdown(class=(title == 'Dashboard') ? 'active' : undefined)
-          h1(data-toggle='dropdown') 
-            span#page-header
-              | #{categoryTitle.toUpperCase()}
-            i.fa.fa-caret-square-o-down
-          ul.dropdown-menu
-            li
-              a(href='/update/'+categorySlug) Редактировать
-            li
-              a(href='/category/'+categorySlug+'/new') Создать в категории
-            li.divider
-            li
-              a(href='/delete/'+categorySlug) Удалить категорию
-    else
-      h1#page-header #{categoryTitle.toUpperCase()}
+  header.text-center
+    //- if isAdmin
+    //-   .btn-group
+    //-     h1#page-header #{categoryTitle}
+    //-     a.btn.btn-link.dropdown-toggle(tabindex="0", href='#settings-modal', id='settings') 
+    //-       i.fa.fa-cogs.fa-2x
+    //-     include settings
+      //- ul.category-menu
+      //-   li.dropdown(class=(title == 'Dashboard') ? 'active' : undefined)
+      //-     h1(data-toggle='dropdown') 
+      //-       span#page-header
+      //-         | #{categoryTitle}
+      //-       i.fa.fa-caret-square-o-down
+      //-     ul.dropdown-menu
+      //-       li
+      //-         a(href='/update/'+categorySlug) Редактировать
+      //-       li
+      //-         a(href='/category/'+categorySlug+'/new') Создать в категории
+      //-       li.divider
+      //-       li
+      //-         a(href='/delete/'+categorySlug) Удалить категорию
+    //- else
+    h1#page-header #{categoryTitle}
 
   .row
     include product.list.mixin.pug

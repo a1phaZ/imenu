@@ -1,0 +1,32 @@
+mixin settings()
+  .modal#settings-modal
+    a(href="#modals", class="modal-overlay", aria-label="Close")
+    .modal-container(role="document")
+      .modal-header
+        a(href="#modals", class="btn btn-clear float-right", aria-label="Close")
+        .modal-title 
+          | Настройки категории 
+      .modal-body
+        .content
+          ul.menu
+            li.menu-item
+              .tile.tile-centered
+                .tile-content
+                  strong #{categoryTitle}
+            li.divider
+            li.menu-item
+              a.btn(href='/update/'+categorySlug) Редактировать категорию
+            li.menu-item
+              a.btn(href='/category/'+categorySlug+'/new') Создать в категории
+            li.divider
+            li.menu-item
+              form.form-horizontal(method='POST', action='/delete/'+categorySlug)
+                input(type='hidden', name='_csrf', value=_csrf)
+                .form-group
+                  button.btn(type='submit', disabled=!isAdmin) Удалить
+      .modal-footer
+        a(href="#modals" class="btn btn-link") Закрыть
+        //- if isAdmin
+        //-   button.btn.btn-primary(type='submit', disabled=!isAdmin) Удалить
+
++settings()
