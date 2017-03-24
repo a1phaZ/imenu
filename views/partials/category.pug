@@ -1,5 +1,5 @@
 mixin category-menu(category)
-  li.nav-item
+  li.nav-item(class=(title == category.title) ? 'active' : undefined)
     a(href='/category/'+category.slug) #{category.title}
 
 ul.docs-nav.nav
