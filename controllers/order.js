@@ -40,6 +40,7 @@ exports.getOrderOpenList = (req, res, next) =>{
 	getOrderOpenList
 		.then((orders) => {
 			res.render('order/order-open', {
+				title: 'Открытые заказы',
 				orderOpenList: orders
 			});
 		})
@@ -71,6 +72,7 @@ exports.getOrderCloseList = (req, res, next) =>{
 	getOrderCloseList
 		.then((orders) => {
 			res.render('order/order-close', {
+				title: 'Закрытые заказы',
 				orderOpenList: orders
 			});
 		})

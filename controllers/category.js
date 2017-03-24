@@ -60,7 +60,7 @@ exports.getCategoryBySlug = (req, res, next) => {
 		.then((category) =>{
 			if (category) {
 				res.render('category/category',{
-					title: category.title,
+					title: 'Редактирование',
 					categoryTitle: category.title,
 					categoryDescription: category.description,
 					categorySlug: category.slug

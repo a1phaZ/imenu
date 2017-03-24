@@ -47,7 +47,8 @@ exports.getNewProduct = (req, res, next) =>{
 			if (category){
 				res.render('product/product', {
 					title: 'Новый продукт',
-					categoryTitle: category.title
+					categoryTitle: category.title,
+					categorySlug: category.slug
 				});
 			} else {
 				const err = new Error();

@@ -35,36 +35,43 @@ ul.docs-nav.nav
         //-     | Управление
         li.nav-item.divider(data-content="Управление")
         ul.nav
-          li.nav-item
+          li.nav-item(class=(title == 'Новая категория') ? 'active' : undefined)
             a(href='/new') Создать категорию
           if categorySlug
             .divider
-            li.nav-item
+            li.nav-item(class=(title == 'Редактирование') ? 'active' : undefined)
               a(href='/update/'+categorySlug) Редактировать
-            li.nav-item
+            li.nav-item(class=(title == 'Новый продукт') ? 'active' : undefined)
               a(href='/category/'+categorySlug+'/new') Создать в категории
             li.nav-item
-              a(href='#delete-modal', disabled=!isAdmin) Удалить
+              a(href='#delete-modal', disabled=!isAdmin) Удалить категорию
               form.form-horizontal(method='POST', action='/delete/'+categorySlug)
                 input(type='hidden', name='_csrf', value=_csrf)
                 .form-group
-                  
                   include ../category/delete
+            if productSlug
+              .divider
+              li.nav-item
+                a(href='#delete-modal-product', disabled=!isAdmin) Удалить продукт
+                form.form-horizontal(method='POST', action='/delete/'+categorySlug+'/'+productSlug)
+                  input(type='hidden', name='_csrf', value=_csrf)
+                  .form-group
+                    include ../product/delete
         li.nav-item.divider(data-content="Заказы")
         ul.nav
-          li.nav-item
+          li.nav-item(class=(title == 'Открытые заказы') ? 'active' : undefined)
             a(href='/order-open') 
               label.label.label-primary 2
               | Открытые
               span.badge.notify(aria-hidden='true', style='display: none;')
-          li.nav-item
+          li.nav-item(class=(title == 'Закрытые заказы') ? 'active' : undefined)
             a(href='/order-close') 
               | Закрытые
             audio#notify-audio
               source(src='/notify/notify.mp3', type='audio/mpeg')
     li.nav-item.divider(data-content="Аккаунт")
     ul.nav
-      li.nav-item
+      li.nav-item(class=(title == 'Управление аккаунтом') ? 'active' : undefined)
         a(href='/account') 
           i.fa.fa-user
           | Мой аккаунт
