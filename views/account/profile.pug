@@ -4,7 +4,7 @@ block content
   .page-header
     h3#page-header 
       | Информация профиля
-      if user.company
+      if user.company.name
         | |
         small.label.label-success Компания #{user.company.name}
 
@@ -65,7 +65,7 @@ block content
       h3 Конвертация профиля
     form.form-horizontal
       .form-group
-        if !user.company
+        if !user.company.name
           a.btn.btn-primary(href='/convert', name='convert', id='convert') 
             i.fa.fa-refresh
             | Конвертировать

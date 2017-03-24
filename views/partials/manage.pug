@@ -20,15 +20,15 @@ ul.docs-nav.nav
           = user.profile.name || user.email || user.id
       if !isAdmin
         li.nav-item.divider
-        li.nav-item
-          a.order(href='/order')
-            i.fa.fa-first-order
-            | Мой заказ
-            span.badge.order-count
-        li.nav-item
-          a(href='/history') 
-            i.fa.fa-history
-            | История заказов
+        ul.nav
+          li.nav-item(class=(title == 'Заказ №'+orderId) ? 'active' : undefined)
+            a.order(href='/order')
+              | Мой заказ
+              span.badge.order-count
+          li.nav-item
+            a(href='/history') 
+              i.fa.fa-history.pr-5
+              | История заказов
       else
         //- li.nav-item
         //-   a(href='/dashboard') 
@@ -73,9 +73,9 @@ ul.docs-nav.nav
     ul.nav
       li.nav-item(class=(title == 'Управление аккаунтом') ? 'active' : undefined)
         a(href='/account') 
-          i.fa.fa-user
+          i.fa.fa-user.pr-5
           | Мой аккаунт
       li.nav-item
         a(href='/logout') 
-          i.fa.fa-sign-out
+          i.fa.fa-sign-out.pr-5
           | Выход
