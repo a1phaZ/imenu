@@ -1,25 +1,3 @@
-//- extends ../layout
-
-//- block content
-//-   header.text-center
-//-     h1#page-header Удаление категории #{categoryTitle}
-
-//-   form.form-horizontal(method='POST')
-//-     input(type='hidden', name='_csrf', value=_csrf)
-//-     .form-group
-//-       .col-3.text-right
-//-         mark
-//-           | Вы можете удалить категорию, но это действие не обратимо. Будьте аккуратны.
-//-       .col-6
-//-         .form-group
-//-           button.form-control.btn.btn-primary(type='submit', disabled=!isAdmin)
-//-             i.fa.fa-floppy-o
-//-             | Удалить категорию
-//-         .form-group
-//-           a.form-control.btn.btn-link(href='/category')
-//-             i.fa.fa-floppy-o
-//-             | Отменить удаление
-
 mixin delete-category()
   .modal#delete-modal
     a(href="#modals", class="modal-overlay", aria-label="Close")
