@@ -1,12 +1,13 @@
 mixin category-list(category)
-	.col-lg-3.col-md-4.col-sm-6
-		.category-card
-			.category-card-header
+	.column.col-3.col-lg-4.col-sm-6.col-xs-12.flex
+		.card
+			.card-image
 				a(href='/category/'+category.slug)
 					img(src='/uploads/'+category.logo, class='img-responsive logo category-card-logo')
-					.category-card-description
-						h2.category-title #{category.title}
-						| #{category.description}
+			.card-header
+				.card-title #{category.title}
+				.card-subtitle #{category.description}
+			//- .card-body
 
 for category in categoryList
 	+category-list(category)
