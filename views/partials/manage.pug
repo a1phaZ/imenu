@@ -1,10 +1,10 @@
 ul.docs-nav.nav
   if !user
-    li.nav-item
+    li.nav-item(class=(title == 'Войти') ? 'active' : undefined)
       a(href='/login') 
         i.fa.fa-sign-in
         | Войти
-    li.nav-item
+    li.nav-item(class=(title == 'Создать аккаунт') ? 'active' : undefined)
       a(href='/signup') 
         i.fa.fa-user-plus
         | Создать аккаунт

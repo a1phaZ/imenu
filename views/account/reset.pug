@@ -1,17 +1,17 @@
 extends ../layout
 
 block content
-  .col-sm-8.col-sm-offset-2
-    form(method='POST')
-      legend#page-header Изменить пароль
-      input(type='hidden', name='_csrf', value=_csrf)
-      .form-group
-        label(for='password') Новый пароль
-        input.form-control(type='password', name='password', id='password', placeholder='Новый пароль', autofocus, required)
-      .form-group
-        label(for='confirm') Подтвердите пароль
-        input.form-control(type='password', name='confirm', id='confirm', placeholder='Подтвердите пароль', required)
-      .form-group
-        button.btn.btn-primary.btn-reset(type='submit')
-          i.fa.fa-keyboard-o
-          | Изменить пароль
+  header.text-center
+    h2#page-header Изменить пароль
+  form(method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
+    .form-group
+      label.form-label(for='password') Новый пароль
+      input.form-input(type='password', name='password', id='password', placeholder='Новый пароль', autofocus, required)
+    .form-group
+      label.form-label(for='confirm') Подтвердите пароль
+      input.form-input(type='password', name='confirm', id='confirm', placeholder='Подтвердите пароль', required)
+    .form-group
+      button.btn.btn-primary.btn-reset(type='submit')
+        i.fa.fa-keyboard-o
+        | Изменить пароль

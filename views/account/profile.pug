@@ -1,8 +1,8 @@
 extends ../layout
 
 block content
-  .page-header
-    h3#page-header 
+  header.text-center
+    h2#page-header 
       | Информация профиля
       if user.company.name
         | |
@@ -44,7 +44,7 @@ block content
         i.fa.fa-pencil
         | Обновить профиль
 
-  .page-header
+  header.text-center
     h3 Изменить пароль
 
   form(action='/account/password', method='POST')
@@ -61,23 +61,23 @@ block content
         | Изменить пароль
 
   
-    .page-header
-      h3 Конвертация профиля
-    form.form-horizontal
-      .form-group
-        if !user.company.name
-          a.btn.btn-primary(href='/convert', name='convert', id='convert') 
-            i.fa.fa-refresh
-            | Конвертировать
-        else 
-          h5
-            small.label.label-danger Конвертация пройдена
+  header.text-center
+    h3 Конвертация профиля
+  form.form-horizontal
+    .form-group
+      if !user.company.name
+        a.btn.btn-primary(href='/convert', name='convert', id='convert') 
+          i.fa.fa-refresh
+          | Конвертировать
+      else 
+        h5
+          small.label.label-danger Конвертация пройдена
 
 
-  .page-header
+  header.text-center
     h3 Удалить аккаунт
 
-  form.form-horizontal(action='/account/delete', method='POST')
+  form(action='/account/delete', method='POST')
     .form-group
       mark Вы можете удалить аккаунт, но это действие не обратимо
     .form-group
@@ -86,63 +86,63 @@ block content
         i.fa.fa-trash
         | Удалить мой аккаунт
 
-  .page-header
+  header.text-center
     h3 Привязать аккаунты
   .form
     .form-group
       if user.vkontakte
-        a.btn.btn-danger(href='/account/unlink/vkontakte') 
+        a.btn.btn-danger.btn-block.btn-vk.btn-social(href='/account/unlink/vkontakte') 
           i.fa.fa-minus
           i.fa.fa-vk
       else
-        a.btn.btn-primary(href='/auth/vkontakte') 
+        a.btn.btn-primary.btn-block.btn-vk.btn-social(href='/auth/vkontakte') 
           i.fa.fa-plus
           i.fa.fa-vk
       if user.instagram
-        a.btn.btn-danger(href='/account/unlink/instagram')
+        a.btn.btn-danger.btn-block.btn-vk.btn-social(href='/account/unlink/instagram')
           i.fa.fa-minus
           i.fa.fa-instagram
       else
-        a.btn.btn-primary(href='/auth/instagram')
+        a.btn.btn-primary.btn-block.btn-vk.btn-social(href='/auth/instagram')
           i.fa.fa-plus
           i.fa.fa-instagram
       if user.google
-        a.btn.btn-primary.btn-danger(href='/account/unlink/google')
+        a.btn.btn-danger.btn-block.btn-vk.btn-social(href='/account/unlink/google')
           i.fa.fa-minus
           i.fa.fa-google
       else
-        a.btn.btn-primary(href='/auth/google')
+        a.btn.btn-primary.btn-block.btn-vk.btn-social(href='/auth/google')
           i.fa.fa-plus
           i.fa.fa-google
       if user.facebook
-        a.btn.btn-primary.btn-danger(href='/account/unlink/facebook')
+        a.btn.btn-danger.btn-block.btn-vk.btn-social(href='/account/unlink/facebook')
           i.fa.fa-minus
           i.fa.fa-facebook
       else
-        a.btn.btn-primary(href='/auth/facebook')
+        a.btn.btn-primary.btn-block.btn-vk.btn-social(href='/auth/facebook')
           i.fa.fa-plus
           i.fa.fa-facebook
       if user.twitter
-        a.btn.btn-primary.btn-danger(href='/account/unlink/twitter')
+        a.btn.btn-danger.btn-block.btn-vk.btn-social(href='/account/unlink/twitter')
           i.fa.fa-minus
           i.fa.fa-twitter
       else
-        a.btn.btn-primary(href='/auth/twitter')
+        a.btn.btn-primary.btn-block.btn-vk.btn-social(href='/auth/twitter')
           i.fa.fa-plus
           i.fa.fa-twitter
       if user.github
-        a.btn.btn-primary.btn-danger(href='/account/unlink/github')
+        a.btn.btn-danger.btn-block.btn-vk.btn-social(href='/account/unlink/github')
           i.fa.fa-minus
           i.fa.fa-github
       else
-        a.btn.btn-primary(href='/auth/github')
+        a.btn.btn-primary.btn-block.btn-vk.btn-social(href='/auth/github')
           i.fa.fa-plus
           i.fa.fa-github
       if user.linkedin
-        a.btn.btn-primary.btn-danger(href='/account/unlink/linkedin')
+        a.btn.btn-danger.btn-block.btn-vk.btn-social(href='/account/unlink/linkedin')
           i.fa.fa-minus
           i.fa.fa-linkedin
       else
-        a.btn.btn-primary(href='/auth/linkedin')
+        a.btn.btn-primary.btn-block.btn-vk.btn-social(href='/auth/linkedin')
           i.fa.fa-plus
           i.fa.fa-linkedin
