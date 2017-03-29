@@ -387,7 +387,7 @@ exports.getConvertToCompany = (req, res, next) =>{
       err.message = 'Пользователь не найден';
       next(err);
     } else {
-      if (!user.company){
+      if (!user.company.name){
         res.render('account/convert', {
           title: 'Конвертация профиля'
         });
