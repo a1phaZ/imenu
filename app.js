@@ -35,6 +35,7 @@ const userController     = require('./controllers/user');
 const categoryController = require('./controllers/category');
 const productController  = require('./controllers/product');
 const orderController  = require('./controllers/order');
+const stateContoller = require('./controllers/state');
 
 /**
  * API keys and Passport configuration.
@@ -108,7 +109,9 @@ app.use((req, res, next) => {
       !req.path.match(/^\/auth/) &&
       !req.path.match(/\./) && 
       !req.path.match(/^\/uploads/) &&
-      !req.path.match(/^\/order\/[0-9a-z]*\/status/)) {
+      !req.path.match(/^\/order\/[0-9a-z]*\/status/) && 
+      !req.path.match(/^\/order\/status/) && 
+      !req.path.match(/^\/state/)) {
     req.session.returnTo = req.path;
   } else if (req.user &&
       req.path == '/account') {
@@ -116,6 +119,7 @@ app.use((req, res, next) => {
   }
   next();
 });
+
 app.use(categoryController.getAllCategoryToRes);
 // app.use(categoryController.getCategoryBySlugMiddleware);
 //Admin?
@@ -133,6 +137,8 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
 //index page
 app.get('/', categoryController.getCategoryList);
 app.use('/users', users);
+//State
+app.post('/state', stateContoller.getState);
 //Account
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
@@ -172,6 +178,7 @@ app.post('/category/:slug/:productSlug', passportConfig.isAuthenticated, product
 
 //Order
 // app.post('/order', orderController.getNewOrder);
+// app.get('/order/status', orderController.getOrderStatusById);
 app.post('/order/add', orderController.postOrderAdd);
 app.get('/order/:id', passportConfig.isAuthenticated, orderController.getOrder);
 app.post('/order/change', orderController.postOrderChange);
@@ -179,7 +186,6 @@ app.post('/order/item-delete', orderController.postOrderItemDelete);
 app.post('/order/:id', passportConfig.isAuthenticated, orderController.postOrder);
 app.get('/order-open', passportConfig.isAdmin, orderController.getOrderOpenList);
 app.get('/order-close', passportConfig.isAdmin, orderController.getOrderCloseList);
-app.get('/order/:id/status', orderController.getOrderStatusById);
 app.post('/order/:id/status', passportConfig.isAdmin, orderController.changeOrderStatus);
 app.get('/order/:id/close', orderController.getOrderClose);
 

@@ -275,35 +275,71 @@ $(document).ready(function() {
   }
 
   //Initialize
-  function init() {
-    getBreadcrumbs();
-    setOrderCount();
-    setOrderLink();
-  }
+  $(function init() {
+    var state = {
+      order: {
+        id: localStorage.orderId ? localStorage.orderId : null,
+        count: localStorage.orderCount ? localStorage.orderCount: null
+      }
+    };
+    $.ajax({
+      url: '/state',
+      method: 'POST',
+      data: state,
+      beforeSend: function(request) {
+        return request.setRequestHeader('X-CSRF-Token', $("meta[name='csrf-token']").attr('content'));
+      }
+    })
+    .done(function(result){
+      console.log(result);
+      if (!result.id){
+        delete localStorage.orderId;
+        delete localStorage.orderCount;
+      } else {
+        localStorage.orderId = result.id;
+        localStorage.orderCount = result.count;
+      }
+      getBreadcrumbs();
+      setOrderCount();
+      setOrderLink();
+    })
+    .fail(function(err){
+      console.log(err);
+    });
+  });
 
   /**
   * Проверка заказа
   * Если закрыт - чистим localStorage
   */
-  $(function(){
-    var orderId = localStorage.orderId ? localStorage.orderId : null;
-    if (orderId){
-      $.ajax({
-        url: '/order/'+orderId+'/status',
-        method: 'GET'
-      })
-      .done(function(result){
-        if (!result || result.status == 4) {
-          delete localStorage.orderId;
-          delete localStorage.orderCount;
-        }
-      })
-      .fail(function(err){
-        console.log(err);
-      });
-    }
-    init();
-  });
+  // $(function(){
+  //   // var orderId = localStorage.orderId ? localStorage.orderId : null;
+  //   // if (orderId){
+  //     $.ajax({
+  //       url: '/order/status',
+  //       method: 'GET',
+  //       beforeSend: function(){
+  //         delete localStorage.orderId;
+  //         delete localStorage.orderCount;
+  //       }
+  //     })
+  //     .done(function(result){
+  //       if (result[0].status != 4 ) {
+  //         console.log(localStorage.orderId);
+  //         console.log(localStorage.orderCount);
+
+  //         localStorage.orderId = result[0]._id;
+  //         localStorage.orderCount = result[0].historyList.length+result[0].orderList.length;
+  //         init();
+  //       } else {
+  //         init();
+  //       }
+  //     })
+  //     .fail(function(err){
+  //       console.log(err);
+  //     });
+  //   // }
+  // });
 
   /**
   * Обработка уведомлений

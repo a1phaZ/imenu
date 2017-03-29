@@ -356,16 +356,20 @@ exports.changeOrderStatus = (req, res, next) =>{
 };
 
 /**
- * GET /order/:id/status	
+ * GET /order/status	
  */
-exports.getOrderStatusById = (req, res, next) =>{
-	let getOrderById = Order
-			.findOne({_id: req.params.id});
-		getOrderById
-			.then((order)=>{
-				res.send(order);
-			})
-			.catch((err)=>{
-				next(err);
-			});
-};
+// exports.getOrderStatusById = (req, res, next) =>{
+// 	let getOrderById = Order
+// 			.find({userId: req.user._id})
+// 			.sort({'createdAt': -1})
+// 			.limit(1);
+// 			// ({userId: ObjectId('58c6285281bba512bc4e3d54')}).sort({'createdAt':-1}).limit(1)
+// 		getOrderById
+// 			.then((order)=>{
+// 				console.log(order);
+// 				res.send(order);
+// 			})
+// 			.catch((err)=>{
+// 				next(err);
+// 			});
+// };
