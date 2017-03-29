@@ -77,6 +77,11 @@ exports.getState = (req, res, next) =>{
 				.catch((err)=>{
 					next(err);
 				});
+		} else {
+			res.send({
+				id: null,
+				count: null
+			});
 		}
 	}
 };
