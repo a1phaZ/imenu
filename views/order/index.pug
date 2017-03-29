@@ -2,13 +2,15 @@ extends ../layout
 
 block content
   header.text-center
-    h2#page-header Заказ
-    include status
+    h2#page-header Заказ 
+      sup
+        small.label
+          include status
 
   include order.list.mixin.pug
-  hr
+  
   include order.history.list.mixin.pug  
-  hr
+  .divider
   h4.text-right.total
     strong
       | Итого: 
@@ -27,8 +29,8 @@ block content
         | укажите номер столика и всё то, что сочтёте нужным указать дополнительно.
     
     .form-group(style=(orderStatus == 4)?'display:none;':'display:block;')
-      button.btn.btn-success(type='submit', style=(historyList.length)?'display:none;':'display:block;')
+      button.btn.btn-primary(type='submit', style=(!orderList.length)?'display:none;':'display:block;')
         | Отправить заказ
-      if orderStatus
+      if !orderList.length
         .col-xs-6
           a#order-plz(href='/order/'+orderId+'/close').btn.btn-default.form-control Попросить счёт

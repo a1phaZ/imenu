@@ -291,7 +291,6 @@ $(document).ready(function() {
       }
     })
     .done(function(result){
-      console.log(result);
       if (!result.id){
         delete localStorage.orderId;
         delete localStorage.orderCount;

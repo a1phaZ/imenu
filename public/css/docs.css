@@ -186,6 +186,10 @@
   height: 4rem;
   width: 4rem;
 }
+
+
+
+
 @media screen and (min-width: 841px) {
   .section-header .navbar-section {
     padding: 0 .5rem;
@@ -256,6 +260,8 @@
     width: 100%;
     z-index: 300;
   }
+
+  
 }
 
 .divider[data-content]::before{
@@ -314,5 +320,29 @@ footer{
 }
 
 .nav .nav a {
-    color: #727e96;
+  color: #727e96;
 }
+
+.history{
+  opacity: .7;
+}
+
+/*@media screen and (max-width: 640px){
+  .tile .tile-action{
+    flex: 1 80%;
+  }
+  .tile .tile-content{
+    flex: 1 100%;
+  }
+  .order-cart-item.flex{
+    flex-flow: row wrap;
+  }
+  .order-cart-item.flex .input-group-addon{
+    flex: 1 40%;
+  }
+  .order-cart-item.flex .cart-item-count{
+    flex: 1 20%;
+  }
+}*/
+
+
