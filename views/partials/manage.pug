@@ -25,8 +25,8 @@ ul.docs-nav.nav
             a.order(href='/order')
               | Заказ
               span.badge.order-count
-          li.nav-item
-            a(href='/history') 
+          li.nav-item(class=(title == 'История заказов') ? 'active' : undefined)
+            a(href='/my') 
               i.fa.fa-history.pr-5
               | История заказов
       else

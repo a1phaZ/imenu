@@ -357,20 +357,29 @@ exports.changeOrderStatus = (req, res, next) =>{
 };
 
 /**
- * GET /order/status	
+ * GET /my
  */
-// exports.getOrderStatusById = (req, res, next) =>{
-// 	let getOrderById = Order
-// 			.find({userId: req.user._id})
-// 			.sort({'createdAt': -1})
-// 			.limit(1);
-// 			// ({userId: ObjectId('58c6285281bba512bc4e3d54')}).sort({'createdAt':-1}).limit(1)
-// 		getOrderById
-// 			.then((order)=>{
-// 				console.log(order);
-// 				res.send(order);
-// 			})
-// 			.catch((err)=>{
-// 				next(err);
-// 			});
-// };
+exports.getMyOrders = (req, res, next) =>{
+	if (!res.locals.isAdmin){
+		let getOrderList = Order
+			.find({userId: req.user._id})
+			.sort({updatedAt: -1})
+			.populate([{
+				path: 'orderList.cartItemId'
+			},{
+				path: 'historyList.cartItemId'
+			}]);
+		getOrderList
+			.then((orders) => {
+				res.render('order/my', {
+					orders: orders,
+					title: 'История заказов'
+				});
+			})
+			.catch((err) => {
+				next(err);
+			});
+	} else {
+		res.redirect('/');
+	}
+};

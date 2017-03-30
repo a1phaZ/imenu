@@ -188,6 +188,7 @@ app.get('/order-open', passportConfig.isAdmin, orderController.getOrderOpenList)
 app.get('/order-close', passportConfig.isAdmin, orderController.getOrderCloseList);
 app.post('/order/:id/status', passportConfig.isAdmin, orderController.changeOrderStatus);
 app.get('/order/:id/close', orderController.getOrderClose);
+app.get('/my', passportConfig.isAuthenticated, orderController.getMyOrders);
 
 /**
  * OAuth authentication routes. (Sign in)
