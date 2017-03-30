@@ -60,6 +60,7 @@ exports.getOrderCloseList = (req, res, next) =>{
 				$gt:3
 			}
 		})
+		.sort({updatedAt: -1})
 		.populate([{
 				path: 'orderList.cartItemId'
 			},{
