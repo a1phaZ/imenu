@@ -83,7 +83,8 @@ mixin order-modal(item)
 
 
 mixin orderOpenList(item)
-  -console.log(item);
+  -inTotalhistoryWithDiscount = 0;
+  +order-modal(item)
   .tile
     .tile-icon
       +status(item)
@@ -98,42 +99,14 @@ mixin orderOpenList(item)
         | Изменен 
         =convert(item.updatedAt)
     .tile.action
-      +status-btn(item)
-  +order-modal(item)
+      if item.status < 4
+        +status-btn(item)
+      else
+        strong
+          span#total 
+            =inTotalhistoryWithDiscount
+        i.fa.fa-rub
   .divider
-
-
-  //- .panel.panel-default
-  //-   .panel-heading(role='tab', id='heading'+item._id)
-  //-     h4.panel-title
-  //-       +status(item)
-  //-       if item.orderAdminList.length
-  //-         span.label.label-info Дополнен
-  //-       if item.orderPlz
-  //-         span.label.label-warning Счет
-  //-       a(role='button', data-toggle='collapse', data-parent='#accordion', href='#'+item._id, aria-expanded='false', aria-controls=item._id)
-  //-         |  Заказ №#{item._id} 
-  //-       small 
-  //-         =convert(item.updatedAt)
-  //-         //- | #{item.updatedAt}
-  //-   .panel-collapse.collapse(role='tabpanel', aria-labelledby='heading'+item._id, id=item._id)
-  //-     .panel-body
-  //-       for order in item.orderAdminList
-  //-         +order(order)
-  //-       hr
-  //-       -item.historyList.splice(item.historyList.length - item.orderAdminList.length, item.orderAdminList.length);
-  //-       for order in item.historyList
-  //-         +order(order)
-  //-       strong Комментарий к заказу:
-  //-       pre #{item.comment}
-  //-       hr
-  //-       h4.text-right.total
-  //-         strong
-  //-           | Итого: 
-  //-           span#total 
-  //-             =inTotalhistoryWithDiscount
-  //-         i.fa.fa-rub
-  //-       +status-btn(item)
 
 include ../functions/convertToLocalTime                  
 
