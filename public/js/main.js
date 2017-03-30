@@ -185,25 +185,41 @@ $(document).ready(function() {
           case 1:
             label.addClass('label-success');
             button.addClass('btn-success in-work');
-            label[0].innerText = 'Новый';
-            button[0].innerText = 'Принят заказ в работу';
+            label.each(function(){
+              this.innerText = 'Новый';
+            });
+            button.each(function(){
+              this.innerText = 'Принят заказ в работу';
+            });
             break;
           case 2: 
             label.addClass('label-warning');
             button.addClass('btn-primary out-work');
-            label[0].innerText = 'В работе';
-            button[0].innerText = 'Выдать заказ';
+            label.each(function(){
+              this.innerText = 'В работе';
+            });
+            button.each(function(){
+              this.innerText = 'Выдать заказ';
+            });
             break;
           case 3: 
             label.addClass('label-primary');
             button.addClass('btn-danger close');
-            label[0].innerText = 'Выдан';
-            button[0].innerText = 'Закрыть заказ';
+            label.each(function(){
+              this.innerText = 'Выдан';
+            });
+            button.each(function(){
+              this.innerText = 'Закрыть заказ';
+            });
             break;
           case 4: 
             label.addClass('label-danger');
-            button[0].style.display = 'none';
-            label[0].innerText = 'Закрыт';
+            button.each(function(){
+              this.style.display = 'none';
+            });
+            label.each(function(){
+              this.innerText = 'Закрыт';
+            });
             break;
         }
 
@@ -358,7 +374,9 @@ $(document).ready(function() {
         notify.each(function(){
           $(this)[0].style.display = 'inline-block';
         });
-        $('span.message__title')[0].innerText = msg;
+        if ($('span.message__title')[0]){
+          $('span.message__title')[0].innerText = msg;
+        }
         $('.message').fadeIn(400).delay(3000).fadeOut(400);
       }
       if (notifyAudio){
