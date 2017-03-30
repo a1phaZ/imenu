@@ -1,6 +1,7 @@
 extends layout
 
 block content
-  h1#page-header= message
+	header.text-center
+  	h1#page-header= message
   h2= error.status
   pre #{error.stack}
