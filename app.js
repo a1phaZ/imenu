@@ -174,7 +174,7 @@ app.get('/category/:slug/new', passportConfig.isAuthenticated, productController
 app.post('/category/:slug/new', passportConfig.isAuthenticated, productController.postNewProduct);
 app.get('/category/:slug/:productSlug', productController.getProductBySlug);
 app.post('/category/:slug/:productSlug', passportConfig.isAuthenticated, productController.postProductBySlug);
-app.post('/category/:slug/:productSlug', passportConfig.isAuthenticated, productController.deleteProductBySlug);
+app.post('/delete/:slug/:productSlug', passportConfig.isAuthenticated, productController.deleteProductBySlug);
 
 //Order
 // app.post('/order', orderController.getNewOrder);

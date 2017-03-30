@@ -216,9 +216,9 @@ exports.postProductBySlug = (req, res, next) =>{
  * DELETE /product/:slug
  */
 exports.deleteProductBySlug = (req, res, next) =>{
-	Product.findOneAndRemove({slug: req.params.slug}, (err, product)=>{
+	Product.findOneAndRemove({slug: req.params.productSlug}, (err, product)=>{
 		if (err) {return next(err);}
 		req.flash('success', {msg: 'Продукт успешно удален'});
-		next();
-	})
+		res.redirect('/category/'+req.params.slug);
+	});
 };
