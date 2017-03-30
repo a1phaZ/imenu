@@ -55,7 +55,8 @@ mixin order-modal(item)
     .modal-container(role="document")
       .modal-header
         a(href="#modals", class="btn btn-clear float-right", aria-label="Close")
-        .modal-title Заказ №#{item._id}
+        .modal-title 
+          span.inline-block Заказ №#{item._id}
       .modal-body
         .content
           if item.orderAdminList.length
@@ -67,8 +68,8 @@ mixin order-modal(item)
           for order in item.historyList
             +order(order)
           strong Комментарий к заказу:
-          mark #{item.comment}
-          .divider.text-center(data-content="Итого")
+          mark.block #{item.comment}
+          .divider.text-right(data-content="Итого")
           h4.text-right.total
             strong
               span#total 
