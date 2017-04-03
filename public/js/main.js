@@ -300,7 +300,7 @@ $(document).ready(function() {
     };
     $.ajax({
       url: '/state',
-      method: 'POST',
+      method: 'GET',
       data: state,
       beforeSend: function(request) {
         return request.setRequestHeader('X-CSRF-Token', $("meta[name='csrf-token']").attr('content'));

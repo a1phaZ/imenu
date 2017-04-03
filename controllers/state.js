@@ -54,9 +54,9 @@ exports.getState = (req, res, next) =>{
 		}
 	};
 
-	if(req.body.order.id){
+	if(req.query.order.id){
 		let getOrder = Order
-			.findOne({_id: req.body.order.id});
+			.findOne({_id: req.query.order.id});
 		getOrder
 			.then((order)=>{
 				res.send(getOrderId(order));

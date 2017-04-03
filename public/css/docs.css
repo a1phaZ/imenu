@@ -310,13 +310,14 @@
 body{
   min-height: 100vh;
   position: relative;
-  padding-bottom: 150px;
+  padding-bottom: 300px;
 }
 
 footer{
   position: absolute;
   bottom: 0;
-  max-height: 150px;
+  /*max-height: 150px;*/
+  width: 100%;
 }
 
 .nav .nav a {
