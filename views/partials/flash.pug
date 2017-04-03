@@ -1,18 +1,18 @@
 if messages.errors
-  .alert.alert-danger.fade.in
-    button.close(type='button', data-dismiss='alert')
-      i.fa.fa-times-circle-o
+  .toast.toast-danger
+    button.btn.btn-clear.float-right
+      //- i.fa.fa-times-circle-o
     for error in messages.errors
-      div= error.msg
+      div.msg= error.msg
 if messages.info
-  .alert.alert-info.fade.in
-    button.close(type='button', data-dismiss='alert')
-      i.fa.fa-times-circle-o
+  .toast.toast-primary
+    button.btn.btn-clear.float-right
+      //- i.fa.fa-times-circle-o
     for info in messages.info
-      div= info.msg
+      div.msg= info.msg
 if messages.success
-  .alert.alert-success.fade.in
-    button.close(type='button', data-dismiss='alert')
-      i.fa.fa-times-circle-o
+  .toast.toast-success
+    button.btn.btn-clear.float-right(data-close='toast')
+      //- i.fa.fa-times-circle-o
     for success in messages.success
-      div= success.msg
+      div.msg= success.msg

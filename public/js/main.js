@@ -323,38 +323,6 @@ $(document).ready(function() {
     });
   });
 
-  /**
-  * Проверка заказа
-  * Если закрыт - чистим localStorage
-  */
-  // $(function(){
-  //   // var orderId = localStorage.orderId ? localStorage.orderId : null;
-  //   // if (orderId){
-  //     $.ajax({
-  //       url: '/order/status',
-  //       method: 'GET',
-  //       beforeSend: function(){
-  //         delete localStorage.orderId;
-  //         delete localStorage.orderCount;
-  //       }
-  //     })
-  //     .done(function(result){
-  //       if (result[0].status != 4 ) {
-  //         console.log(localStorage.orderId);
-  //         console.log(localStorage.orderCount);
-
-  //         localStorage.orderId = result[0]._id;
-  //         localStorage.orderCount = result[0].historyList.length+result[0].orderList.length;
-  //         init();
-  //       } else {
-  //         init();
-  //       }
-  //     })
-  //     .fail(function(err){
-  //       console.log(err);
-  //     });
-  //   // }
-  // });
 
   /**
   * Обработка уведомлений
@@ -389,6 +357,24 @@ $(document).ready(function() {
     e.preventDefault();
     $('#success').attr('style', 'display: none;');
   }
+
+  (function (arr) {
+    for (var i = 0; i < arr.length; i++) {
+      var el = arr[i];
+      for (var c = 0; c < el.children.length; c++) {
+        if (el.children[c].getAttribute('class').indexOf('btn-clear') || el.children[c].getAttribute('class').indexOf('clear-toast')) {
+          (function () {
+            var clear = el.children[c];
+            clear.addEventListener('click', function (e) {
+              e.preventDefault();
+              clear.parentElement.setAttribute('class', clear.parentElement.getAttribute('class') + ' hide');
+            });
+            // return false
+          })();
+        }
+      }
+    }
+  })(document.querySelectorAll('.toast'));
 
 });
 

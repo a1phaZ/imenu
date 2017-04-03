@@ -18,12 +18,12 @@ html
     include partials/header
 
     .container
-      include partials/flash
       .columns
         #category.docs-sidebar.column.col-2.col-md-12
           include partials/category
         a(href="#category-close", id="category-close", class="docs-nav-clear")
         .docs-content.column.col-8.col-md-12
+          include partials/flash
           //- ol.breadcrumb#breadcrumb(style="padding-top: 72px;")
           block content
         #sidebar.docs-sidebar.column.col-2.col-md-12

@@ -89,14 +89,15 @@
 }
 .docs-content {
   color: #667189;
-  padding-top: 0;
+  padding-top: 7rem;
 }
+
 .docs-content .container {
   padding: 1rem;
 }
 .docs-content header {
   color: #50596c;
-  padding-top: 6rem;
+  /*padding-top: 6rem;*/
 }
 
 .docs-content header #page-header:first-letter {
@@ -328,22 +329,37 @@ footer{
   opacity: .7;
 }
 
-/*@media screen and (max-width: 640px){
-  .tile .tile-action{
-    flex: 1 80%;
-  }
-  .tile .tile-content{
-    flex: 1 100%;
-  }
-  .order-cart-item.flex{
-    flex-flow: row wrap;
-  }
-  .order-cart-item.flex .input-group-addon{
-    flex: 1 40%;
-  }
-  .order-cart-item.flex .cart-item-count{
-    flex: 1 20%;
-  }
-}*/
+.message {
+  width: 200px;
+  position: absolute;
+  right: 1em;
+  bottom: 1em;
+  margin: 20px auto;
+  padding: 15px;
+  -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  border-left-width: 8px;
+  border-left-style: solid;
+  border-radius: 5px;
+  display: none;
+}
 
+.message__title {
+  font-weight: 700;
+}
 
+.btn-close {
+  float: right;
+  text-decoration: none;
+  color: inherit; /* link inherit color from parent block .message */
+}
+
+.btn-close:focus {
+  outline: none;
+}
+
+.message#success {
+  background-color: #61b832;
+  color: #296829;
+  border-left-color: #55a12c;
+}
