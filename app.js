@@ -16,6 +16,7 @@ const lusca            = require('lusca');
 const passport         = require('passport');
 const sass             = require('node-sass-middleware');
 const multer           = require('multer');
+const aws              = require('aws-sdk');
 
 const upload = multer({ 
   dest: path.join(__dirname, 'public/uploads'), 
@@ -28,6 +29,8 @@ const upload = multer({
 });
 
 dotenv.load({ path: '.env' });
+
+const S3_BUCKET = process.env.S3_BUCKET_NAME;
 
 const index              = require('./routes/index');
 const users              = require('./routes/users');
@@ -189,6 +192,33 @@ app.get('/order-close', passportConfig.isAdmin, orderController.getOrderCloseLis
 app.post('/order/:id/status', passportConfig.isAdmin, orderController.changeOrderStatus);
 app.get('/order/:id/close', orderController.getOrderClose);
 app.get('/my', passportConfig.isAuthenticated, orderController.getMyOrders);
+
+//Upload on S3
+app.get('/sign-s3', (req, res)=>{
+  const s3 = new aws.S3();
+  const fileName = req.query['file-name'];
+  const fileType = req.query['file-type'];
+  const s3Params = {
+    Bucket: S3_BUCKET,
+    Key: fileName,
+    Expires: 60,
+    ContentType: fileType,
+    ACL: 'public-read'
+  };
+
+  s3.getSignedUrl('putObject', s3Params, (err, data)=>{
+    if(err){
+      console.log(err);
+      return res.send();
+    }
+    const returnData = {
+      signedRequest: data,
+      url: `https://${S3_BUCKET}.s3.amazonaws.com/${fileName}`
+    };
+    res.write(JSON.stringify(returnData));
+    res.end();
+  });
+});
 
 /**
  * OAuth authentication routes. (Sign in)

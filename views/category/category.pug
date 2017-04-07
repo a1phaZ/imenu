@@ -6,8 +6,11 @@ block content
       h1#page-header #{categoryTitle}
     else 
       h1#page-header Новая категория
+  input#file-input(type='file')
+  img#preview(src='/img/bg.png')
   form(role='form', enctype='multipart/form-data', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
+    input(type='hidden', id="avatar-url", name="avatar-url", value="/img/bg.png")
     .form-group
       label.form-label(for="imageFile") Изображение
       input.form-input(type='file', name='imageFile', id='imageFile', accept="image/*")
