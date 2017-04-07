@@ -5,7 +5,7 @@ mixin order-list(cartItem)
       .tile.order-cart-item.history.columns(data-cart-item-id=cartItem.cartItemId._id)
         .tile-icon
           figure.avatar.avatar-lg
-            img(src='/uploads/'+cartItem.cartItemId.logo)
+            img(src=cartItem.cartItemId.logo)
         .tile-content
           .tile-title
             strong #{cartItem.cartItemId.title} 
