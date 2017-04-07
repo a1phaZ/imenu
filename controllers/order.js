@@ -22,11 +22,27 @@ exports.getOrderList = (req, res, next) =>{
  */
 exports.getOrderOpenList = (req, res, next) =>{
 	let getOrderOpenList = Order
-		.find()
-		.where('closed').equals(false);
+		.find({
+			status: {
+				$lt:4
+			}
+		})
+		.sort({status: 1})
+		.populate([{
+				path: 'orderList.cartItemId'
+			},{
+				path: 'userId'
+			},{
+				path: 'historyList.cartItemId'
+			},{
+				path: 'orderAdminList.cartItemId'
+			}]);
 	getOrderOpenList
 		.then((orders) => {
-			res.send(orders);
+			res.render('order/order-open', {
+				title: 'Открытые заказы',
+				orderOpenList: orders
+			});
 		})
 		.catch((error) => {
 			next(error);
@@ -39,11 +55,27 @@ exports.getOrderOpenList = (req, res, next) =>{
  */
 exports.getOrderCloseList = (req, res, next) =>{
 	let getOrderCloseList = Order
-		.find()
-		.where('closed').equals(true);
+		.find({
+			status: {
+				$gt:3
+			}
+		})
+		.sort({updatedAt: -1})
+		.populate([{
+				path: 'orderList.cartItemId'
+			},{
+				path: 'userId'
+			},{
+				path: 'historyList.cartItemId'
+			},{
+				path: 'orderAdminList.cartItemId'
+			}]);
 	getOrderCloseList
 		.then((orders) => {
-			res.send(orders);
+			res.render('order/order-close', {
+				title: 'Закрытые заказы',
+				orderOpenList: orders
+			});
 		})
 		.catch((error) => {
 			next(error);
@@ -51,7 +83,7 @@ exports.getOrderCloseList = (req, res, next) =>{
 };
 
 /**
- * GET /order
+ * GET /order/:id
  * Страница оформления заказа
  */
 exports.getOrder = (req, res, next) =>{
@@ -62,17 +94,21 @@ exports.getOrder = (req, res, next) =>{
 				path: 'orderList.cartItemId'
 			},{
 				path: 'userId'
+			},{
+				path: 'historyList.cartItemId'
 			}]);
 		findOrderById.
 			then((order)=>{
 				if (order){
 					res.render('order/index',{
 						orderList: order.orderList,
+						historyList: order.historyList,
 						orderStatus: order.status,
 						orderComment: order.comment,
+						orderPlz: order.orderPlz,
+						orderId: order._id,
 						title: 'Заказ №'+order._id
 					});
-					// res.send(order);
 				} else {
 					const err = new Error();
 					err.status = 404;
@@ -102,12 +138,9 @@ exports.postOrderAdd = (req, res, next) =>{
 						} 
 						return false;
 					});
-					console.log(idInOrderList);
 					if (idInOrderList.length === 0){
 						order.orderList.push({cartItemId: req.body.cartItemId, count: 1});
 					}
-					
-					console.log(order.orderList);
 					order.save((err)=>{
 						if (err) next(err);
 						res.send(order);
@@ -141,9 +174,11 @@ exports.postOrderChange = (req, res, next) =>{
 	if (req.body.orderId){
 		let FindOrderByIdAndUpdate = Order
 			.findOne({_id: req.body.orderId})
-			.populate({
+			.populate([{
 				path: 'orderList.cartItemId'
-			});
+			},{
+				path: 'historyList.cartItemId'
+			}]);
 		FindOrderByIdAndUpdate
 			.then((order)=>{
 				if (order){
@@ -181,9 +216,11 @@ exports.postOrderItemDelete = (req, res, next) =>{
 	if (req.body.orderId){
 		let FindOrderByIdAndUpdate = Order
 				.findOne({_id: req.body.orderId})
-				.populate({
+				.populate([{
 					path: 'orderList.cartItemId'
-				});
+				},{
+					path: 'historyList.cartItemId'
+				}]);
 			FindOrderByIdAndUpdate
 				.then((order)=>{
 					if(order){
@@ -196,7 +233,6 @@ exports.postOrderItemDelete = (req, res, next) =>{
 						order.orderList.splice(itemPosition, 1);
 						order.save((err)=>{
 							if (err) next(err);
-							console.log(order);
 							res.send(order);
 						});
 					} else {
@@ -228,20 +264,27 @@ exports.postOrder = (req, res, next) =>{
 		return res.redirect('/order/'+req.params.id);
 	}
 	let FindOrderByIdAndUpdate = Order
-			.findOne({_id: req.params.id})
-			.populate({
-				path: 'orderList.cartItemId'
-			});
+			.findOne({_id: req.params.id});
 		FindOrderByIdAndUpdate
 			.then((order)=>{
 				if(order){
-					order.userId = req.user._id;
+					if (!order.userId){
+						order.userId = req.user._id;
+					}
 					order.comment = req.body.comment;
 					order.status = 1;
-					order.closed = false;
+					//order.closed = false;
+					order.orderList.forEach((item)=>{
+						order.orderAdminList.push({cartItemId: item.cartItemId, count: item.count});
+					});
+					order.orderList.forEach((item)=>{
+						order.historyList.push({cartItemId: item.cartItemId, count: item.count});
+					});					
+					order.orderList = [];
 					order.save((err)=>{
 						if (err) next(err);
 						req.flash('success', {msg: 'Заказ №'+order._id+' успешно отправлен'});
+						//res.send(order);
 						res.redirect('/');
 					});
 				} else {
@@ -254,4 +297,89 @@ exports.postOrder = (req, res, next) =>{
 			.catch((err)=>{
 				next(err);
 			});
+};
+
+/**
+ * GET /order/:id/close
+ */
+exports.getOrderClose = (req, res, next) =>{
+	let findOrderById = Order
+			.findOne({_id: req.params.id});
+		findOrderById
+			.then((order)=>{
+				if(order){
+					order.orderPlz = true;
+					order.save((err)=>{
+						req.flash('success', {msg: 'Заказ №'+order._id+' отправлен на закрытие'});
+						res.redirect('/');
+					})
+				} else {
+					const err = new Error();
+					err.status = 404;
+					err.message = 'Заказ не найден';
+					next(err);
+				}
+			})
+			.catch((err)=>{
+				next(err);
+			});
+};
+
+/**
+ * POST /order/:id/status
+ */
+exports.changeOrderStatus = (req, res, next) =>{
+	let getOrderById = Order
+			.findOne({_id: req.params.id});
+		getOrderById
+			.then((order)=>{
+				if(order){
+					order.status +=1;
+					order.orderAdminList = [];
+					if (order.status == 4){
+						order.orderPlz = false;
+					}
+					//order.closed = (order.status == 4);
+					order.save((err)=>{
+						if (err) next(err);
+						res.send(order);
+					});
+				} else {
+					const err = new Error();
+					err.status = 404;
+					err.message = 'Заказ не найден';
+					next(err);
+				}
+			})
+			.catch((err)=>{
+				next(err);
+			});
+};
+
+/**
+ * GET /my
+ */
+exports.getMyOrders = (req, res, next) =>{
+	if (!res.locals.isAdmin){
+		let getOrderList = Order
+			.find({userId: req.user._id})
+			.sort({updatedAt: -1})
+			.populate([{
+				path: 'orderList.cartItemId'
+			},{
+				path: 'historyList.cartItemId'
+			}]);
+		getOrderList
+			.then((orders) => {
+				res.render('order/my', {
+					orders: orders,
+					title: 'История заказов'
+				});
+			})
+			.catch((err) => {
+				next(err);
+			});
+	} else {
+		res.redirect('/');
+	}
 };

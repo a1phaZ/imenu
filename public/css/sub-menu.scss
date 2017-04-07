@@ -46,6 +46,13 @@
   font-size: 18px;
 }
 
+.category-logo{
+  max-width: 100%;
+  object-fit: cover;
+  /* max-height: 300px; */
+  min-height: 200px;
+}
+
 @media (max-width: 768px) {
   .dropdown-menu-large {
     margin-left: 0 ;

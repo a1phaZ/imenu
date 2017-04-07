@@ -47,7 +47,8 @@ exports.getNewProduct = (req, res, next) =>{
 			if (category){
 				res.render('product/product', {
 					title: 'Новый продукт',
-					categoryTitle: category.title
+					categoryTitle: category.title,
+					categorySlug: category.slug
 				});
 			} else {
 				const err = new Error();
@@ -74,6 +75,7 @@ exports.postNewProduct = (req, res, next) =>{
 		req.flash('errors', errors);
 		return res.redirect('/products/new');
 	}
+
 	const getCategoryBySlug = Category.findOne({slug: req.params.slug});
 	getCategoryBySlug.
 		then((category)=>{
@@ -85,7 +87,8 @@ exports.postNewProduct = (req, res, next) =>{
 					category: category._id,
 					price: req.body.price,
 					waiting: req.body.waiting,
-					discount:  req.body.discount || 0
+					discount:  req.body.discount || 0,
+					logo: req.body.avatarUrl ? req.body.avatarUrl : '/img/bg.png'
 				});
 				product.save(req.body.title, (err)=>{
 					if (err) {return next(err);}
@@ -126,6 +129,7 @@ exports.getProductBySlug = (req, res, next) =>{
 								productPrice: product.price,
 								productWaiting: product.waiting,
 								productDiscount: product.discount,
+								productLogo: product.logo,
 								categoryTitle: category.title,
 								categorySlug: category.slug
 							});
@@ -179,6 +183,9 @@ exports.postProductBySlug = (req, res, next) =>{
 								product.price = req.body.price;
 								product.waiting = req.body.waiting;
 								product.discount = req.body.discount || 0 ;
+								if (req.body.avatarUrl){
+									product.logo = req.body.avatarUrl;
+								}
 								product.save(req.body.title, (err)=>{
 									if (err) {return next(err);}
 									req.flash('success', {msg: 'Информация о товаре успешно обновлена'});
@@ -210,9 +217,9 @@ exports.postProductBySlug = (req, res, next) =>{
  * DELETE /product/:slug
  */
 exports.deleteProductBySlug = (req, res, next) =>{
-	Product.findOneAndRemove({slug: req.params.slug}, (err, product)=>{
+	Product.findOneAndRemove({slug: req.params.productSlug}, (err, product)=>{
 		if (err) {return next(err);}
 		req.flash('success', {msg: 'Продукт успешно удален'});
-		next();
-	})
+		res.redirect('/category/'+req.params.slug);
+	});
 };

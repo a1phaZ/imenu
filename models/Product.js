@@ -6,6 +6,7 @@ const productSchema = new mongoose.Schema({
 	title      : {type: String},
 	slug       : {type: String, unique: true},
 	description: {type: String},
+	logo       : {type: String},
 	composition: {type: String},
 	category   : {
 		type     : mongoose.Schema.Types.ObjectId,

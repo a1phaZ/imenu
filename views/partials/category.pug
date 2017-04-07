@@ -1,0 +1,17 @@
+mixin category-menu(category)
+  li.nav-item(class=(title == category.title) ? 'active' : undefined)
+    a(href='/category/'+category.slug) #{category.title}
+
+ul.docs-nav.nav
+  li.nav-item
+    div.tile.tile-centered
+      div.tile-icon
+        //- img(src="img/avatar-4.png", class="avatar")
+        i.fa.fa-list
+      div.tile-content
+        | Категории
+  li.nav-item.divider
+
+  if categoryList
+    for category in categoryList
+      +category-menu(category)

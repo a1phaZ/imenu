@@ -5,6 +5,7 @@ const slugify = require('transliteration').slugify;
 const categorySchema = new mongoose.Schema({
 	title      : {type: String, unique: true},
 	description: {type: String},
+	logo       : {type: String},
 	slug       : {type: String}
 },{timestamps: true});
 

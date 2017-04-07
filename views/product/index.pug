@@ -1,24 +1,8 @@
 extends ../layout
 
 block content
-  .page-header
-    if isAdmin
-      ul.category-menu
-        li.dropdown(class=(title == 'Dashboard') ? 'active' : undefined)
-          h1(data-toggle='dropdown') 
-            span#page-header
-              | #{categoryTitle.toUpperCase()}
-            i.fa.fa-caret-square-o-down
-          ul.dropdown-menu
-            li
-              a(href='/update/'+categorySlug) Редактировать
-            li
-              a(href='/category/'+categorySlug+'/new') Создать в категории
-            li.divider
-            li
-              a(href='/delete/'+categorySlug) Удалить категорию
-    else
-      h1#page-header #{categoryTitle.toUpperCase()}
+  header.text-center
+    h1#page-header #{categoryTitle}
 
-  .row
+  .columns
     include product.list.mixin.pug

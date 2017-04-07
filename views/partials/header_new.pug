@@ -12,9 +12,19 @@ nav.navbar.navbar-default.navbar-fixed-top
       | Menu
     //- ul.nav.navbar-nav
     //-   li.dropdown.dropdown-large(class=(title == 'Order') ? 'active' : undefined)
-    a.navbar-brand.order(href='/order') 
-      | Заказ
-      span.badge.order-count
+    if !isAdmin
+      a.navbar-brand.order(href='/order') 
+        | Заказ
+        span.badge.order-count
+    if isAdmin
+      a.navbar-brand(href='/order-open') 
+        | Открытые
+        i.fa.fa-bell#notify(aria-hidden='true', style='display: none;')
+      a.navbar-brand(href='/order-close') 
+        | Закрытые
+      audio#notify-audio
+        source(src='/notify/notify.mp3', type='audio/mpeg')
+        
   .collapse.navbar-collapse.js-navbar-collapse
     ul.nav.navbar-nav
       li.dropdown.dropdown-large(class=(title == 'Order') ? 'active' : undefined)

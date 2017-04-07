@@ -15,8 +15,22 @@ const flash            = require('express-flash');
 const lusca            = require('lusca');
 const passport         = require('passport');
 const sass             = require('node-sass-middleware');
+//const multer           = require('multer');
+const aws              = require('aws-sdk');
+
+// const upload = multer({ 
+//   dest: path.join(__dirname, 'public/uploads'), 
+//   fileFilter: function (req, file, cb) {
+//     if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+//         return cb(new Error('Только изображения разрешены к загрузке'));
+//     }
+//     cb(null, true);
+//   }
+// });
 
 dotenv.load({ path: '.env' });
+
+const S3_BUCKET = process.env.S3_BUCKET_NAME;
 
 const index              = require('./routes/index');
 const users              = require('./routes/users');
@@ -24,6 +38,7 @@ const userController     = require('./controllers/user');
 const categoryController = require('./controllers/category');
 const productController  = require('./controllers/product');
 const orderController  = require('./controllers/order');
+const stateContoller = require('./controllers/state');
 
 /**
  * API keys and Passport configuration.
@@ -60,8 +75,8 @@ app.use(sass({
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+//app.use(cookieParser());
 app.use(expressValidator());
 app.use(session({
   resave: true,
@@ -75,12 +90,13 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+//app.use(upload.single('imageFile'));
 app.use((req, res, next) => {
-  if (req.path === '/api/upload') {
-    next();
-  } else {
+  // if (req.path === '/api/upload') {
+  //   next();
+  // } else {
     lusca.csrf({cookie: false})(req, res, next);
-  }
+  // }
 });
 app.use(lusca.xframe('SAMEORIGIN'));
 app.use(lusca.xssProtection(true));
@@ -94,7 +110,11 @@ app.use((req, res, next) => {
       req.path !== '/login' &&
       req.path !== '/signup' &&
       !req.path.match(/^\/auth/) &&
-      !req.path.match(/\./)) {
+      !req.path.match(/\./) && 
+      !req.path.match(/^\/uploads/) &&
+      !req.path.match(/^\/order\/[0-9a-z]*\/status/) && 
+      !req.path.match(/^\/order\/status/) && 
+      !req.path.match(/^\/state/)) {
     req.session.returnTo = req.path;
   } else if (req.user &&
       req.path == '/account') {
@@ -102,21 +122,26 @@ app.use((req, res, next) => {
   }
   next();
 });
+
 app.use(categoryController.getAllCategoryToRes);
 // app.use(categoryController.getCategoryBySlugMiddleware);
 //Admin?
 app.use((req, res, next)=>{
   if (req.user){
-    res.locals.isAdmin = (req.user.email.toLowerCase() == process.env.ADMIN_EMAIL.toLowerCase());
+    if (req.user.email){
+      res.locals.isAdmin = (req.user.email.toLowerCase() == process.env.ADMIN_EMAIL.toLowerCase());
+    }
   }
   next();
 });
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
 // app.use('/', index);
 //index page
 app.get('/', categoryController.getCategoryList);
 app.use('/users', users);
+//State
+app.get('/state', stateContoller.getState);
 //Account
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
@@ -132,6 +157,8 @@ app.post('/account/delete', passportConfig.isAuthenticated, userController.postD
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
 app.get('/signup', userController.getSignup);
 app.post('/signup', userController.postSignup);
+app.get('/convert', userController.getConvertToCompany);
+app.post('/convert', userController.postConvertToCompany);
 
 // app.get('/contact', contactController.getContact);
 // app.post('/contact', contactController.postContact);
@@ -150,15 +177,85 @@ app.get('/category/:slug/new', passportConfig.isAuthenticated, productController
 app.post('/category/:slug/new', passportConfig.isAuthenticated, productController.postNewProduct);
 app.get('/category/:slug/:productSlug', productController.getProductBySlug);
 app.post('/category/:slug/:productSlug', passportConfig.isAuthenticated, productController.postProductBySlug);
-app.post('/category/:slug/:productSlug', passportConfig.isAuthenticated, productController.deleteProductBySlug);
+app.post('/delete/:slug/:productSlug', passportConfig.isAuthenticated, productController.deleteProductBySlug);
 
 //Order
 // app.post('/order', orderController.getNewOrder);
+// app.get('/order/status', orderController.getOrderStatusById);
 app.post('/order/add', orderController.postOrderAdd);
 app.get('/order/:id', passportConfig.isAuthenticated, orderController.getOrder);
 app.post('/order/change', orderController.postOrderChange);
 app.post('/order/item-delete', orderController.postOrderItemDelete);
 app.post('/order/:id', passportConfig.isAuthenticated, orderController.postOrder);
+app.get('/order-open', passportConfig.isAdmin, orderController.getOrderOpenList);
+app.get('/order-close', passportConfig.isAdmin, orderController.getOrderCloseList);
+app.post('/order/:id/status', passportConfig.isAdmin, orderController.changeOrderStatus);
+app.get('/order/:id/close', orderController.getOrderClose);
+app.get('/my', passportConfig.isAuthenticated, orderController.getMyOrders);
+
+//Upload on S3
+app.get('/sign-s3', (req, res)=>{
+  aws.config.update({
+    region: 'eu-central-1'
+  })
+  const s3 = new aws.S3({
+    apiVersion: '2006-03-01'
+  });
+  const fileName = req.query['file-name'];
+  const fileType = req.query['file-type'];
+  const s3Params = {
+    Bucket: S3_BUCKET,
+    Key: fileName,
+    Expires: 60,
+    ContentType: fileType,
+    ACL: 'public-read'
+  };
+
+  s3.getSignedUrl('putObject', s3Params, (err, data)=>{
+    if(err){
+      console.log(err);
+      return res.send();
+    }
+    const returnData = {
+      signedRequest: data,
+      url: `https://${S3_BUCKET}.s3-eu-central-1.amazonaws.com/${fileName}`
+    };
+    res.write(JSON.stringify(returnData));
+    res.end();
+  });
+});
+
+/**
+ * OAuth authentication routes. (Sign in)
+ */
+app.get('/auth/instagram', passport.authenticate('instagram'));
+app.get('/auth/instagram/callback', passport.authenticate('instagram', { failureRedirect: '/login' }), (req, res) => {
+  res.redirect(req.session.returnTo || '/');
+});
+app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'user_location'] }));
+app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), (req, res) => {
+  res.redirect(req.session.returnTo || '/');
+});
+app.get('/auth/vkontakte', passport.authenticate('vkontakte', { scope: ['email'] }));
+app.get('/auth/vkontakte/callback', passport.authenticate('vkontakte', { failureRedirect: '/login' }), (req, res) => {
+  res.redirect(req.session.returnTo || '/');
+});
+app.get('/auth/github', passport.authenticate('github'));
+app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login' }), (req, res) => {
+  res.redirect(req.session.returnTo || '/');
+});
+app.get('/auth/google', passport.authenticate('google', { scope: 'profile email' }));
+app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
+  res.redirect(req.session.returnTo || '/');
+});
+app.get('/auth/twitter', passport.authenticate('twitter'));
+app.get('/auth/twitter/callback', passport.authenticate('twitter', { failureRedirect: '/login' }), (req, res) => {
+  res.redirect(req.session.returnTo || '/');
+});
+app.get('/auth/linkedin', passport.authenticate('linkedin', { state: 'SOME STATE' }));
+app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRedirect: '/login' }), (req, res) => {
+  res.redirect(req.session.returnTo || '/');
+});
 
 
 // catch 404 and forward to error handler

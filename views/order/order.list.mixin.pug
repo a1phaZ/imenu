@@ -1,29 +1,45 @@
 -var inTotalWithDiscount = 0;
 mixin order-list(cartItem)
-  .order-cart-item(data-cart-item-id=cartItem.cartItemId._id)
-    .cart-item-img
-      img.img-responsive(src='http://placehold.it/500x500')
-    .cart-item-title
-      p #{cartItem.cartItemId.title} 
-        if cartItem.cartItemId.discount != 0
-          span.product-discount.label.label-success
-            span(id=cartItem.cartItemId._id+'-discount') #{cartItem.cartItemId.discount}
-            i.fa.fa-percent
-      //- p #{cartItem.cartItemId.composition}  
-    input.form-control.text-center.cart-item-count(type='number', size="5", name="count", class='cart-item-count', min="0", max="50", step='1', value=cartItem.count, data-cart-item-id=cartItem.cartItemId._id, disabled=orderStatus?true:false)
-    .price-block.text-center(id=cartItem.cartItemId._id)
-      span.product-price.red(style="display: none;") Цена: 
-        strong
-          span(id=cartItem.cartItemId._id+'-price') #{cartItem.cartItemId.price}
-        i.fa.fa-rub
-      
-      span.product-total.text-center
-        strong
-          span(id=cartItem.cartItemId._id+'-total')
-            =Math.round(cartItem.cartItemId.price*cartItem.count/((cartItem.cartItemId.discount+100)/100))
-            -inTotalWithDiscount += Math.round(cartItem.cartItemId.price*cartItem.count/((cartItem.cartItemId.discount+100)/100));
-        i.fa.fa-rub
-    .delete-btn.text-right
-      i.btn.btn-danger.fa.fa-trash-o(data-cart-item-id=cartItem.cartItemId._id, aria-label="Delete", aria-hidden="true", style="margin-right: 0px;", disabled=orderStatus?true:false)
+  if cartItem.cartItemId != null
+    .column.col-12
+      .tile.order-cart-item.columns(data-cart-item-id=cartItem.cartItemId._id)
+        .tile-icon
+          figure.avatar.avatar-lg
+            img(src='/uploads/'+cartItem.cartItemId.logo)
+        .tile-content
+          .tile-title
+            strong #{cartItem.cartItemId.title} 
+          .tile-subtitle
+            if cartItem.cartItemId.discount != 0
+              span.product-discount.label.label-success
+                span(id=cartItem.cartItemId._id+'-discount') #{cartItem.cartItemId.discount}
+                i.fa.fa-percent
+        .tile-action.column.col-6.col-sm-12
+          .input-group.columns
+            span.input-group-addon.price-block.text-center.column.col-4(id=cartItem.cartItemId._id)
+              span.product-price.red() Цена: 
+                strong
+                  span(id=cartItem.cartItemId._id+'-price') #{cartItem.cartItemId.price}
+                i.fa.fa-rub
+            span.input-group-addon.text-center.column.col-4
+              span(id=cartItem.cartItemId._id+'-total')
+                =Math.round(cartItem.cartItemId.price*cartItem.count/((cartItem.cartItemId.discount+100)/100))
+                -inTotalWithDiscount += Math.round(cartItem.cartItemId.price*cartItem.count/((cartItem.cartItemId.discount+100)/100));
+              i.fa.fa-rub
+            input.text-center.cart-item-count.form-input.column.col-3(type='number', size="5", name="count", class='cart-item-count', min="1", max="50", step='1', value=cartItem.count, data-cart-item-id=cartItem.cartItemId._id)
+            .input-group-btn.delete-btn.col-1
+              i.btn.btn-danger.fa.fa-trash-o(data-cart-item-id=cartItem.cartItemId._id, aria-label="Delete", aria-hidden="true", style="margin-right: 0px;")
+  else
+    .column.col-12
+      .tile
+        .tile-icon
+          span.label.label-danger Удалено
+        .tile-content
+          .tile-title
+            strong Продукт удален
+          .tile-subtitle
+            | Продукт был удален из базы данных
+        .tile-action
+
 for cartItem in orderList
   +order-list(cartItem)

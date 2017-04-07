@@ -1,28 +1,41 @@
 extends ../layout
 
 block content
-  .page-header
+  header.text-center
     if categoryTitle
-      h1#page-header #{categoryTitle.toUpperCase()}
+      h1#page-header #{categoryTitle}
     else 
       h1#page-header Новая категория
-  .row
-    form.form-horizontal.col-sm-12(method='POST')
+  input#file-input(type='file', accept="image/*")
+  img#preview(src=avatarUrl?avatarUrl:'/img/bg.png')
+  form(role='form', method='POST') 
+    //-enctype='multipart/form-data',
+    input(type='hidden', name='_csrf', value=_csrf)
+    input(type='hidden', id="avatar-url", name="avatarUrl", value=avatarUrl)
+    //- .form-group
+    //-   label.form-label(for="imageFile") Изображение
+    //-   input.form-input(type='file', name='imageFile', id='imageFile', accept="image/*")
+    .form-group
+      label.form-label(for='title') Название
+      input.form-input(type='text', name='title', id='title', placeholder='Название', autofocus, required, value=categoryTitle, disabled=!isAdmin)
+    .form-group
+      label.form-label(for='description') Описание
+      textarea.form-input(name='description', id='description', placeholder='Описание', rows='7', required, disabled=!isAdmin) #{categoryDescription}
+    .form-group
+      button.btn.btn-primary(type='submit', disabled=!isAdmin)
+        if categoryTitle
+          i.fa.fa-floppy-o
+          span Обновить категорию
+        else
+          i.fa.fa-plus
+          span Создать категорию
+  if categoryTitle
+    .divider.text-center(data-content="ИЛИ")
+    form.form-horizontal(method='POST', action='/delete/'+categorySlug)
       input(type='hidden', name='_csrf', value=_csrf)
       .form-group
-        label.col-sm-3.control-label(for='title') Название
-        .col-sm-7
-          input.form-control(type='text', name='title', id='title', placeholder='Название', autofocus, required, value=categoryTitle, disabled=!isAdmin)
-      .form-group
-        label.col-sm-3.control-label(for='description') Описание
-        .col-sm-7
-          textarea.form-control(name='description', id='description', placeholder='Описание', rows='7', required, disabled=!isAdmin) #{categoryDescription}
-      .form-group
-        .col-sm-offset-3.col-sm-7
-          button.col-sm-12.btn.btn-primary(type='submit', disabled=!isAdmin)
-            if categoryTitle
-              i.fa.fa-floppy-o
-              | Обновить категорию
-            else
-              i.fa.fa-plus
-              | Создать категорию
+        label.form-label(for='delete') Удалить категорию
+        a.btn.btn-danger(href='#delete-modal', id='delete')
+          i.fa.fa-trash-o
+          span.hide-xs Удалить категорию
+        include delete

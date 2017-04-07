@@ -6,22 +6,60 @@ html
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     meta(name='theme-color' content='#4DA5F4')
     meta(name='csrf-token', content=_csrf)
+
+    meta(property='og:title', content='iMenu')
+    meta(property='og:type', content='website')
+    meta(property='og:description', content=description)
+    meta(property='og:locale', content='ru_RU')
+    meta(property='og:site_name', content='iMenu')
+    meta(property='og:url', content='http://imenu.alphaz.ru')
+    meta(property='og:image', content='/img/bg.png')
+    meta(property="og:image:width", content="300")
+    meta(property="og:image:height", content="300")
+
+    meta(property='twitter:card', content='summary_large_image')
+    meta(property='twitter:title', content='iMenu')
+    meta(property='twitter:type', content='website')
+    meta(property='twitter:description', content=description)
+    meta(property='twitter:creator', content='@alphaZ_')
+    meta(property='twitter:locale', content='ru_RU')
+    meta(property='twitter:site_name', content='iMenu')
+    meta(property='twitter:url', content='http://imenu.alphaz.ru')
+    meta(property='twitter:domain', content='imenu.alphaz.ru')
+    meta(property='twitter:site', content='@')
+    meta(property='twitter:image:src', content='/img/bg.png')
+
+
     title #{title} - iMenu
     link(rel='shortcut icon', href='/favicon.png')
-    link(rel='stylesheet', href='/css/main.css')
+    link(rel='stylesheet', href='/css/font-awesome.min.css')
+    link(rel='stylesheet', href='/css/spectre.min.css')
+    link(rel='stylesheet', href='/css/spectre-exp.min.css')
+    link(rel='stylesheet', href='/css/docs.css')
 
   body
-    include partials/header_new
+    include partials/header
 
     .container
-      include partials/flash
-      ol.breadcrumb#breadcrumb
-      block content
+      .columns
+        #category.docs-sidebar.column.col-2.col-md-12
+          include partials/category
+        a(href="#category-close", id="category-close", class="docs-nav-clear")
+        .docs-content.column.col-8.col-md-12
+          include partials/flash
+          //- ol.breadcrumb#breadcrumb(style="padding-top: 72px;")
+          block content
+        #sidebar.docs-sidebar.column.col-2.col-md-12
+          include partials/manage
+        a(href="#sidebar-close", id="sidebar-close", class="docs-nav-clear")
 
     include partials/footer
+    include partials/notify
 
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js')
     script(src='/js/lib/jquery-2.2.4.min.js')
-    script(src='/js/lib/bootstrap.min.js')
+    //- script(src='/js/lib/bootstrap.min.js')
+    //- script(src='/js/status.js')
     script(src='/js/main.js')
 
     // Google Analytics: change UA-XXXXX-X to be your site's ID

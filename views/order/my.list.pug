@@ -1,0 +1,111 @@
+-var inTotalhistoryWithDiscount = 0;
+mixin status(item)
+  if (item.status == 1)
+    span.label.label-success(data-order-item-id=item._id) Новый
+  if (item.status == 2)
+    span.label.label-warning(data-order-item-id=item._id) В работе
+  if (item.status == 3)
+    span.label.label-primary(data-order-item-id=item._id) Выдан
+  if (item.status == 4)
+    span.label.label-danger(data-order-item-id=item._id) Закрыт
+
+mixin status-btn(item)
+  if (item.status == 1)
+    button.form-control.btn.btn-warning(class='in-work', data-order-item-id=item._id)
+      | Принять заказ в работу
+  if (item.status == 2)
+    button.form-control.btn.btn-primary(class='out-work', data-order-item-id=item._id)
+      | Выдать заказ
+  if (item.status == 3)
+    button.form-control.btn.btn-danger(class='close', data-order-item-id=item._id)
+      | Закрыть заказ
+
+mixin order(order)
+  if order.cartItemId != null
+    .column.col-12
+      .tile
+        .tile-icon
+          figure.avatar.avatar-lg
+            img(src='/uploads/'+order.cartItemId.logo)
+        .tile-content
+          .tile-title
+            strong #{order.cartItemId.title} 
+          .tile-subtitle
+            if order.cartItemId.discount != 0
+              span.product-discount.label.label-success
+                span(id=order.cartItemId._id+'-discount') #{order.cartItemId.discount}
+                i.fa.fa-percent
+        .tile-action
+          kbd #{order.count}
+          -inTotalhistoryWithDiscount += Math.round(order.cartItemId.price*order.count/((order.cartItemId.discount+100)/100));
+  else
+    .column.col-12
+      .tile
+        .tile-icon
+          span.label.label-danger Удалено
+        .tile-content
+          .tile-title
+            strong Продукт удален
+          .tile-subtitle
+            | Продукт был удален из базы данных
+
+mixin order-modal(item)
+  .modal(id='order-modal-'+item._id)
+    a(href="#modals", class="modal-overlay", aria-label="Close")
+    .modal-container(role="document")
+      .modal-header
+        a(href="#modals", class="btn btn-clear float-right", aria-label="Close")
+        .modal-title 
+          span.inline-block Заказ №#{item._id}
+      .modal-body
+        .content
+          if item.orderAdminList.length
+            .divider.text-center(data-content="Обновление заказа")
+            for order in item.orderAdminList
+              +order(order)
+          .divider.text-center(data-content="История заказа")
+          -item.historyList.splice(item.historyList.length - item.orderAdminList.length, item.orderAdminList.length);
+          for order in item.historyList
+            +order(order)
+          strong Комментарий к заказу:
+          mark.block #{item.comment}
+          .divider.text-right(data-content="Итого")
+          h4.text-right.total
+            strong
+              span#total 
+                =inTotalhistoryWithDiscount
+            i.fa.fa-rub
+          
+      .modal-footer
+        a(href="#modals" class="btn btn-link") Отмена
+        if isAdmin
+          +status-btn(item)
+
+
+mixin orderOpenList(item)
+  -inTotalhistoryWithDiscount = 0;
+  +order-modal(item)
+  .tile
+    .tile-icon
+      +status(item)
+      if item.orderAdminList.length > 0 && item.status != 1
+        span.label.label-info Дополнен
+      if item.orderPlz
+        span.label.label-warning Счет
+    .tile-content
+      .tile-title
+        a(href='#order-modal-'+item._id) Заказ №#{item._id}
+      .tile-subtitle
+        | Изменен 
+        =convert(item.updatedAt)
+    .tile.action
+      strong
+        span#total 
+          =inTotalhistoryWithDiscount
+      i.fa.fa-rub
+  .divider
+
+include ../functions/convertToLocalTime                  
+
+for item in orders
+  +orderOpenList(item)

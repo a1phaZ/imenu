@@ -1,30 +1,36 @@
 extends ../layout
 
 block content
-  .page-header
-    h1#page-header Заказ
+  header.text-center
+    h2#page-header Заказ 
+      sup
+        small.label
+          include status
 
   include order.list.mixin.pug
-  hr
+  
+  include order.history.list.mixin.pug  
+  .divider
   h4.text-right.total
     strong
       | Итого: 
-      span#total #{inTotalWithDiscount}
+      span#total 
+        =inTotalWithDiscount+inTotalhistoryWithDiscount
     i.fa.fa-rub
   hr
-  .row
-    form.form-horizontal.col-sm-12(method='POST')
-      input(type='hidden', name='_csrf', value=_csrf)
-      .form-group
-        label.col-xs-12.control-label(for='comment') Комментарий к заказу
-        .col-xs-12
-          textarea.form-control(name='comment', id='comment', placeholder='Комментарий к заказу', rows='7', required, disabled=orderStatus?true:false) #{orderComment}
-          span.small
-            | В комментарии к заказу 
-            strong обязательно 
-            | укажите номер столика и всё то, что сочтёте нужным указать дополнительно.
-      
-      .form-group
-        .col-sm-12
-          button.col-sm-12.btn.btn-success(type='submit', disabled=orderStatus?true:false)
-            | Отправить заказ
+  form#send-order(method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
+    .form-group
+      label.form-label(for='comment') Комментарий к заказу
+      textarea.form-input(name='comment', id='comment', placeholder='Комментарий к заказу', rows='7', required) #{orderComment}
+      span.small
+        | В комментарии к заказу 
+        strong обязательно 
+        | укажите номер столика и всё то, что сочтёте нужным указать дополнительно.
+    
+    .form-group(style=(orderStatus == 4)?'display:none;':'display:block;')
+      button.btn.btn-primary(type='submit', style=(!orderList.length)?'display:none;':'display:block;')
+        | Отправить заказ
+      if !orderList.length
+        .col-xs-6
+          a#order-plz(href='/order/'+orderId+'/close').btn.btn-default.form-control Попросить счёт

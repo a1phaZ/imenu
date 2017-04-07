@@ -7,7 +7,22 @@ const orderSchema = new mongoose.Schema({
 		ref: 'User'
 	},
 	comment: {type: String},
+	orderPlz: {type: Boolean},
+	orderAdminList: [{
+		cartItemId:{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Product'
+		},
+		count: {type: Number}
+	}],
 	orderList: [{
+		cartItemId:{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Product'
+		},
+		count: {type: Number}
+	}],
+	historyList: [{
 		cartItemId:{
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Product'
@@ -17,7 +32,7 @@ const orderSchema = new mongoose.Schema({
 	sum: {type: Number},
 	status: {type: Number},
 	closed: {type: Boolean}
-});
+},{timestamps: true});
 
 const Order = mongoose.model('Order', orderSchema);
 

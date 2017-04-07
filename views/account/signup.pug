@@ -1,24 +1,20 @@
 extends ../layout
 
 block content
-  .page-header
-    h3#page-header Регистрация
-  form.form-horizontal(id='signup-form', method='POST')
+  header.text-center
+    h2#page-header Регистрация
+  form(id='signup-form', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
     .form-group
-      label.col-sm-3.control-label(for='email') Email
-      .col-sm-7
-        input.form-control(type='email', name='email', id='email', placeholder='Email', autofocus, required)
+      label.form-label(for='email') Email
+      input.form-input(type='email', name='email', id='email', placeholder='Email', autofocus, required)
     .form-group
-      label.col-sm-3.control-label(for='password') Пароль
-      .col-sm-7
-        input.form-control(type='password', name='password', id='password', placeholder='Пароль', required)
+      label.form-label(for='password') Пароль
+      input.form-input(type='password', name='password', id='password', placeholder='Пароль', required)
     .form-group
-      label.col-sm-3.control-label(for='confirmPassword') Подтвердите пароль
-      .col-sm-7
-        input.form-control(type='password', name='confirmPassword', id='confirmPassword', placeholder='Подтвердите пароль', required)
+      label.form-label(for='confirmPassword') Подтвердите пароль
+      input.form-input(type='password', name='confirmPassword', id='confirmPassword', placeholder='Подтвердите пароль', required)
     .form-group
-      .col-sm-offset-3.col-sm-7
-        button.btn.btn-success(type='submit')
-          i.fa.fa-user-plus
-          | Зарегистрироваться
+      button.btn.btn-success(type='submit')
+        i.fa.fa-user-plus
+        | Зарегистрироваться
