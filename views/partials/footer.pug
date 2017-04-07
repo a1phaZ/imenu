@@ -6,8 +6,23 @@ footer.bg-dark
   section.container(style="height: 200px;")
     .columns
       .column.col-2.hide-md
-      .column.col-2.col-md-3.col-sm-6
-      .column.col-2.col-md-3.col-sm-6
-      .column.col-2.col-md-3.col-sm-6
-      .column.col-2.col-md-3.col-sm-6
+      .column.col-8.col-md-12
+        .columns
+          .column.col-3.col-xl-4.col-lg-4.col-md-4.col-sm-6.col-xs-12.flex
+            .tile
+              .tile-icon
+                
+              tile-content
+                p.tile-title iMenu
+                p.tile-subtitle
+                  | Интерактивное меню для Вашего кафе. По всем вопросам обращаться по ссылкам: 
+                p
+                  a.mr-10.btn.btn-primary(href='https://vk.com/alpha_z')
+                    i.fa.fa-vk
+                  a.mr-10.btn.btn-primary(mailto='info@alphaz.ru')
+                    i.fa.fa-envelope-o
+                  a.btn.btn-primary(tel='+79082478208')
+                    i.fa.fa-phone
+          .column.col-3.col-xl-4.col-lg-4.col-md-4.col-sm-6.col-xs-12.flex
+          .column.col-3.col-xl-4.col-lg-4.col-md-4.col-sm-6.col-xs-12.flex
       .column.col-2.hide-md
