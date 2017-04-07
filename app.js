@@ -195,7 +195,12 @@ app.get('/my', passportConfig.isAuthenticated, orderController.getMyOrders);
 
 //Upload on S3
 app.get('/sign-s3', (req, res)=>{
-  const s3 = new aws.S3();
+  aws.config.update({
+    region: 'eu-central-1'
+  })
+  const s3 = new aws.S3({
+    apiVersion: '2006-03-01'
+  });
   const fileName = req.query['file-name'];
   const fileType = req.query['file-type'];
   const s3Params = {
@@ -213,7 +218,7 @@ app.get('/sign-s3', (req, res)=>{
     }
     const returnData = {
       signedRequest: data,
-      url: `https://${S3_BUCKET}.s3.amazonaws.com/${fileName}`
+      url: `https://${S3_BUCKET}.s3-eu-central-1.amazonaws.com/${fileName}`
     };
     res.write(JSON.stringify(returnData));
     res.end();
