@@ -8,12 +8,15 @@ block content
       h2#page-header #{productTitle}
     else 
       h2#page-header Добавить в категорию #{categoryTitle}
-
-  form(role='form', enctype='multipart/form-data', method='POST')
+      
+  input#file-input(type='file', accept="image/*")
+  img#preview(src=avatarUrl?avatarUrl:'/img/bg.png')
+  form(role='form', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
-    .form-group
-      label.form-label(for="imageFile") Изображение
-      input.form-input(type='file', class='btn btn-primary', name='imageFile', id='imageFile', accept="image/*")
+    input(type='hidden', id="avatar-url", name="avatarUrl", value=avatarUrl)
+    //- .form-group
+    //-   label.form-label(for="imageFile") Изображение
+    //-   input.form-input(type='file', class='btn btn-primary', name='imageFile', id='imageFile', accept="image/*")
     .form-group
       label.form-label(for='title') Название
       input.form-input(type='text', name='title', id='title', placeholder='Название', autofocus, required, value=productTitle, disabled=!isAdmin)

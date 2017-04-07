@@ -379,14 +379,16 @@ $(document).ready(function() {
 
   // S3 Amazon
   (()=>{
-    document.getElementById('file-input').onchange = () => {
-      const files = document.getElementById('file-input').files;
-      const file = files[0];
-      if (file == null){
-        return alert('No file selected.');
-      }
-      getSignedRequest(file);
-    };
+    if (document.getElementById('file-input')){
+      document.getElementById('file-input').onchange = () => {
+        const files = document.getElementById('file-input').files;
+        const file = files[0];
+        if (file == null){
+          return; //alert('No file selected.');
+        }
+        getSignedRequest(file);
+      };
+    }
   })();
 
   function getSignedRequest(file){
@@ -417,7 +419,7 @@ $(document).ready(function() {
         if(xhr.status === 200){
           console.log('uploaded');
           document.getElementById('preview').src = url;
-          document.getElementById('avatar-url').src = url;
+          document.getElementById('avatar-url').value = url;
         }
       }
     }

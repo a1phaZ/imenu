@@ -18,8 +18,6 @@ exports.getAllCategoryToRes = (req, res, next) =>{
 
 //GET /category
 exports.getCategoryList = (req, res) =>{
-	// let ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
-	// console.log(ip);
 	res.render('category/index', {
 		title: 'Список категорий',
 		description: 'IMenu - интерактивное меню для вашего кафе или ресторана.'
@@ -36,6 +34,7 @@ exports.getNewCategory = (req, res) =>{
 //POST /new
 exports.postNewCategory = (req, res, next) =>{
 	req.assert('title', 'Название не должно быть пустым').notEmpty();
+	console.log(req.body);
 	const errors = req.validationErrors();
 	if (errors){
 		req.flash('errors', errors);
@@ -44,12 +43,13 @@ exports.postNewCategory = (req, res, next) =>{
 	const category = new Category({
 		title: req.body.title,
 		description: req.body.description ? req.body.description : '',
-		logo: req.file ? req.file.filename : 'placeholder.jpg'
+		logo: req.body.avatarUrl ? req.body.avatarUrl : '/img/bg.png'
 	});
 	category.save(req.body.title, (err)=>{
+		console.log(category);
 		if (err) {return next(err);}
 		req.flash('success', {msg: 'Категория успешно создана'});
-		res.redirect('/category');
+		res.redirect('/');
 	});
 };
 
@@ -64,7 +64,8 @@ exports.getCategoryBySlug = (req, res, next) => {
 					title: 'Редактирование',
 					categoryTitle: category.title,
 					categoryDescription: category.description,
-					categorySlug: category.slug
+					categorySlug: category.slug,
+					avatarUrl: category.logo
 				});
 			} else {
 				const err = new Error();
@@ -92,8 +93,8 @@ exports.postCategoryBySlug = (req, res ,next) => {
 		.then((category)=>{
 			category.title = req.body.title;
 			category.description = req.body.description || '';
-			if (req.file){
-				category.logo      = req.file.filename;
+			if (req.body.avatarUrl){
+				category.logo      = req.body.avatarUrl;
 			}
 			category.save(req.body.title, (err)=>{
 				if (err) {return next(err);}

@@ -12,6 +12,6 @@ ul.docs-nav.nav
         | Категории
   li.nav-item.divider
 
-
-  for category in categoryList
-    +category-menu(category)
+  if categoryList
+    for category in categoryList
+      +category-menu(category)

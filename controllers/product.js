@@ -88,7 +88,7 @@ exports.postNewProduct = (req, res, next) =>{
 					price: req.body.price,
 					waiting: req.body.waiting,
 					discount:  req.body.discount || 0,
-					logo: req.file ? req.file.filename : 'placeholder.jpg'
+					logo: req.body.avatarUrl ? req.body.avatarUrl : '/img/bg.png'
 				});
 				product.save(req.body.title, (err)=>{
 					if (err) {return next(err);}
@@ -129,6 +129,7 @@ exports.getProductBySlug = (req, res, next) =>{
 								productPrice: product.price,
 								productWaiting: product.waiting,
 								productDiscount: product.discount,
+								productLogo: product.logo,
 								categoryTitle: category.title,
 								categorySlug: category.slug
 							});
@@ -182,8 +183,8 @@ exports.postProductBySlug = (req, res, next) =>{
 								product.price = req.body.price;
 								product.waiting = req.body.waiting;
 								product.discount = req.body.discount || 0 ;
-								if (req.file){
-									product.logo = req.file.filename;
+								if (req.body.avatarUrl){
+									product.logo = req.body.avatarUrl;
 								}
 								product.save(req.body.title, (err)=>{
 									if (err) {return next(err);}

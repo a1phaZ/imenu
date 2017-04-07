@@ -3,7 +3,7 @@ mixin category-list(category)
 		.card
 			.card-image
 				a(href='/category/'+category.slug)
-					img(src='/uploads/'+category.logo, class='img-responsive logo category-card-logo')
+					img(src=category.logo, class='img-responsive logo category-card-logo')
 			.card-header
 				.card-title #{category.title}
 				.card-subtitle #{category.description}

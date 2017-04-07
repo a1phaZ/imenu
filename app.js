@@ -15,18 +15,18 @@ const flash            = require('express-flash');
 const lusca            = require('lusca');
 const passport         = require('passport');
 const sass             = require('node-sass-middleware');
-const multer           = require('multer');
+//const multer           = require('multer');
 const aws              = require('aws-sdk');
 
-const upload = multer({ 
-  dest: path.join(__dirname, 'public/uploads'), 
-  fileFilter: function (req, file, cb) {
-    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
-        return cb(new Error('Только изображения разрешены к загрузке'));
-    }
-    cb(null, true);
-  }
-});
+// const upload = multer({ 
+//   dest: path.join(__dirname, 'public/uploads'), 
+//   fileFilter: function (req, file, cb) {
+//     if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+//         return cb(new Error('Только изображения разрешены к загрузке'));
+//     }
+//     cb(null, true);
+//   }
+// });
 
 dotenv.load({ path: '.env' });
 
@@ -90,12 +90,12 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-app.use(upload.single('imageFile'));
+//app.use(upload.single('imageFile'));
 app.use((req, res, next) => {
   // if (req.path === '/api/upload') {
   //   next();
   // } else {
-    lusca.csrf({cookie: true})(req, res, next);
+    lusca.csrf({cookie: false})(req, res, next);
   // }
 });
 app.use(lusca.xframe('SAMEORIGIN'));
