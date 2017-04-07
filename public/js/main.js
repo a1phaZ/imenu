@@ -409,7 +409,9 @@ $(document).ready(function() {
   function uploadFile(file, signedRequest, url){
     const xhr = new XMLHttpRequest();
     xhr.open('PUT', signedRequest);
+    console.log(xhr);
     xhr.onreadystatechange = () =>{
+      console.log(xhr.readyState);
       if(xhr.readyState === 4){
         if(xhr.status === 200){
           console.log('uploaded');
@@ -418,6 +420,7 @@ $(document).ready(function() {
         }
       }
     }
+    xhr.send(file);
   }
 
 });
