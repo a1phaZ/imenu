@@ -26,7 +26,7 @@ mixin order(order)
       .tile
         .tile-icon
           figure.avatar.avatar-lg
-            img(src='/uploads/'+order.cartItemId.logo)
+            img(src=order.cartItemId.logo)
         .tile-content
           .tile-title
             strong #{order.cartItemId.title} 
