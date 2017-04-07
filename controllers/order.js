@@ -368,6 +368,8 @@ exports.getMyOrders = (req, res, next) =>{
 				path: 'orderList.cartItemId'
 			},{
 				path: 'historyList.cartItemId'
+			},{
+				path: 'orderAdminList.cartItemId'
 			}]);
 		getOrderList
 			.then((orders) => {
