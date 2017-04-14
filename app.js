@@ -138,6 +138,9 @@ app.use(subdomain({
   whitelist: ['www', 'app'],
 }));
 
+/**
+* Placeholder for sub
+*/
 const subdomains = [
   'test',
   'test1',
@@ -145,17 +148,8 @@ const subdomains = [
   'test3'
 ];
 
-subdomains.forEach((sd)=>{
-  app.use(sd, express.static('public'));
-  // app.use(subdomain(sd, router));
-  app.get('/s/'+sd, categoryController.getCategoryList);
-});
-
-// app.use('/', index);
 //index page
 app.get('/', categoryController.getCategoryList);
-
-//app.use('/users', users);
 //State
 app.get('/state', stateContoller.getState);
 //Account
@@ -272,6 +266,32 @@ app.get('/auth/linkedin', passport.authenticate('linkedin', { state: 'SOME STATE
 app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRedirect: '/login' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
+
+/**
+* Subdomain routers
+**/
+subdomains.forEach((sd)=>{
+  app.use(sd, express.static('public'));
+});
+app.get('/s/:sd', categoryController.getCategoryList);
+app.get('/s/:sd/state', stateContoller.getState);
+//Account
+app.get('/s/:sd/login', userController.getLogin);
+app.post('/s/:sd/login', userController.postLogin);
+app.get('/s/:sd/logout', userController.logout);
+app.get('/s/:sd/forgot', userController.getForgot);
+app.post('/s/:sd/forgot', userController.postForgot);
+app.get('/s/:sd/reset/:token', userController.getReset);
+app.post('/s/:sd/reset/:token', userController.postReset);
+app.get('/s/:sd/account', passportConfig.isAuthenticated, userController.getAccount);
+app.post('/s/:sd/account/profile', passportConfig.isAuthenticated, userController.postUpdateProfile);
+app.post('/s/:sd/account/password', passportConfig.isAuthenticated, userController.postUpdatePassword);
+app.post('/s/:sd/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
+app.get('/s/:sd/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
+app.get('/s/:sd/signup', userController.getSignup);
+app.post('/s/:sd/signup', userController.postSignup);
+app.get('/s/:sd/convert', userController.getConvertToCompany);
+app.post('/s/:sd/convert', userController.postConvertToCompany);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
