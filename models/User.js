@@ -11,9 +11,9 @@ const userSchema = new mongoose.Schema({
   company             : {
     name : String,
     address : {
-      region : String,
-      city: String,
-      street: String
+			region: String,
+			city  : String,
+			street: String
     }
   },
   
