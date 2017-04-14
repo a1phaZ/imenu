@@ -15,8 +15,9 @@ const flash            = require('express-flash');
 const lusca            = require('lusca');
 const passport         = require('passport');
 const sass             = require('node-sass-middleware');
-//const multer           = require('multer');
+//const multer         = require('multer');
 const aws              = require('aws-sdk');
+const subdomain        = require('wildcard-subdomains');
 
 // const upload = multer({ 
 //   dest: path.join(__dirname, 'public/uploads'), 
@@ -37,8 +38,8 @@ const users              = require('./routes/users');
 const userController     = require('./controllers/user');
 const categoryController = require('./controllers/category');
 const productController  = require('./controllers/product');
-const orderController  = require('./controllers/order');
-const stateContoller = require('./controllers/state');
+const orderController    = require('./controllers/order');
+const stateContoller     = require('./controllers/state');
 
 /**
  * API keys and Passport configuration.
@@ -65,6 +66,12 @@ app.disable('x-powered-by');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+
+app.use(subdomain({
+  namespace: '_s',
+  whitelist: ['www']
+}));
+
 app.use(compression());
 app.use(sass({
   src: path.join(__dirname, 'public'),
@@ -139,7 +146,32 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
 // app.use('/', index);
 //index page
 app.get('/', categoryController.getCategoryList);
-app.use('/users', users);
+const subdomains = [
+  'test',
+  'test1',
+  'test2',
+  'test3'
+];
+
+subdomains.forEach((sd)=>{
+  app.get('/_s/'+sd, (req, res)=>{
+    res.end(
+      'Subdomains: ' +
+      JSON.stringify(req.subdomains) +
+      '\n' +
+      'Original Url: ' +
+      req.originalUrl +
+      '\n' +
+      'New Url: ' +
+      req.url +
+      '\n' +
+      'Query string: ' +
+      JSON.stringify(req.query)
+    )
+  });
+});
+
+//app.use('/users', users);
 //State
 app.get('/state', stateContoller.getState);
 //Account
@@ -256,7 +288,6 @@ app.get('/auth/linkedin', passport.authenticate('linkedin', { state: 'SOME STATE
 app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRedirect: '/login' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

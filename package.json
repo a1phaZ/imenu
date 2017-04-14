@@ -21,6 +21,7 @@
     "express": "~4.14.0",
     "express-flash": "0.0.2",
     "express-session": "^1.15.0",
+    "express-subdomain": "^1.0.5",
     "express-validator": "^3.1.2",
     "lusca": "^1.4.1",
     "mongoose": "^4.8.1",
@@ -43,7 +44,8 @@
     "request": "^2.79.0",
     "serve-favicon": "~2.3.0",
     "socket.io": "^1.7.3",
-    "transliteration": "^1.5.2"
+    "transliteration": "^1.5.2",
+    "wildcard-subdomains": "^1.1.0"
   },
   "main": "app.js",
   "engines": {
