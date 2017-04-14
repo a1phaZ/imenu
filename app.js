@@ -17,18 +17,8 @@ const passport         = require('passport');
 const sass             = require('node-sass-middleware');
 //const multer         = require('multer');
 const aws              = require('aws-sdk');
-// const subdomain        = require('wildcard-subdomains');
-const subdomain        = require('express-subdomain');
-
-// const upload = multer({ 
-//   dest: path.join(__dirname, 'public/uploads'), 
-//   fileFilter: function (req, file, cb) {
-//     if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
-//         return cb(new Error('Только изображения разрешены к загрузке'));
-//     }
-//     cb(null, true);
-//   }
-// });
+const subdomain        = require('wildcard-subdomains');
+// const subdomain        = require('express-subdomain');
 
 dotenv.load({ path: '.env' });
 
@@ -139,6 +129,27 @@ app.use((req, res, next)=>{
 });
 
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
+
+/**
+* Subdomains
+*/
+app.use(subdomain({
+  namespace: 's',
+  whitelist: ['www', 'app'],
+}));
+
+const subdomains = [
+  'test',
+  'test1',
+  'test2',
+  'test3'
+];
+
+subdomains.forEach((sd)=>{
+  app.use(sd, express.static('public'));
+  // app.use(subdomain(sd, router));
+  app.get('/s/'+sd, categoryController.getCategoryList);
+});
 
 // app.use('/', index);
 //index page
@@ -260,25 +271,6 @@ app.get('/auth/twitter/callback', passport.authenticate('twitter', { failureRedi
 app.get('/auth/linkedin', passport.authenticate('linkedin', { state: 'SOME STATE' }));
 app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRedirect: '/login' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
-});
-
-/**
-* Subdomains
-*/
-const subdomains = [
-  'test',
-  'test1',
-  'test2',
-  'test3'
-];
-
-var router = express.Router();
-
-router.get('/', categoryController.getCategoryList);
-
-subdomains.forEach((sd)=>{
-  app.use(subdomain(sd, express.static('public')));
-  app.use(subdomain(sd, router));
 });
 
 // catch 404 and forward to error handler
