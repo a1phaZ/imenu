@@ -18,20 +18,20 @@ passport.serializeUser((user, done)=>{
 });
 
 passport.deserializeUser((id, done)=>{
-	User
+	// User
+ //    .findById(id)
+ //    .exec((err, user)=>{
+ //      if (!user.company){
+ //        done(err, user);
+ //      } else {
+  User
     .findById(id)
+    .populate('company')
     .exec((err, user)=>{
-      if (!user.company){
-        done(err, user);
-      } else {
-        User
-          .findById(id)
-          .populate('company')
-          .exec((err, user)=>{
-            done(err, user);
-          });
-      }
+      done(err, user);
     });
+    //   }
+    // });
 });
 
 /**

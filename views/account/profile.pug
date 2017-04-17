@@ -4,11 +4,13 @@ block content
   header.text-center
     h2#page-header 
       | Информация профиля
-      if user.company.title
-        | |
-        small.label.label-success 
-          if user.company.url  
-            a(href='http://'+user.company.url) Компания #{user.company.title}
+      if user.company
+        if user.company.title
+          | |
+          small.label.label-success 
+            if user.company.url
+              //- Придумать как заменить протокол
+              a(href='http://'+user.company.url) Компания #{user.company.title}
   form(action='/account/profile', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
     .form-group
@@ -64,15 +66,38 @@ block content
   
   header.text-center
     h3 Конвертация профиля
-  form.form-horizontal
-    .form-group
-      //- if !user.company
-      a.btn.btn-primary(href='/convert', name='convert', id='convert') 
-        i.fa.fa-refresh
-        | Конвертировать
-      //- else 
-      //-   h5
-      //-     small.label.label-danger Конвертация пройдена
+  form
+    if !user.company
+      .form-group
+        a.btn.btn-primary(href='/convert', name='convert', id='convert') 
+          i.fa.fa-refresh
+          | Конвертировать
+    else 
+      h5
+        small.label.label-danger Конвертация пройдена
+      form
+        .form-group
+          label.form-label(for='company-name') Имя компании
+          input.form-input(type='text', id='company-name', name='title', placeholder='Имя компании', value=user.company.title ,required)
+        .form-group
+          label.form-label(for='company-decription') Имя компании
+          textarea.form-input(type='text', id='company-decription', name='description', placeholder='Описание компании', required) #{user.company.description}
+        .form-group
+          label.form-label(for='company-slug') Имя компании
+          input.form-input(type='text', id='company-slug', name='slug', placeholder='Имя короткое компании(только англ.)', value=user.company.slug,required)
+        .form-group
+          label.form-label(for='company-address') Адрес
+          ul#company-address.form-group
+            li
+              label.form-label(for='company-address-region') Регион
+              input.form-input(type='text', id='company-address-region', name='addressRegion', placeholder='Регион', value=user.company.address.region,required)
+            li
+              label.form-label(for='company-address-city') Город
+              input.form-input(type='text', id='company-address-city', name='addressCity', placeholder='Город', value=user.company.address.city,required)
+            li
+              label.form-label(for='company-address-street') Адрес
+              input.form-input(type='text', id='company-address-street', name='addressStreet', placeholder='Адрес', value=user.company.address.street,required)
+
 
 
   header.text-center

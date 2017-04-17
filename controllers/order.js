@@ -25,7 +25,8 @@ exports.getOrderOpenList = (req, res, next) =>{
 		.find({
 			status: {
 				$lt:4
-			}
+			}, 
+			companyName: req.subdomains[0]
 		})
 		.sort({status: 1})
 		.populate([{
@@ -58,7 +59,8 @@ exports.getOrderCloseList = (req, res, next) =>{
 		.find({
 			status: {
 				$gt:3
-			}
+			}, 
+			companyName: req.subdomains[0]
 		})
 		.sort({updatedAt: -1})
 		.populate([{
@@ -159,6 +161,7 @@ exports.postOrderAdd = (req, res, next) =>{
 			});
 	} else {
 		const order = new Order();
+		order.companyName = req.subdomains[0];
 		order.orderList.push({cartItemId: req.body.cartItemId, count: 1});
 		order.save((err)=>{
 			if (err) next(err);

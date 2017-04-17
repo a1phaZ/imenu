@@ -92,7 +92,7 @@ app.use(lusca.xssProtection(true));
 
 app.use((req, res, next) => {
   res.locals.user = req.user;
-  
+  console.log(req.user);
   next();
 });
 app.use((req, res, next) => {
