@@ -26,7 +26,7 @@ mixin order(order)
       .tile
         .tile-icon
           figure.avatar.avatar-lg
-            img(src='/uploads/'+order.cartItemId.logo)
+            img(src=order.cartItemId.logo)
         .tile-content
           .tile-title
             strong #{order.cartItemId.title} 
@@ -56,7 +56,10 @@ mixin order-modal(item)
       .modal-header
         a(href="#modals", class="btn btn-clear float-right", aria-label="Close")
         .modal-title 
+          span.inline-block
+            strong #{item.companyName}
           span.inline-block Заказ №#{item._id}
+
       .modal-body
         .content
           if item.orderAdminList.length

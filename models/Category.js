@@ -6,7 +6,8 @@ const categorySchema = new mongoose.Schema({
 	title      : {type: String, unique: true},
 	description: {type: String},
 	logo       : {type: String},
-	slug       : {type: String}
+	slug       : {type: String},
+	companyName: {type: String}
 },{timestamps: true});
 
 categorySchema.pre('save', function save(next, title, cb) {

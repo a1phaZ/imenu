@@ -6,6 +6,7 @@ const orderSchema = new mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User'
 	},
+	companyName: {type: String},
 	comment: {type: String},
 	orderPlz: {type: Boolean},
 	orderAdminList: [{

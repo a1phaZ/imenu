@@ -59,7 +59,20 @@ exports.getState = (req, res, next) =>{
 			.findOne({_id: req.query.order.id});
 		getOrder
 			.then((order)=>{
-				res.send(getOrderId(order));
+				if(order){
+					console.log(order);
+					if (order.companyName){
+						console.log(order.companyName);
+						if (order.companyName == req.subdomains[0]){
+							res.send(getOrderId(order));
+						}
+					}
+				} else {
+					res.send({
+						id:null,
+						count: null
+					})
+				}
 			})
 			.catch((err)=>{
 				next(err);
@@ -72,7 +85,20 @@ exports.getState = (req, res, next) =>{
 				.limit(1);
 			getOrderById
 				.then((order)=>{
-					res.send(getPersonalOrder(order));
+					if (order){
+						console.log(order);
+						if (order.companyName){
+							console.log(order.companyName);
+							if (order.companyName == req.subdomains[0]){
+								res.send(getPersonalOrder(order));
+							}
+						}
+					} else {
+						res.send({
+							id:null,
+							count: null
+						})
+					}
 				})
 				.catch((err)=>{
 					next(err);
