@@ -8,13 +8,9 @@ const userSchema = new mongoose.Schema({
   passwordResetToken  : String,
   passwordResetExpires: Date,
   
-  company             : {
-    name : String,
-    address : {
-			region: String,
-			city  : String,
-			street: String
-    }
+  company   : {
+    type     : mongoose.Schema.Types.ObjectId,
+    ref      : 'Company'
   },
   
   facebook            : String,

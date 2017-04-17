@@ -18,28 +18,42 @@ passport.serializeUser((user, done)=>{
 });
 
 passport.deserializeUser((id, done)=>{
-	User.findById(id, (err, user)=>{
-		done(err, user);
-	});
+	User
+    .findById(id)
+    .exec((err, user)=>{
+      if (!user.company){
+        done(err, user);
+      } else {
+        User
+          .findById(id)
+          .populate('company')
+          .exec((err, user)=>{
+            done(err, user);
+          });
+      }
+    });
 });
 
 /**
  * Авторизация email password
  */
 passport.use(new LocalStrategy({usernameField: 'email'}, (email, password, done)=>{
-  User.findOne({ email: email.toLowerCase() }, (err, user) => {
-    if (err) { return done(err); }
-    if (!user) {
-      return done(null, false, { msg: `Email ${email} not found.` });
-    }
-    user.comparePassword(password, (err, isMatch) => {
+  User
+    .findOne({ email: email.toLowerCase() })
+    .populate('company')
+    .exec((err, user) => {
       if (err) { return done(err); }
-      if (isMatch) {
-        return done(null, user);
+      if (!user) {
+        return done(null, false, { msg: `Email ${email} not found.` });
       }
-      return done(null, false, { msg: 'Invalid email or password.' });
+      user.comparePassword(password, (err, isMatch) => {
+        if (err) { return done(err); }
+        if (isMatch) {
+          return done(null, user);
+        }
+        return done(null, false, { msg: 'Invalid email or password.' });
+      });
     });
-  });
 }));
 
 /**

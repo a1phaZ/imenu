@@ -5,7 +5,7 @@ const Category = require('../models/Category');
  */
 exports.getAllCategoryToRes = (req, res, next) =>{
 	let getCategoryList = Category
-		.find();
+		.find({companyName: req.subdomains[0]});
 	getCategoryList
 		.then((categoryList) => {
 			res.locals.categoryList = categoryList;
@@ -34,7 +34,6 @@ exports.getNewCategory = (req, res) =>{
 //POST /new
 exports.postNewCategory = (req, res, next) =>{
 	req.assert('title', 'Название не должно быть пустым').notEmpty();
-	console.log(req.body);
 	const errors = req.validationErrors();
 	if (errors){
 		req.flash('errors', errors);
@@ -43,10 +42,10 @@ exports.postNewCategory = (req, res, next) =>{
 	const category = new Category({
 		title: req.body.title,
 		description: req.body.description ? req.body.description : '',
-		logo: req.body.avatarUrl ? req.body.avatarUrl : '/img/bg.png'
+		logo: req.body.avatarUrl ? req.body.avatarUrl : '/img/bg.png',
+		companyName: req.params.sd
 	});
 	category.save(req.body.title, (err)=>{
-		console.log(category);
 		if (err) {return next(err);}
 		req.flash('success', {msg: 'Категория успешно создана'});
 		res.redirect('/');
