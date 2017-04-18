@@ -135,16 +135,6 @@ app.use(subdomain({
   whitelist: ['www', 'app'],
 }));
 
-/**
-* Placeholder for sub
-*/
-const subdomains = [
-  'test',
-  'test1',
-  'test2',
-  'test3'
-];
-
 //index page
 app.get('/', categoryController.getCategoryList);
 //State
@@ -164,12 +154,6 @@ app.post('/account/delete', passportConfig.isAuthenticated, userController.postD
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
 app.get('/signup', userController.getSignup);
 app.post('/signup', userController.postSignup);
-
-// app.get('/contact', contactController.getContact);
-// app.post('/contact', contactController.postContact);
-
-
-
 
 /**
  * OAuth authentication routes. (Sign in)
@@ -206,9 +190,9 @@ app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRe
 /**
 * Subdomain routers
 **/
-subdomains.forEach((sd)=>{
-  app.use(sd, express.static('public'));
-});
+// subdomains.forEach((sd)=>{
+//   app.use(sd, express.static('public'));
+// });
 app.get('/s/:sd', categoryController.getCategoryList);
 app.get('/s/:sd/state', stateContoller.getState);
 //Account
@@ -251,8 +235,6 @@ app.post('/s/:sd/category/:slug/:productSlug', passportConfig.isAuthenticated, p
 app.post('/s/:sd/delete/:slug/:productSlug', passportConfig.isAuthenticated, productController.deleteProductBySlug);
 
 //Order
-// app.post('/order', orderController.getNewOrder);
-// app.get('/order/status', orderController.getOrderStatusById);
 app.post('/s/:sd/order/add', orderController.postOrderAdd);
 app.get('/s/:sd/order/:id', passportConfig.isAuthenticated, orderController.getOrder);
 app.post('/s/:sd/order/change', orderController.postOrderChange);

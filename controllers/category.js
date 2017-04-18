@@ -1,4 +1,5 @@
 const Category = require('../models/Category');
+const Company = require('../models/Company');
 
 /**
  * Middleware for menu
@@ -18,10 +19,32 @@ exports.getAllCategoryToRes = (req, res, next) =>{
 
 //GET /category
 exports.getCategoryList = (req, res) =>{
-	res.render('category/index', {
-		title: 'Список категорий',
-		description: 'IMenu - интерактивное меню для вашего кафе или ресторана.'
-	});
+	if (!req.subdomains[0] || req.subdomains[0]=='www'){
+		res.render('category/index', {
+			title: 'Список категорий',
+			description: 'IMenu - интерактивное меню для вашего кафе или ресторана.'
+		});	
+	} else {
+		let getCompanyBySlug = Company
+			.findOne({slug: req.subdomains[0]});
+		getCompanyBySlug
+			.then((company)=>{
+				if(company){
+					res.render('category/index', {
+						title: 'Список категорий',
+						description: 'IMenu - интерактивное меню для вашего кафе или ресторана.'
+					});
+				} else {
+					const err = new Error();
+					err.status = 404;
+					err.message = 'Компания не найдена';
+					next(err);
+				}
+			})
+			.catch((err)=>{
+				next(err);
+			});
+	}
 };
 
 //GET /new
