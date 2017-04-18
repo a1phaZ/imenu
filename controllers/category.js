@@ -20,31 +20,32 @@ exports.getAllCategoryToRes = (req, res, next) =>{
 //GET /category
 exports.getCategoryList = (req, res) =>{
 	if (!req.subdomains[0] || req.subdomains[0]=='www'){
-		res.render('category/index', {
+		return res.render('category/index', {
 			title: 'Список категорий',
 			description: 'IMenu - интерактивное меню для вашего кафе или ресторана.'
 		});	
-	} else {
-		let getCompanyBySlug = Company
-			.findOne({slug: req.subdomains[0]});
-		getCompanyBySlug
-			.then((company)=>{
-				if(company){
-					res.render('category/index', {
-						title: 'Список категорий',
-						description: 'IMenu - интерактивное меню для вашего кафе или ресторана.'
-					});
-				} else {
-					const err = new Error();
-					err.status = 404;
-					err.message = 'Компания не найдена';
-					next(err);
-				}
-			})
-			.catch((err)=>{
-				next(err);
-			});
-	}
+	} 
+	let getCompanyBySlug = Company
+		.findOne({slug: req.subdomains[0]});
+	getCompanyBySlug
+		.then((company)=>{
+			if(company){
+				return res.render('category/index', {
+					title: 'Список категорий',
+					description: 'IMenu - интерактивное меню для вашего кафе или ресторана.',
+					company: company
+				});
+			} else {
+				req.flash('errors', {msg: 'Запрашиваемой компании не существует или она была перемещена на другой адрес, попробуйте воспользоваться поиском.'});
+				return res.render('category/index', {
+					title: 'Список категорий',
+					description: 'IMenu - интерактивное меню для вашего кафе или ресторана.'
+				});
+			}
+		})
+		.catch((err)=>{
+			next(err);
+		});
 };
 
 //GET /new

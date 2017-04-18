@@ -1,8 +1,9 @@
 extends ../layout
 
 block content
-	header.text-center
-		h1#page-header Меню
+	if company
+		header.text-center
+			h1#page-header Меню
 
-	.columns
-		include category.list.mixin.pug
+		.columns
+			include category.list.mixin.pug

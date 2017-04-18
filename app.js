@@ -92,7 +92,6 @@ app.use(lusca.xssProtection(true));
 
 app.use((req, res, next) => {
   res.locals.user = req.user;
-  console.log(req.user);
   next();
 });
 app.use((req, res, next) => {
@@ -266,7 +265,7 @@ app.get('/s/:sd/sign-s3', (req, res)=>{
 
   s3.getSignedUrl('putObject', s3Params, (err, data)=>{
     if(err){
-      console.log(err);
+
       return res.send();
     }
     const returnData = {
