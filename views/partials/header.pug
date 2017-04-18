@@ -14,12 +14,12 @@ section.section.section-header.bg-gray
 
       section.navbar-section
         if !user
-          a.btn.btn-link(href='/login') 
-            i.fa.fa-sign-in
-            | Войти
-          a.btn.btn-link(href='/signup') 
-            i.fa.fa-user-plus
-            | Создать аккаунт
+          a.btn.btn-link.show-md(href='/signup') 
+            i.fa.fa-user-plus.show-sm.tooltip.tooltip-bottom.fa-lg(data-tooltip='Создать аккаунт')
+            span.hide-sm Создать аккаунт
+          a.btn.btn-link.show-md(href='/login') 
+            i.fa.fa-sign-in.show-sm.tooltip.tooltip-bottom.fa-lg(data-tooltip='Войти')
+            span.hide-sm Войти
         else
           a.btn.btn-link.show-md(href='#sidebar') 
             | Управление
