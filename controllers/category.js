@@ -50,7 +50,7 @@ exports.getCategoryList = (req, res) =>{
 
 //GET /new
 exports.getNewCategory = (req, res) =>{
-	res.render('category/category', {
+	res.status(200).render('category/category', {
 		title: 'Новая категория'
 	});
 };

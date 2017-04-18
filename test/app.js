@@ -25,34 +25,34 @@ describe('GET /signup', () => {
   });
 });
 
-describe('GET /category', () => {
+describe('GET subdomain /category', () => {
   it('should return 200 OK', (done) => {
     request(app)
-      .get('/category')
+      .get('/s/test/category')
       .expect(200, done);
   });
 });
 
-describe('GET /category/new', () => {
+describe('GET subdomain /new', () => {
   it('should return 200 OK', (done) => {
     request(app)
-      .get('/category/new')
+      .get('/s/test/new')
       .expect(200, done);
   });
 });
 
-describe('GET /product', () => {
+describe('GET subdomain /product', () => {
   it('should return 200 OK', (done) => {
     request(app)
-      .get('/product')
+      .get('/s/test/category/test')
       .expect(200, done);
   });
 });
 
-describe('GET /product/new', () => {
+describe('GET subdomain /product/new', () => {
   it('should return 200 OK', (done) => {
     request(app)
-      .get('/product/new')
+      .get('/s/test/category/test/new')
       .expect(200, done);
   });
 });
@@ -60,7 +60,7 @@ describe('GET /product/new', () => {
 describe('GET /random-url', () => {
   it('should return 404', (done) => {
     request(app)
-      .get('/reset')
+      .get('/random-url')
       .expect(404, done);
   });
 });
