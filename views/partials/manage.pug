@@ -21,8 +21,9 @@ ul.docs-nav.nav
       if !isAdmin
         if user.company
           if user.company.title
-            li.nav-item.divider
-              a(href='http://'+user.company.url) Моя компания
+            ul.nav
+              li.nav-item.divider
+                a(href='http://'+user.company.url) Моя компания
         li.nav-item.divider
         ul.nav
           li.nav-item(class=(title == 'Заказ №'+orderId) ? 'active' : undefined)
