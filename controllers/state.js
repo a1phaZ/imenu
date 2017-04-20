@@ -60,11 +60,14 @@ exports.getState = (req, res, next) =>{
 		getOrder
 			.then((order)=>{
 				if(order){
-					console.log(order);
 					if (order.companyName){
-						console.log(order.companyName);
 						if (order.companyName == req.subdomains[0]){
 							res.send(getOrderId(order));
+						} else {
+							res.send({
+								id:null,
+								count: null
+							})
 						}
 					}
 				} else {
@@ -86,11 +89,14 @@ exports.getState = (req, res, next) =>{
 			getOrderById
 				.then((order)=>{
 					if (order){
-						console.log(order);
 						if (order.companyName){
-							console.log(order.companyName);
 							if (order.companyName == req.subdomains[0]){
 								res.send(getPersonalOrder(order));
+							} else {
+								res.send({
+									id:null,
+									count: null
+								})
 							}
 						}
 					} else {

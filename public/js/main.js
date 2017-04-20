@@ -330,12 +330,12 @@ $(document).ready(function() {
   $(function(){
     var socket = io();
     $('#send-order').submit(function(){
-      socket.emit('notify', 'Новый заказ');
+      socket.emit('notify', {title: 'Новый заказ', host: window.location.host});
     });
     $('#order-plz').click(function(){
-      socket.emit('notify', 'Закрыть заказ');
+      socket.emit('notify', {title: 'Закрыть заказ', host: window.location.host});
     })
-    socket.on('notify', function (msg) {
+    socket.on('notify_'+window.location.host, function (msg) {
       var notify = $('.notify');
       var notifyAudio = $('#notify-audio')[0];
       if (notify){

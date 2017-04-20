@@ -23,8 +23,9 @@ var server = http.createServer(app);
 var io = require('socket.io')(server);
 io.on('connection', function (socket) {
   socket.on('notify', function (msg) {
-    io.emit('notify', msg);
-    console.log('message: '+msg);
+    io.emit('notify_'+msg.host, msg.title);
+    console.log(msg);
+    // io.emit('notify', msg.title);
   });
 });
 
