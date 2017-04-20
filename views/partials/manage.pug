@@ -19,6 +19,10 @@ ul.docs-nav.nav
         div.tile-content
           = user.profile.name || user.email || user.id
       if !isAdmin
+        if user.company
+          if user.company.title
+            li.nav-item.divider
+              a(href='http://'+user.company.url) Моя компания
         li.nav-item.divider
         ul.nav
           li.nav-item(class=(title == 'Заказ №'+orderId) ? 'active' : undefined)
