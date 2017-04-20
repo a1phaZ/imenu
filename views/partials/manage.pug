@@ -21,11 +21,11 @@ ul.docs-nav.nav
       if !isAdmin
         if user.company
           if user.company.title
-            li.nav-item.divider
+            li.nav-item.divider(data-content="Компания")
             ul.nav
               li.nav-item
                 a(href='http://'+user.company.url) Моя компания
-        li.nav-item.divider
+        li.nav-item.divider(data-content="Заказ")
         ul.nav
           li.nav-item(class=(title == 'Заказ №'+orderId) ? 'active' : undefined)
             a.order(href='/order')
