@@ -1,0 +1,46 @@
+mixin fill-menu-category(category)
+  li
+    a(href='/category/'+category.slug)
+      i.ti-receipt
+      p #{category.title}
+
+.sidebar(data-background-color='white', data-active-color='danger')
+  //
+    Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
+    Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
+  .sidebar-wrapper
+    .logo
+      a.simple-text(href='/')
+        | IMenu
+    ul.nav
+      if categoryList
+        for category in categoryList
+          +fill-menu-category(category)
+      li.active
+        a(href='dashboard.html')
+          i.ti-panel
+          p Dashboard
+      li
+        a(href='user.html')
+          i.ti-user
+          p User Profile
+      li
+        a(href='table.html')
+          i.ti-view-list-alt
+          p Table List
+      li
+        a(href='typography.html')
+          i.ti-text
+          p Typography
+      li
+        a(href='icons.html')
+          i.ti-pencil-alt2
+          p Icons
+      li
+        a(href='maps.html')
+          i.ti-map
+          p Maps
+      li
+        a(href='notifications.html')
+          i.ti-bell
+          p Notifications

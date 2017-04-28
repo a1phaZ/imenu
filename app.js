@@ -137,7 +137,8 @@ app.use(subdomain({
 }));
 
 //index page
-app.get('/', categoryController.getCategoryList);
+// app.get('/', categoryController.getCategoryList);
+app.use('/', index);
 //State
 app.get('/state', stateContoller.getState);
 //Account

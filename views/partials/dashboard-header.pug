@@ -1,0 +1,67 @@
+nav.navbar.navbar-default
+  .container-fluid
+    .navbar-header
+      button.navbar-toggle(type='button')
+        span.sr-only Toggle navigation
+        span.icon-bar.bar1
+        span.icon-bar.bar2
+        span.icon-bar.bar3
+      a.navbar-brand(href='#') Dashboard
+    .collapse.navbar-collapse
+      ul.nav.navbar-nav.navbar-right
+        li
+          a.dropdown-toggle(href='#', data-toggle='dropdown')
+            i.ti-panel
+            p Stats
+        li.dropdown
+          a.dropdown-toggle(href='#', data-toggle='dropdown')
+            i.ti-bell
+            p.notification 5
+            p Notifications
+            b.caret
+          ul.dropdown-menu
+            li
+              a(href='#') Notification 1
+            li
+              a(href='#') Notification 2
+            li
+              a(href='#') Notification 3
+            li
+              a(href='#') Notification 4
+            li
+              a(href='#') Another notification
+        li
+          a(href='#')
+            i.ti-settings
+            p Settings
+        li.dropdown
+          a.dropdown-toggle(href='#', data-toggle='dropdown')
+            if !user
+              i.ti-user
+              p Профиль
+            else
+              if user.profile.picture
+                img(src=user.profile.picture) 
+              else
+                img(src=user.gravatar(23)) 
+              p=  user.profile.name || user.email || user.id
+            b.caret
+          ul.dropdown-menu
+            if !user
+              li
+                a(href='/signup')
+                  i.ti-plus 
+                  | Создать аккаунт
+              li
+                a(href='/login')
+                  i.ti-key 
+                  | Войти
+            else
+              li
+                a(href='/account')
+                  i.ti-user
+                  | Мой аккаунт
+              li
+                a(href='/logout')
+                  i.ti-rocket
+                  | Выход

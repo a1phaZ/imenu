@@ -1,42 +1,33 @@
 extends ../layout
 
 block content
-  header.text-center
-    h2#page-header Войти
-  form(method='POST')
-    input(type='hidden', name='_csrf', value=_csrf)
-    .form-group
-      label.form-label(for='email') Email
-      input.form-input(type='email', name='email', id='email', placeholder='Email', autofocus, required)
-    .form-group
-      label.form-label(for='password') Пароль
-      input.form-input(type='password', name='password', id='password', placeholder='Пароль', required)
-    .form-group
-      button.btn.btn-primary(type='submit')
-        i.fa.fa-user
-        | Войти
-      a.btn.btn-link(href='/forgot') Забыли пароль?
-    if false
-      .divider.text-center(data-content="ИЛИ")
-      .form-group
-        a.btn.btn-block.btn-vk.btn-social(href='/auth/vkontakte')
-          i.fa.fa-vk
-          | Войти с VK
-        a.btn.btn-block.btn-facebook.btn-social(href='/auth/facebook')
-          i.fa.fa-facebook
-          | Войти с Facebook
-        a.btn.btn-block.btn-twitter.btn-social(href='/auth/twitter')
-          i.fa.fa-twitter
-          | Войти с Twitter
-        a.btn.btn-block.btn-google.btn-social(href='/auth/google')
-          i.fa.fa-google-plus
-          | Войти с Google
-        a.btn.btn-block.btn-github.btn-social(href='/auth/github')
-          i.fa.fa-github
-          | Войти с GitHub
-        a.btn.btn-block.btn-linkedin.btn-social(href='/auth/linkedin')
-          i.fa.fa-linkedin
-          | Войти с LinkedIn
-        a.btn.btn-block.btn-instagram.btn-social(href='/auth/instagram')
-          i.fa.fa-instagram
-          | Войти с Instagram
+  .content
+    .container-fluid
+      .row
+        .col-xs-12.col-sm-8.col-sm-offset-2
+          .card
+            .header
+              h4.title #{title}
+            .content
+              form(method='POST')
+                input(type='hidden', name='_csrf', value=_csrf)
+                .row
+                  .col-md-12
+                    .form-group
+                      label(for='email') Email
+                      input.form-control.border-input(type='email', name='email', id='email', placeholder='Email', autofocus, required)
+                .row
+                  .col-md-12
+                    .form-group
+                      label(for='password') Пароль
+                      input.form-control.border-input(type='password', name='password', id='password', placeholder='Пароль', required)
+                .row
+                  .col-md-12
+                    a(href='/forgot') Забыли пароль?
+                .row
+                  .col-md-12              
+                    .text-center
+                      button.btn.btn-info.btn-fill.btn-wd(type='submit')
+                        i.ti-key 
+                        | Войти
+                .clearfix

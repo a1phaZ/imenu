@@ -1,174 +1,148 @@
 extends ../layout
 
 block content
-  header.text-center
-    h2#page-header 
-      | Информация профиля
-      if user.company
-        if user.company.title
-          | |
-          small.label.label-success 
-            if user.company.url
-              //- Придумать как заменить протокол
-              a(href='http://'+user.company.url) Компания #{user.company.title}
-  form(action='/account/profile', method='POST')
-    input(type='hidden', name='_csrf', value=_csrf)
-    .form-group
-      label.form-label(for='email') Email
-      input.form-input(type='email', name='email', id='email', value=user.email)
-    .form-group
-      label.form-label(for='name') Имя
-      input.form-input(type='text', name='name', id='name', value=user.profile.name)
-    .form-group
-      label.form-label Пол
-      label.form-radio
-        input(type='radio', checked=user.profile.gender=='male', name='gender', value='male', data-toggle='radio')
-        i.form-icon 
-        | Муж.
-      label.form-radio
-        input(type='radio', checked=user.profile.gender=='female', name='gender', value='female', data-toggle='radio')
-        i.form-icon 
-        | Жен.
-      label.form-radio
-        input(type='radio', checked=user.profile.gender=='other', name='gender', value='other', data-toggle='radio')
-        i.form-icon 
-        | Другой
-    .form-group
-      label.form-label(for='location') Местоположение
-      input.form-input(type='text', name='location', id='location', value=user.profile.location)
-    .form-group
-      label.form-label(for='website') Web-сайт
-      input.form-input(type='text', name='website', id='website', value=user.profile.website)
-    .form-group
-      label.form-label Gravatar
-      img(src=user.gravatar(), class='profile', width='100', height='100')
-    .form-group
-      button.btn.btn.btn-primary(type='submit')
-        i.fa.fa-pencil
-        | Обновить профиль
-
-  header.text-center
-    h3 Изменить пароль
-
-  form(action='/account/password', method='POST')
-    input(type='hidden', name='_csrf', value=_csrf)
-    .form-group
-      label.form-label(for='password') Новый пароль
-      input.form-input(type='password', name='password', id='password')
-    .form-group
-      label.form-label(for='confirmPassword') Подтвердить пароль
-      input.form-input(type='password', name='confirmPassword', id='confirmPassword')
-    .form-group
-      button.btn.btn-primary(type='submit')
-        i.fa.fa-lock
-        | Изменить пароль
-
-  
-  header.text-center
-    h3 Конвертация профиля
-  form
-    if !user.company
-      .form-group
-        a.btn.btn-primary(href='/convert', name='convert', id='convert') 
-          i.fa.fa-refresh
-          | Конвертировать
-    else 
-      h5
-        small.label.label-danger Конвертация пройдена
-      form
-        .form-group
-          label.form-label(for='company-name') Имя компании
-          input.form-input(type='text', id='company-name', name='title', placeholder='Имя компании', value=user.company.title ,required)
-        .form-group
-          label.form-label(for='company-decription') Имя компании
-          textarea.form-input(type='text', id='company-decription', name='description', placeholder='Описание компании', required) #{user.company.description}
-        .form-group
-          label.form-label(for='company-slug') Имя компании
-          input.form-input(type='text', id='company-slug', name='slug', placeholder='Имя короткое компании(только англ.)', value=user.company.slug,required)
-        .form-group
-          label.form-label(for='company-address') Адрес
-          ul#company-address.form-group
-            li
-              label.form-label(for='company-address-region') Регион
-              input.form-input(type='text', id='company-address-region', name='addressRegion', placeholder='Регион', value=user.company.address.region,required)
-            li
-              label.form-label(for='company-address-city') Город
-              input.form-input(type='text', id='company-address-city', name='addressCity', placeholder='Город', value=user.company.address.city,required)
-            li
-              label.form-label(for='company-address-street') Адрес
-              input.form-input(type='text', id='company-address-street', name='addressStreet', placeholder='Адрес', value=user.company.address.street,required)
-
-
-
-  header.text-center
-    h3 Удалить аккаунт
-
-  form(action='/account/delete', method='POST')
-    .form-group
-      mark Вы можете удалить аккаунт, но это действие не обратимо
-    .form-group
-      input(type='hidden', name='_csrf', value=_csrf)
-      button.btn.btn-danger(type='submit')
-        i.fa.fa-trash
-        | Удалить мой аккаунт
-  if false
-    header.text-center
-      h3 Привязать аккаунты
-    .form
-      .form-group
-        if user.vkontakte
-          a.btn.btn-danger.btn-block.btn-vk.btn-social(href='/account/unlink/vkontakte') 
-            i.fa.fa-minus
-            i.fa.fa-vk
-        else
-          a.btn.btn-primary.btn-block.btn-vk.btn-social(href='/auth/vkontakte') 
-            i.fa.fa-plus
-            i.fa.fa-vk
-        if user.instagram
-          a.btn.btn-danger.btn-block.btn-vk.btn-social(href='/account/unlink/instagram')
-            i.fa.fa-minus
-            i.fa.fa-instagram
-        else
-          a.btn.btn-primary.btn-block.btn-vk.btn-social(href='/auth/instagram')
-            i.fa.fa-plus
-            i.fa.fa-instagram
-        if user.google
-          a.btn.btn-danger.btn-block.btn-vk.btn-social(href='/account/unlink/google')
-            i.fa.fa-minus
-            i.fa.fa-google
-        else
-          a.btn.btn-primary.btn-block.btn-vk.btn-social(href='/auth/google')
-            i.fa.fa-plus
-            i.fa.fa-google
-        if user.facebook
-          a.btn.btn-danger.btn-block.btn-vk.btn-social(href='/account/unlink/facebook')
-            i.fa.fa-minus
-            i.fa.fa-facebook
-        else
-          a.btn.btn-primary.btn-block.btn-vk.btn-social(href='/auth/facebook')
-            i.fa.fa-plus
-            i.fa.fa-facebook
-        if user.twitter
-          a.btn.btn-danger.btn-block.btn-vk.btn-social(href='/account/unlink/twitter')
-            i.fa.fa-minus
-            i.fa.fa-twitter
-        else
-          a.btn.btn-primary.btn-block.btn-vk.btn-social(href='/auth/twitter')
-            i.fa.fa-plus
-            i.fa.fa-twitter
-        if user.github
-          a.btn.btn-danger.btn-block.btn-vk.btn-social(href='/account/unlink/github')
-            i.fa.fa-minus
-            i.fa.fa-github
-        else
-          a.btn.btn-primary.btn-block.btn-vk.btn-social(href='/auth/github')
-            i.fa.fa-plus
-            i.fa.fa-github
-        if user.linkedin
-          a.btn.btn-danger.btn-block.btn-vk.btn-social(href='/account/unlink/linkedin')
-            i.fa.fa-minus
-            i.fa.fa-linkedin
-        else
-          a.btn.btn-primary.btn-block.btn-vk.btn-social(href='/auth/linkedin')
-            i.fa.fa-plus
-            i.fa.fa-linkedin
+  .content
+    .container-fluid
+      .row
+        .col-lg-4.col-md-5
+          .card.card-user
+            .image
+              img(src='assets/img/background.jpg', alt='...')
+            .content
+              .author
+                if user.profile.picture
+                  img.avatar.border-white(src=user.profile.picture) 
+                else
+                  img.avatar.border-white(src=user.gravatar(100))
+                h4.title
+                  = user.profile.name || user.email || user.id
+                  br
+                  if user.company.url
+                    a(href='http://'+user.company.url) 
+                      small ##{user.company.title}
+              p.description.text-center
+                | #{user.company.address.region}
+                br
+                | #{user.company.address.city}
+                br
+                | #{user.company.address.street}
+            hr
+            .text-center
+              .row
+                .col-md-3.col-md-offset-1
+                  h5
+                    | 12
+                    br
+                    small Files
+                .col-md-4
+                  h5
+                    | 2GB
+                    br
+                    small Used
+                .col-md-3
+                  h5
+                    | 24,6$
+                    br
+                    small Spent
+          .card
+            .header
+              h4.title Team Members
+            .content
+              ul.list-unstyled.team-members
+                li
+                  .row
+                    .col-xs-3
+                      .avatar
+                        img.img-circle.img-no-padding.img-responsive(src='assets/img/faces/face-0.jpg', alt='Circle Image')
+                    .col-xs-6
+                      | DJ Khaled
+                      br
+                      span.text-muted
+                        small Offline
+                    .col-xs-3.text-right
+                      btn.btn.btn-sm.btn-success.btn-icon
+                        i.fa.fa-envelope
+                li
+                  .row
+                    .col-xs-3
+                      .avatar
+                        img.img-circle.img-no-padding.img-responsive(src='assets/img/faces/face-1.jpg', alt='Circle Image')
+                    .col-xs-6
+                      | Creative Tim
+                      br
+                      span.text-success
+                        small Available
+                    .col-xs-3.text-right
+                      btn.btn.btn-sm.btn-success.btn-icon
+                        i.fa.fa-envelope
+                li
+                  .row
+                    .col-xs-3
+                      .avatar
+                        img.img-circle.img-no-padding.img-responsive(src='assets/img/faces/face-3.jpg', alt='Circle Image')
+                    .col-xs-6
+                      | Flume
+                      br
+                      span.text-danger
+                        small Busy
+                    .col-xs-3.text-right
+                      btn.btn.btn-sm.btn-success.btn-icon
+                        i.fa.fa-envelope
+        .col-lg-8.col-md-7
+          .card
+            .header
+              h4.title #{title}
+            .content
+              form
+                .row
+                  .col-md-5
+                    .form-group
+                      label Company
+                      input.form-control.border-input(type='text', disabled='', placeholder='Company', value='Creative Code Inc.')
+                  .col-md-3
+                    .form-group
+                      label Username
+                      input.form-control.border-input(type='text', placeholder='Username', value='michael23')
+                  .col-md-4
+                    .form-group
+                      label(for='exampleInputEmail1') Email address
+                      input.form-control.border-input(type='email', placeholder='Email')
+                .row
+                  .col-md-6
+                    .form-group
+                      label First Name
+                      input.form-control.border-input(type='text', placeholder='Company', value='Chet')
+                  .col-md-6
+                    .form-group
+                      label Last Name
+                      input.form-control.border-input(type='text', placeholder='Last Name', value='Faker')
+                .row
+                  .col-md-12
+                    .form-group
+                      label Address
+                      input.form-control.border-input(type='text', placeholder='Home Address', value='Melbourne, Australia')
+                .row
+                  .col-md-4
+                    .form-group
+                      label City
+                      input.form-control.border-input(type='text', placeholder='City', value='Melbourne')
+                  .col-md-4
+                    .form-group
+                      label Country
+                      input.form-control.border-input(type='text', placeholder='Country', value='Australia')
+                  .col-md-4
+                    .form-group
+                      label Postal Code
+                      input.form-control.border-input(type='number', placeholder='ZIP Code')
+                .row
+                  .col-md-12
+                    .form-group
+                      label About Me
+                      textarea.form-control.border-input(rows='5', placeholder='Here can be your description', value='Mike')
+                        | Oh so, your weak rhyme
+                        | You doubt I'll bother, reading into it
+                        | I'll probably won't, left to my own devices
+                        | But that's the difference in our opinions.
+                .text-center
+                  button.btn.btn-info.btn-fill.btn-wd(type='submit') Update Profile
+                .clearfix
