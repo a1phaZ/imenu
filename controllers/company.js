@@ -22,6 +22,12 @@ exports.getNewCompany = (req, res, next) =>{
  */
 exports.postNewCompany = (req, res, next) =>{
 	req.assert('title', 'Название не должно быть пустым').notEmpty();
+	req.assert('description', 'Описание не должно быть пустым').notEmpty();
+	req.assert('slug', 'Слаг не должно быть пустым').notEmpty();
+	req.assert('slug', 'Только цифры и английские буквы доступны для ввода').equals(/^[a-zA-Z0-9]+$/);
+	req.assert('region', 'Регион не должен быть пустым').notEmpty();
+	req.assert('city', 'Город не должен быть пустым').notEmpty();
+	req.assert('street', 'Адрес не должен быть пустым').notEmpty();
 	const errors = req.validationErrors();
 	if (errors){
 		req.flash('errors', errors);
