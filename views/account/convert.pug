@@ -48,13 +48,29 @@ block content
                 .row
                   .col-md-12
                     .form-group
-                      label(for='company-decription') Имя компании
-                      textarea.form-control.border-input(type='text', id='company-decription', name='description', placeholder='Описание компании', required)
+                      label(for='company-decription') Описание компании
+                      textarea.form-control.border-input(type='text', rows='7', id='company-decription', name='description', placeholder='Описание компании', required)
                 .row
                   .col-md-12
-                    .form-group
-                      label(for='company-slug') Имя компании
-                      input.form-control.border-input(type='text', id='company-slug', name='slug', placeholder='Имя короткое компании(только англ.)', required)
+                    .form-group#slug
+                      label(for='company-slug') Короткое имя компании
+                      br
+                      small#slug-error-message.alert-danger(style='display: none;') Только цифры и английские буквы доступны для ввода.
+                      input.form-control.border-input(type='text', id='company-slug', name='slug', placeholder='Короткое имя компании(только англ.)', pattern="[a-zA-Z]" required)
+                    script.
+                      var slug = document.getElementById('company-slug');
+                      slug.addEventListener('input', function(){
+                        var val = this.value;
+                        var re = new RegExp('^[a-zA-Z0-9]+$', 'gi');
+                        if(re.test(val)){
+                          document.getElementById('slug-error-message').style = 'display: none;';
+                          document.getElementById('slug').classList.remove('has-error', 'has-feedback');
+                        } else {
+                          document.getElementById('slug-error-message').style = 'display: block; background-color: #fff';
+                          document.getElementById('slug').classList.add('has-error', 'has-feedback');
+                          this.value = val.slice(0, -1);
+                        }
+                      });
                 .row
                   .col-md-12
                     .form-group
@@ -70,7 +86,6 @@ block content
                     .form-group
                       label(for='company-address-city') Город
                       input.form-control.border-input(type='text', id='company-address-city', name='addressCity', placeholder='Город', required)
-                .row
                   .col-md-6
                     .form-group
                       label(for='company-address-region') Регион
