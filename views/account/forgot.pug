@@ -1,16 +1,25 @@
 extends ../layout
 
 block content
-  header.text-center
-    h2#page-header Забыли пароль?
-
-  form(method='POST')
-    input(type='hidden', name='_csrf', value=_csrf)
-    .form-group
-      p Введите Ваш адрес электронной почты и мы вышлем Вам инструкции для сброса пароля.
-      label.form-label(for='email') Email
-      input.form-input(type='email', name='email', id='email', placeholder='Email', autofocus, required)
-    .form-group
-      button.btn.btn-primary(type='submit')
-        i.fa.fa-key
-        | Сбросить пароль
+  .content
+    .container-fluid
+      .row
+        .col-xs-12.col-sm-8.col-sm-offset-2
+          .card
+            .header
+              h4.title #{title}
+            .content
+              form(id='forgot-form', method='POST')
+                input(type='hidden', name='_csrf', value=_csrf)
+                .row
+                  .col-md-12
+                    .form-group
+                      p Введите Ваш адрес электронной почты и мы вышлем Вам инструкции для сброса пароля.
+                      label(for='email') Email
+                      input.form-control.border-input(type='email', name='email', id='email', placeholder='Email', autofocus, required)
+                .row
+                  .col-md-12
+                    .text-center
+                      button.btn.btn-primary(type='submit')
+                        i.ti-key
+                        | Сбросить пароль
