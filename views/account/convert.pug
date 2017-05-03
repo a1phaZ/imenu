@@ -1,62 +1,82 @@
 extends ../layout
 
 block content
-  header.text-center
-    h2#page-header #{title}
+  .content
+    .container-fluid
+      .row
+        .col-xs-12.col-sm-8.col-sm-offset-2
+          .card
+            .header
+              h4.title #{title}
+            .content
+              form(method="POST")
+                input(type='hidden', name='_csrf', value=_csrf)
+                input#hostUrl(type='hidden', name='hostUrl')
+                script.
+                  function extractHostname(url) {
+                    var hostname;
+                    //find & remove protocol (http, ftp, etc.) and get the hostname
+                    if (url.indexOf("://") > -1) {
+                        hostname = url.split('/')[2];
+                    }
+                    else {
+                        hostname = url.split('/')[0];
+                    }
 
-  form(method="POST")
-    input(type='hidden', name='_csrf', value=_csrf)
-    input#hostUrl(type='hidden', name='hostUrl')
-    script.
-      function extractHostname(url) {
-        var hostname;
-        //find & remove protocol (http, ftp, etc.) and get the hostname
-        if (url.indexOf("://") > -1) {
-            hostname = url.split('/')[2];
-        }
-        else {
-            hostname = url.split('/')[0];
-        }
+                    //find & remove port number
+                    //hostname = hostname.split(':')[0];
 
-        //find & remove port number
-        //hostname = hostname.split(':')[0];
+                    return hostname;
+                  }
+                  function extractRootDomain(url) {
+                    var domain = extractHostname(url),
+                        splitArr = domain.split('.'),
+                        arrLen = splitArr.length;
 
-        return hostname;
-      }
-      function extractRootDomain(url) {
-        var domain = extractHostname(url),
-            splitArr = domain.split('.'),
-            arrLen = splitArr.length;
+                    //extracting the root domain here
+                    if (arrLen > 2) {
+                        domain = splitArr[arrLen - 2] + '.' + splitArr[arrLen - 1];
+                    }
+                    return domain;
+                  }
+                  document.getElementById('hostUrl').value=extractRootDomain(window.location.host);
+                .row
+                  .col-md-12
+                    .form-group
+                      label(for='company-name') Имя компании
+                      input.form-control.border-input(type='text', id='company-name', name='title', placeholder='Имя компании', autofocus, required)
+                .row
+                  .col-md-12
+                    .form-group
+                      label(for='company-decription') Имя компании
+                      textarea.form-control.border-input(type='text', id='company-decription', name='description', placeholder='Описание компании', required)
+                .row
+                  .col-md-12
+                    .form-group
+                      label(for='company-slug') Имя компании
+                      input.form-control.border-input(type='text', id='company-slug', name='slug', placeholder='Имя короткое компании(только англ.)', required)
+                .row
+                  .col-md-12
+                    .form-group
+                      label(for='company-address') Адрес
 
-        //extracting the root domain here
-        if (arrLen > 2) {
-            domain = splitArr[arrLen - 2] + '.' + splitArr[arrLen - 1];
-        }
-        return domain;
-      }
-      document.getElementById('hostUrl').value=extractRootDomain(window.location.host);
-
-    .form-group
-      label.form-label(for='company-name') Имя компании
-      input.form-input(type='text', id='company-name', name='title', placeholder='Имя компании', autofocus, required)
-    .form-group
-      label.form-label(for='company-decription') Имя компании
-      textarea.form-input(type='text', id='company-decription', name='description', placeholder='Описание компании', required)
-    .form-group
-      label.form-label(for='company-slug') Имя компании
-      input.form-input(type='text', id='company-slug', name='slug', placeholder='Имя короткое компании(только англ.)', required)
-    .form-group
-      label.form-label(for='company-address') Адрес
-      ul#company-address.form-group
-        li
-          label.form-label(for='company-address-region') Регион
-          input.form-input(type='text', id='company-address-region', name='addressRegion', placeholder='Регион', required)
-        li
-          label.form-label(for='company-address-city') Город
-          input.form-input(type='text', id='company-address-city', name='addressCity', placeholder='Город', required)
-        li
-          label.form-label(for='company-address-street') Адрес
-          input.form-input(type='text', id='company-address-street', name='addressStreet', placeholder='Адрес', required)
-    .form-group
-      button.btn.btn-primary(type='submit') Конвертировать
-      a.btn.btn-danger(href='/account') Отмена
+                .row
+                  .col-md-12
+                    .form-group
+                      label(for='company-address-street') Адрес
+                      input.form-control.border-input(type='text', id='company-address-street', name='addressStreet', placeholder='Адрес', required)
+                .row
+                  .col-md-6
+                    .form-group
+                      label(for='company-address-city') Город
+                      input.form-control.border-input(type='text', id='company-address-city', name='addressCity', placeholder='Город', required)
+                .row
+                  .col-md-6
+                    .form-group
+                      label(for='company-address-region') Регион
+                      input.form-control.border-input(type='text', id='company-address-region', name='addressRegion', placeholder='Регион', required)
+                .row
+                  .col-md-12
+                    .text-center
+                      button.btn.btn-primary(type='submit') Конвертировать
+                      a.btn.btn-danger(href='/account') Отмена
