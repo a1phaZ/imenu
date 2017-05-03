@@ -1,20 +1,35 @@
 extends ../layout
 
 block content
-  header.text-center
-    h2#page-header Регистрация
-  form(id='signup-form', method='POST')
-    input(type='hidden', name='_csrf', value=_csrf)
-    .form-group
-      label.form-label(for='email') Email
-      input.form-input(type='email', name='email', id='email', placeholder='Email', autofocus, required)
-    .form-group
-      label.form-label(for='password') Пароль
-      input.form-input(type='password', name='password', id='password', placeholder='Пароль', required)
-    .form-group
-      label.form-label(for='confirmPassword') Подтвердите пароль
-      input.form-input(type='password', name='confirmPassword', id='confirmPassword', placeholder='Подтвердите пароль', required)
-    .form-group
-      button.btn.btn-success(type='submit')
-        i.fa.fa-user-plus
-        | Зарегистрироваться
+  .content
+    .container-fluid
+      .row
+        .col-xs-12.col-sm-8.col-sm-offset-2
+          .card
+            .header
+              h4.title #{title}
+            .content
+              form(id='signup-form', method='POST')
+                input(type='hidden', name='_csrf', value=_csrf)
+                .row
+                  .col-md-12
+                    .form-group
+                      label(for='email') Email
+                      input.form-control.border-input(type='email', name='email', id='email', placeholder='Email', autofocus, required)
+                .row
+                  .col-md-12
+                    .form-group
+                      label(for='password') Пароль
+                      input.form-control.border-input(type='password', name='password', id='password', placeholder='Пароль', required)
+                .row
+                  .col-md-12
+                    .form-group
+                      label(for='confirmPassword') Подтвердите пароль
+                      input.form-control.border-input(type='password', name='confirmPassword', id='confirmPassword', placeholder='Подтвердите пароль', required)
+                .row
+                  .col-md-12
+                    .text-center
+                      button.btn.btn-success(type='submit')
+                        i.ti-check
+                        | Зарегистрироваться
+                .clearfix
