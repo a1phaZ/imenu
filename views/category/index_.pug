@@ -1,0 +1,9 @@
+extends ../layout
+
+block content
+	if company
+		header.text-center
+			h1#page-header Меню
+
+		.columns
+			include category.list.mixin.pug

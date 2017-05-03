@@ -21,7 +21,7 @@ exports.getAllCategoryToRes = (req, res, next) =>{
 exports.getCategoryList = (req, res) =>{
 	if (!req.subdomains[0] || req.subdomains[0]=='www'){
 		return res.render('index', {
-			title: 'Список категорий',
+			title: 'IMenu',
 			description: 'IMenu - интерактивное меню для вашего кафе или ресторана.'
 		});	
 	} 
@@ -30,7 +30,7 @@ exports.getCategoryList = (req, res) =>{
 	getCompanyBySlug
 		.then((company)=>{
 			if(company){
-				return res.render('index', {
+				return res.render('category/index', {
 					title: 'Список категорий',
 					description: 'IMenu - интерактивное меню для вашего кафе или ресторана.',
 					company: company
@@ -38,7 +38,7 @@ exports.getCategoryList = (req, res) =>{
 			} else {
 				req.flash('errors', {msg: 'Запрашиваемой компании не существует или она была перемещена на другой адрес, попробуйте воспользоваться поиском.'});
 				return res.render('index', {
-					title: 'Список категорий',
+					title: 'IMenu',
 					description: 'IMenu - интерактивное меню для вашего кафе или ресторана.'
 				});
 			}
