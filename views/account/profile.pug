@@ -17,15 +17,17 @@ block content
                 h4.title
                   = user.profile.name || user.email || user.id
                   br
-                  if user.company.url
-                    a(href='http://'+user.company.url) 
-                      small ##{user.company.title}
-              p.description.text-center
-                | #{user.company.address.region}
-                br
-                | #{user.company.address.city}
-                br
-                | #{user.company.address.street}
+                  if user.company
+                    if user.company.url
+                      a(href='http://'+user.company.url) 
+                        small ##{user.company.title}
+              if user.company
+                p.description.text-center
+                  | #{user.company.address.region}
+                  br
+                  | #{user.company.address.city}
+                  br
+                  | #{user.company.address.street}
 
               form(action='/account/delete', method='POST')
                 .text-center
