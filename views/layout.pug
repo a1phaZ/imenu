@@ -10,17 +10,17 @@ html(lang='ru')
     meta(name='viewport', content='width=device-width')
     meta(name='csrf-token', content=_csrf)
     // Bootstrap core CSS
-    link(href='assets/css/bootstrap.min.css', rel='stylesheet')
+    link(href='/assets/css/bootstrap.min.css', rel='stylesheet')
     // Animation library for notifications
-    link(href='assets/css/animate.min.css', rel='stylesheet')
+    link(href='/assets/css/animate.min.css', rel='stylesheet')
     // Paper Dashboard core CSS
-    link(href='assets/css/paper-dashboard.css', rel='stylesheet')
+    link(href='/assets/css/paper-dashboard.css', rel='stylesheet')
     // CSS for Demo Purpose, don't include it in your project
-    link(href='assets/css/demo.css', rel='stylesheet')
+    link(href='/assets/css/demo.css', rel='stylesheet')
     // Fonts and icons
     link(href='http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', rel='stylesheet')
     link(href='https://fonts.googleapis.com/css?family=Muli:400,300', rel='stylesheet', type='text/css')
-    link(href='assets/css/themify-icons.css', rel='stylesheet')
+    link(href='/assets/css/themify-icons.css', rel='stylesheet')
     link(href='/css/styles.css', rel='stylesheet')
   body
     .wrapper
@@ -30,20 +30,20 @@ html(lang='ru')
         block content
 
   // Core JS Files
-  script(src='assets/js/jquery-1.10.2.js', type='text/javascript')
-  script(src='assets/js/bootstrap.min.js', type='text/javascript')
+  script(src='/assets/js/jquery-1.10.2.js', type='text/javascript')
+  script(src='/assets/js/bootstrap.min.js', type='text/javascript')
   // Checkbox, Radio & Switch Plugins
   //- script(src='assets/js/bootstrap-checkbox-radio.js')
   // Charts Plugin
-  script(src='assets/js/chartist.min.js')
+  script(src='/assets/js/chartist.min.js')
   // Notifications Plugin
-  script(src='assets/js/bootstrap-notify.js')
+  script(src='/assets/js/bootstrap-notify.js')
   // Google Maps Plugin
   script(type='text/javascript', src='https://maps.googleapis.com/maps/api/js')
   // Paper Dashboard Core javascript and methods for Demo purpose
-  script(src='assets/js/paper-dashboard.js')
+  script(src='/assets/js/paper-dashboard.js')
   // Paper Dashboard DEMO methods, don't include it in your project!
-  script(src='assets/js/demo.js')
+  script(src='/assets/js/demo.js')
   script(type='text/javascript').
     $(document).ready(function(){
       demo.initChartist();

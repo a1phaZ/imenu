@@ -1,9 +1,8 @@
 extends ../layout
 
 block content
-  .content
-    .header
-      h1.title #{categoryTitle}
+  header.text-center
+    h1#page-header #{categoryTitle}
 
   .columns
     include product.list.mixin.pug
