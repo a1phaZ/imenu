@@ -1,17 +1,29 @@
 extends ../layout
 
 block content
-  header.text-center
-    h2#page-header Изменить пароль
-  form(method='POST')
-    input(type='hidden', name='_csrf', value=_csrf)
-    .form-group
-      label.form-label(for='password') Новый пароль
-      input.form-input(type='password', name='password', id='password', placeholder='Новый пароль', autofocus, required)
-    .form-group
-      label.form-label(for='confirm') Подтвердите пароль
-      input.form-input(type='password', name='confirm', id='confirm', placeholder='Подтвердите пароль', required)
-    .form-group
-      button.btn.btn-primary.btn-reset(type='submit')
-        i.fa.fa-keyboard-o
-        | Изменить пароль
+  .content
+    .container-fluid
+      .row
+        .col-xs-12.col-sm-8.col-sm-offset-2
+          .card
+            .header
+              h4.title #{title}
+            .content
+              form(id='reset-form', method='POST')
+                input(type='hidden', name='_csrf', value=_csrf)
+                .row
+                  .col-md-12
+                    .form-group
+                      label(for='password') Новый пароль
+                      input.form-control.border-input(type='password', name='password', id='password', placeholder='Новый пароль', autofocus, required)
+                .row
+                  .col-md-12
+                    .form-group
+                      label(for='confirm') Подтвердите пароль
+                      input.form-control.border-input(type='password', name='confirm', id='confirm', placeholder='Подтвердите пароль', required)
+                .row
+                  .col-md-12
+                    .text-center
+                      button.btn.btn-primary.btn-reset(type='submit')
+                        i.ti-key
+                        | Изменить пароль
