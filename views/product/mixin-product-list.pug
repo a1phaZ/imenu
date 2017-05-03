@@ -1,0 +1,68 @@
+mixin product-list(product)
+  .col-lg-3.col-md-4.col-sm-6.col-xs-12
+    if isAdmin
+      a(href='/category/'+categorySlug+'/'+product.slug)
+        .card.card-link(style='background: url('+product.logo+'); background-size: contain; min-height: 300px;')
+          .header(style='background-color: rgba(255,255,255,.6);')
+            h4.title #{product.title}
+            p.category #{product.description}
+            p.category.product-composition #{product.composition}
+          .content
+            .footer
+              if product.discount !=0
+                span.discount.label.label-success.abs #{product.discount} 
+                  i.fa.fa-percent
+              span.product-price.red #{product.price}
+                i.fa.fa-rub
+              span.product-waiting 
+                i.fa.fa-clock-o #{product.waiting}
+    else
+      .card.card-link(style='background: url('+product.logo+'); background-size: contain; min-height: 300px;')
+        .header(style='background-color: rgba(255,255,255,.6);')
+          h4.title #{product.title}
+          p.category #{product.description}
+          p.category.product-composition #{product.composition}
+        .content
+          .footer
+            if product.discount !=0
+              span.discount.label.label-success.abs #{product.discount} 
+                i.fa.fa-percent
+            span.product-price.red #{product.price}
+              i.fa.fa-rub
+            span.product-waiting 
+              i.fa.fa-clock-o #{product.waiting}
+              button.btn.btn-primary.cart-add-btn(data-product-id=product._id)
+                i.fa.fa-plus(data-product-id=product._id)
+
+
+
+  //- .column.col-3.col-xl-4.col-lg-4.col-md-4.col-sm-6.col-xs-12.flex
+  //-   .card.rel
+  //-     .card-image
+  //-       if isAdmin
+  //-         a(href='/category/'+categorySlug+'/'+product.slug)
+  //-           img(class="img-responsive", src=product.logo)
+  //-       else
+  //-         img(class="img-responsive", src=product.logo)
+  //-     .card-header
+  //-       .card-title
+  //-         if isAdmin
+  //-           a(href='/category/'+categorySlug+'/'+product.slug) #{product.title}
+  //-         else 
+  //-           | #{product.title}
+  //-       .card-subtitle #{product.description}
+  //-     .card-body
+  //-       if product.discount !=0
+  //-         span.discount.label.label-success.abs #{product.discount} 
+  //-           i.fa.fa-percent
+  //-       span.product-composition #{product.composition}
+  //-       span.product-price.red #{product.price}
+  //-         i.fa.fa-rub
+  //-       span.product-waiting 
+  //-         i.fa.fa-clock-o #{product.waiting}
+  //-       if !isAdmin
+  //-         button.btn.btn-primary.cart-add-btn(data-product-id=product._id)
+  //-           i.fa.fa-plus(data-product-id=product._id)
+
+for product in productList
+  +product-list(product)

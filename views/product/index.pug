@@ -2,8 +2,10 @@ extends ../layout
 
 block content
   .content
-    .header
-      h1.title #{categoryTitle}
-
-  .columns
-    include product.list.mixin.pug
+    .container-fluid
+      .row
+        .col-xs-12
+          .header
+            h1.title #{categoryTitle}
+      .row
+        include mixin-product-list

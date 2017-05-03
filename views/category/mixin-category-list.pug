@@ -1,6 +1,6 @@
 mixin category-list(category)
 	.col-lg-3.col-md-4.col-sm-6.col-xs-12
-		a.card-link(href='/category/'+category.slug)
+		a(href='/category/'+category.slug)
 			.card.card-link(style='background: url('+category.logo+'); background-size: contain; min-height: 300px;')
 				.header(style='background-color: rgba(255,255,255,.6);')
 					h4.title #{category.title}
